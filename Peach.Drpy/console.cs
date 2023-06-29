@@ -13,6 +13,7 @@ namespace Peach.Drpy
         public void log(string mgs)
         {
             Debug.WriteLine(mgs);
+            Console.WriteLine(mgs);
         }
 
     }
