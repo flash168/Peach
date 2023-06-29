@@ -59,7 +59,7 @@ builder.Services.AddApplication();
 // Ìí¼Ó¹ýÂËÆ÷
 builder.Services.AddMvcCore(options =>
 {
-    options.Filters.Add<ResponseFilter>();
+    //options.Filters.Add<ResponseFilter>();
     options.Filters.Add<ExceptionFilter>();
 });
 

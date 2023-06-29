@@ -48,7 +48,7 @@ namespace Peach.Application.VodInfos
         /// 分类和首页推荐
         /// </summary>
         /// <returns></returns>
-        public async Task<JsonObject> HomeAsync(string rule)
+        public async Task<string> HomeAsync(string rule)
         {
             var sp = GetSite(rule);
             try
@@ -63,7 +63,7 @@ namespace Peach.Application.VodInfos
 
                 Jcls["list"] = JsonNode.Parse(Jv);
 
-                return Jcls.AsObject();
+                return Jcls.ToJsonString();
             }
             catch (Exception e)
             {
@@ -77,13 +77,13 @@ namespace Peach.Application.VodInfos
         /// </summary>
         /// <param name="input"></param>
         /// <returns></returns>
-        public async Task<JsonObject> ClassifyAsync(string rule, string tid, string pg, string filter, string extend)
+        public async Task<string> ClassifyAsync(string rule, string tid, string pg, string filter, string extend)
         {
             var sp = GetSite(rule);
             try
             {
                 var clas = await sp.GetCategory(tid, pg, filter, extend);
-                return JsonNode.Parse(clas)?.AsObject(); //JsonSerializer.Deserialize<ClassifyDto>(clas);
+                return clas;//JsonNode.Parse()?.ToJsonString(); //JsonSerializer.Deserialize<ClassifyDto>(clas);
             }
             catch (Exception e)
             {
@@ -97,13 +97,14 @@ namespace Peach.Application.VodInfos
         /// </summary>
         /// <param name="input"></param>
         /// <returns></returns>
-        public async Task<DetailsDto> DetailsAsync(string rule, string ids)
+        public async Task<string> DetailsAsync(string rule, string ids)
         {
             var sp = GetSite(rule);
             try
             {
                 var clas = await sp.GetDetails(ids);
-                return JsonSerializer.Deserialize<DetailsDto>(clas);
+                return clas;
+                //return JsonSerializer.Deserialize<DetailsDto>(clas);
             }
             catch (Exception e)
             {
@@ -117,13 +118,14 @@ namespace Peach.Application.VodInfos
         /// </summary>
         /// <param name="input"></param>
         /// <returns></returns>
-        public async Task<ClassifyDto> SearchAsync(string rule, string filter)
+        public async Task<string> SearchAsync(string rule, string filter)
         {
             var sp = GetSite(rule);
             try
             {
                 var clas = await sp.Search(filter);
-                return JsonSerializer.Deserialize<ClassifyDto>(clas);
+                return clas;
+               // return JsonSerializer.Deserialize<ClassifyDto>(clas);
             }
             catch (Exception e)
             {
@@ -137,9 +139,18 @@ namespace Peach.Application.VodInfos
         /// </summary>
         /// <param name="input"></param>
         /// <returns></returns>
-        public async Task<string> SniffingAsync(VodInput input)
+        public async Task<string> SniffingAsync(string rule, string purl)
         {
-            throw new BusinessException("未实现");
+            var sp = GetSite(rule); try
+            {
+                var clas = await sp.GetPlayInfo(rule, purl,"");
+                return clas;
+                // return JsonSerializer.Deserialize<ClassifyDto>(clas);
+            }
+            catch (Exception e)
+            {
+                throw new BusinessException(e.Message);
+            }
         }
 
 

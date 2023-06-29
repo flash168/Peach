@@ -7,8 +7,6 @@ namespace Peach.Host.Configurations
     {
         public static void AddApplication(this IServiceCollection services)
         {
-           // services.AddAutoMapper(typeof(VideoApplicationExtension).Assembly);
-
             services.AddSingleton<IVodInfoService, VodInfoService>();
 
         }

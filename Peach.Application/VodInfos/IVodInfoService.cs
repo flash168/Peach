@@ -14,7 +14,7 @@ namespace Peach.Application.VodInfos
         /// 分类和首页推荐
         /// </summary>
         /// <returns></returns>
-        Task<JsonObject> HomeAsync(string rule);
+        Task<string> HomeAsync(string rule);
 
 
         /// <summary>
@@ -22,7 +22,7 @@ namespace Peach.Application.VodInfos
         /// </summary>
         /// <param name="input"></param>
         /// <returns></returns>
-        Task<JsonObject> ClassifyAsync(string rule, string tid, string pg, string filter, string extend);
+        Task<string> ClassifyAsync(string rule, string tid, string pg, string filter, string extend);
 
 
         /// <summary>
@@ -30,7 +30,7 @@ namespace Peach.Application.VodInfos
         /// </summary>
         /// <param name="input"></param>
         /// <returns></returns>
-        Task<DetailsDto> DetailsAsync(string rule, string ids);
+        Task<string> DetailsAsync(string rule, string ids);
 
 
         /// <summary>
@@ -38,7 +38,7 @@ namespace Peach.Application.VodInfos
         /// </summary>
         /// <param name="input"></param>
         /// <returns></returns>
-        Task<ClassifyDto> SearchAsync(string rule, string filter);
+        Task<string> SearchAsync(string rule, string filter);
 
 
         /// <summary>
@@ -46,7 +46,7 @@ namespace Peach.Application.VodInfos
         /// </summary>
         /// <param name="input"></param>
         /// <returns></returns>
-        Task<string> SniffingAsync(VodInput input);
+        Task<string> SniffingAsync(string rule, string url);
 
 
     }
