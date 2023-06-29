@@ -25,13 +25,14 @@ namespace Peach.Drpy
 
                 string drpy = "";
                 drpy = File.ReadAllText(Path.Combine(dph, "libs", "drpy2.min.js"));
-                drpy = drpy.Replace("console.log", "consolelog");
+                //drpy = drpy.Replace("console.log", "consolelog");
 
                 engine = new Engine(cfg =>
                 {
                     cfg.AllowClr();
                     cfg.EnableModules(new RequireModuleLoader("", dph));
-                }).SetValue("consolelog", new Action<object>(g => { Debug.WriteLine(g); }));
+                });
+                //engine.SetValue("consolelog", new Action<object>(g => { Debug.WriteLine(g); }));
 
                 // 将 C# 函数转换为 JavaScript 函数，并将其添加到 engine 中
                 engine.SetValue("pdfh", new Func<string, string, string>(hparser.parseDomForUrl));
@@ -42,6 +43,7 @@ namespace Peach.Drpy
                 engine.SetValue("req", new Func<string, JsValue, object>(hparser.request));
 
                 engine.SetValue("local", new Local());
+                engine.SetValue("console", new console());
 
                 engine.AddModule("drpyModel", drpy);
                 ns = engine.ImportModule("drpyModel");

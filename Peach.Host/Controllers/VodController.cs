@@ -36,7 +36,7 @@ namespace Peach.Host.Controllers
             if (!string.IsNullOrEmpty(t) && !string.IsNullOrEmpty(ac))//一级分类
                 return await vodInfoService.ClassifyAsync(rule, t, pg, ac, f);
             else if (!string.IsNullOrEmpty(ids) && !string.IsNullOrEmpty(ac) && ac.ToLower().Equals("detail"))//二级详情
-                return await vodInfoService.ClassifyAsync(rule, t, pg, ac, f);
+                return await vodInfoService.DetailsAsync(rule, ids);
             else if (!string.IsNullOrEmpty(wd))//搜索
                 return await vodInfoService.SearchAsync(rule, wd);
             else if (!string.IsNullOrEmpty(play_url))//播放
