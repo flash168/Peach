@@ -13,6 +13,8 @@ using NSoup.Select;
 using Document = NSoup.Nodes.Document;
 using RestSharp;
 using System.Xml.Linq;
+using Jint;
+using System.Web;
 
 namespace Peach.Drpy
 {
@@ -32,8 +34,8 @@ namespace Peach.Drpy
                 UserAgent = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/110.0.0.0 Safari/537.36"
             };
             client = new RestClient(options);
-            client.AddDefaultHeader("Content-Type", "application/json");
-            client.AddDefaultHeader("Accept", "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7");
+            //client.AddDefaultHeader("Content-Type", "application/json");
+            //client.AddDefaultHeader("Accept", "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7");
         }
 
         /// <summary>
@@ -47,15 +49,63 @@ namespace Peach.Drpy
             Uri uri = new Uri(url);
             string Host = uri.Host;
             var method = arguments.Get("method")?.ToString();
-            var _headers = arguments.Get("headers");
+            var _headers = arguments.AsObject()["headers"].AsObject();
             var Referer = _headers.Get("Referer")?.ToString();
             var UserAgent = _headers.Get("User-Agent")?.ToString();
             var Cookie = _headers.Get("Cookie")?.ToString();
+            var ContentType = _headers.Get("Content-Type")?.ToString();
+
+
+            var Data = arguments.AsObject()["data"]?.ToString();
+            var Body = arguments.AsObject()["body"]?.ToString();
+
+            var Buffer = arguments.AsObject()["buffer"]?.ToString();
+
+
+            String charset = "utf-8";
+            if (ContentType != null && ContentType.Split("charset=").Length > 1)
+            {
+                charset = ContentType.Split("charset=")[1];
+            }
 
             var request = new RestRequest(url);
-            if (string.IsNullOrEmpty(UserAgent))
-                UserAgent = "Mozilla/5.0 (Linux; Android 11; M2007J3SC Build/RKQ1.200826.002; wv) AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0 Chrome/77.0.3865.120 MQQBrowser/6.2 TBS/045714 Mobile Safari/537.36";
-            request.AddHeader("User-Agent", UserAgent);
+
+            if (!string.IsNullOrEmpty(Data) && !Data.Equals("undefined"))
+            {
+                // 序列化JSON数据
+                // string post_data = JsonConvert.SerializeObject(Data);
+                // 将JSON参数添加至请求中
+                request.AddParameter("application/json", Data, ParameterType.RequestBody);
+
+            }
+
+            if (!string.IsNullOrEmpty(Body) && !Body.Equals("undefined"))
+            {
+                String[] queryS = Body.Split("&");
+                foreach (String query in queryS)
+                {
+                    //String query = queryS[i];
+                    int tmp = query.IndexOf("=");
+                    String key;
+                    String value;
+                    if (tmp != -1)
+                    {
+                        key = query.Substring(0, tmp);
+                        value = query[(tmp + 1)..];
+                    }
+                    else
+                    {
+                        key = query;
+                        value = "";
+                    }
+                    request.AddParameter(key, value);
+                }
+            }
+
+
+
+            if (!string.IsNullOrEmpty(UserAgent))
+                request.AddHeader("User-Agent", UserAgent);
             if (!string.IsNullOrEmpty(Referer))
                 request.AddHeader("Referer", Referer);
 
@@ -71,6 +121,7 @@ namespace Peach.Drpy
                 }
             }
             string rContent = "";
+            JsObject header = new(_headers.Engine);
             try
             {
                 RestResponse? response;
@@ -78,8 +129,32 @@ namespace Peach.Drpy
                     response = client.Post(request);
                 else
                     response = client.Get(request);
-                var trw = response.Cookies;
-                rContent = response.Content;
+                // var trw = response.Cookies;
+                //rContent = response.Content;
+                Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);
+                rContent = HttpUtility.UrlDecode(response.RawBytes == null ? Array.Empty<byte>() : response.RawBytes,
+                                                 Encoding.GetEncoding(charset));
+
+                if (response.Headers != null)
+                {
+                    foreach (var item in response.Headers)
+                    {
+                        header.Set(item.Name, item.Value == null ? "" : item.Value.ToString());
+                    }
+                }
+
+                if (Buffer == "1")
+                {
+                    return new { headers = header, content = response.RawBytes };
+                }
+                else if (Buffer == "2")
+                {
+                    return new { headers = header, content = Convert.ToBase64String(Encoding.UTF8.GetBytes(rContent)) };
+                }
+                else
+                {
+                    return new { headers = header, content = rContent };
+                }
             }
             catch (Exception)
             { }

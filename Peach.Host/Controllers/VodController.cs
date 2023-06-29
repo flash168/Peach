@@ -33,6 +33,8 @@ namespace Peach.Host.Controllers
         {
             if (!pwd.ToLower().Equals(apiPwd.ToLower()))
                 throw new BusinessException("接口密码错误！");
+            if (string.IsNullOrEmpty(pg))
+                pg = "1";
             if (!string.IsNullOrEmpty(t) && !string.IsNullOrEmpty(ac))//一级分类
                 return await vodInfoService.ClassifyAsync(rule, t, pg, ac, f);
             else if (!string.IsNullOrEmpty(ids) && !string.IsNullOrEmpty(ac) && ac.ToLower().Equals("detail"))//二级详情
