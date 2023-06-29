@@ -1,27 +1,52 @@
+name: Release
 
-on: [push]
+on:
+  push:
+    branches:
+      - main
 
 jobs:
   build:
+    runs-on: ${{ matrix.os }}
 
-    runs-on: ubuntu-latest
     strategy:
       matrix:
-        dotnet-version: [  '6.0.x' ]
+        os: [windows-latest, ubuntu-latest]
 
     steps:
-      - uses: actions/checkout@v3
-      - name: Setup .NET Core SDK ${{ matrix.dotnet-version }}
-        uses: actions/setup-dotnet@v3
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v1
         with:
-          dotnet-version: '6.0.x'
-          token: ${{ secrets.PEACH }} 
-          path: ~/.nuget/packages
-          # Look to see if there is a cache hit for the corresponding requirements file
-          key: ${{ runner.os }}-nuget-${{ hashFiles('**/packages.lock.json') }}
-          restore-keys: |
-            ${{ runner.os }}-nuget
-      - name: Install dependencies
+          dotnet-version: 6.0.x
+
+      - name: Restore dependencies
         run: dotnet restore
-      - name: Build
-        run: dotnet build --configuration Release --no-restore
+
+      - name: Build and publish
+        run: |
+          dotnet build --configuration Release
+          dotnet publish --configuration Release --output ./publish
+
+      - name: Set version
+        id: version
+        run: echo "::set-output name=version::$(date +'%Y%m%d%H%M%S')"
+
+      - name: Create release
+        id: create_release
+        uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.Peach }}
+        with:
+          tag_name: ${{ steps.version.outputs.version }}
+          release_name: Release ${{ steps.version.outputs.version }}
+          draft: false
+          prerelease: false
+
+      - name: Upload artifacts
+        uses: actions/upload-artifact@v2
+        with:
+          name: Release artifacts
+          path: ./publish
