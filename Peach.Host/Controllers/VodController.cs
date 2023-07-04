@@ -8,7 +8,9 @@ using System.Text.Json.Nodes;
 
 namespace Peach.Host.Controllers
 {
-
+    /// <summary>
+    /// 视频管理
+    /// </summary>
     [Route("[controller]")]
     [ApiController]
     // [ServiceFilter(typeof(VodValidationFilter))] // 添加自定义的验证过滤器
@@ -16,6 +18,10 @@ namespace Peach.Host.Controllers
     {
         private readonly IVodInfoService vodInfoService;
         private readonly string apiPwd;
+        /// <summary>
+        /// 视频
+        /// </summary>
+        /// <param name="_vodInfoService"></param>
         public VodController(IVodInfoService _vodInfoService)
         {
             apiPwd = AppSettingsHelper.GetContent<string>("AppConfig", "ApiPwd");
@@ -37,7 +43,7 @@ namespace Peach.Host.Controllers
                 pg = "1";
             if (!string.IsNullOrEmpty(t) && !string.IsNullOrEmpty(ac))//一级分类
                 return await vodInfoService.ClassifyAsync(rule, t, pg, ac, f);
-            else if (!string.IsNullOrEmpty(ids) && !string.IsNullOrEmpty(ac) && ac.ToLower().Equals("detail"))//二级详情
+            else if (!string.IsNullOrEmpty(ids) && !string.IsNullOrEmpty(ac) && ac.Length > 0)//二级详情
                 return await vodInfoService.DetailsAsync(rule, ids);
             else if (!string.IsNullOrEmpty(wd))//搜索
                 return await vodInfoService.SearchAsync(rule, wd);

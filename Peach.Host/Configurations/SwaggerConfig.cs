@@ -4,6 +4,11 @@ namespace Peach.Host.Configurations
 {
     public static class SwaggerConfig
     {
+        /// <summary>
+        /// 添加Swagger配置
+        /// </summary>
+        /// <param name="services"></param>
+        /// <exception cref="ArgumentNullException"></exception>
         public static void AddSwaggerConfiguration(this IServiceCollection services)
         {
             if (services == null) throw new ArgumentNullException(nameof(services));
@@ -51,25 +56,14 @@ namespace Peach.Host.Configurations
                     In = ParameterLocation.Header,
                     Type = SecuritySchemeType.ApiKey
                 });
-
-                s.AddSecurityRequirement(new OpenApiSecurityRequirement
-                {
-                    {
-                        new OpenApiSecurityScheme
-                        {
-                            Reference = new OpenApiReference
-                            {
-                                Type = ReferenceType.SecurityScheme,
-                                Id = "Bearer"
-                            }
-                        },
-                        new string[] {}
-                    }
-                });
-
             });
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="app"></param>
+        /// <exception cref="ArgumentNullException"></exception>
         public static void UseSwaggerSetup(this IApplicationBuilder app)
         {
             if (app == null) throw new ArgumentNullException(nameof(app));

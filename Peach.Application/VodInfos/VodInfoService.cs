@@ -8,6 +8,7 @@ using System.Data;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Text.Encodings.Web;
 using System.Text.Json;
 using System.Text.Json.Nodes;
 using System.Threading.Tasks;
@@ -24,6 +25,12 @@ namespace Peach.Application.VodInfos
             path = "";
             Sites = new();
         }
+        // 配置 JsonSerializerOptions
+        JsonSerializerOptions options = new JsonSerializerOptions
+        {
+            Encoder = JavaScriptEncoder.UnsafeRelaxedJsonEscaping
+        };
+
         //js引擎实例集合
         private Dictionary<string, JsSpiderClient> Sites;
 
@@ -62,8 +69,8 @@ namespace Peach.Application.VodInfos
                 var Jv = Jhvv["list"].ToString();
 
                 Jcls["list"] = JsonNode.Parse(Jv);
-
-                return Jcls.ToJsonString();
+             
+                return Jcls.ToJsonString(options);
             }
             catch (Exception e)
             {
