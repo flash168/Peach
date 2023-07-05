@@ -89,7 +89,7 @@ namespace Peach.Host.Controllers
                         searchable = 2,
                         quickSearch = 0,
                         filterable = 1,
-                        api = $"{host}/libs/drpy.min.js",
+                        api = $"{host}/libs/drpy2.min.js",
                         ext = $"{host}/js/{Path.GetFileName(file)}"
                     });
                 }
