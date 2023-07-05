@@ -65,11 +65,16 @@ namespace Peach.Application.VodInfos
 
                 var Jcls = JsonNode.Parse(clas);
                 var Jhvv = JsonNode.Parse(hv);
+                if (Jhvv.ToJsonString(options) != "{}")
+                {
+                    var Jv = Jhvv["list"].ToString();
+                    Jcls["list"] = JsonNode.Parse(Jv);
+                }
+                else
+                {
+                    Jcls["list"] = "[]";
+                }
 
-                var Jv = Jhvv["list"].ToString();
-
-                Jcls["list"] = JsonNode.Parse(Jv);
-             
                 return Jcls.ToJsonString(options);
             }
             catch (Exception e)
@@ -132,7 +137,7 @@ namespace Peach.Application.VodInfos
             {
                 var clas = await sp.Search(filter);
                 return clas;
-               // return JsonSerializer.Deserialize<ClassifyDto>(clas);
+                // return JsonSerializer.Deserialize<ClassifyDto>(clas);
             }
             catch (Exception e)
             {
@@ -150,7 +155,7 @@ namespace Peach.Application.VodInfos
         {
             var sp = GetSite(rule); try
             {
-                var clas = await sp.GetPlayInfo(rule, purl,"");
+                var clas = await sp.GetPlayInfo(rule, purl, "");
                 return clas;
                 // return JsonSerializer.Deserialize<ClassifyDto>(clas);
             }

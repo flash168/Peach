@@ -1,12 +1,13 @@
 using Microsoft.AspNetCore.StaticFiles;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.FileProviders;
 using Microsoft.OpenApi.Models;
 using Peach.Application.Configuration;
 using Peach.Host.Configurations;
 using Peach.Host.Filters;
 using Serilog;
 using Serilog.Events;
-
+using System.Text;
 
 Log.Logger = new LoggerConfiguration()
     .MinimumLevel.Debug()
@@ -64,7 +65,6 @@ builder.Services.AddMvcCore(options =>
 });
 
 
-
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -73,14 +73,23 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerSetup();
 }
 
-
 var provider = new FileExtensionContentTypeProvider();
-
 provider.Mappings[".exe"] = "application/octet-stream";
+
 
 app.UseStaticFiles(new StaticFileOptions
 {
-    ContentTypeProvider = provider
+    OnPrepareResponse = ctx =>
+    {
+        ctx.Context.Response.GetTypedHeaders().ContentType = new Microsoft.Net.Http.Headers.MediaTypeHeaderValue("text/html")
+        {
+            Encoding = Encoding.UTF8,
+        };
+    },
+    ServeUnknownFileTypes = true,
+   // DefaultContentType = "text/plain; charset=utf-8",
+    ContentTypeProvider = provider,
+    FileProvider = new PhysicalFileProvider(Path.Combine(AppDomain.CurrentDomain.BaseDirectory))
 });
 
 app.UseAuthentication(); // хож╓ 

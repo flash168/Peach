@@ -9,7 +9,7 @@ using System.Text.Json.Nodes;
 namespace Peach.Host.Controllers
 {
     /// <summary>
-    /// 视频管理
+    /// 影视数据获取
     /// </summary>
     [Route("[controller]")]
     [ApiController]
@@ -30,10 +30,19 @@ namespace Peach.Host.Controllers
         }
 
         /// <summary>
-        /// 分类和首页推荐
+        /// 视频数据获取
         /// </summary>
-        /// <param name="input"></param>
+        /// <param name="pwd">接口密码（必需）</param>
+        /// <param name="rule">规则（必需）</param>
+        /// <param name="t">分类</param>
+        /// <param name="pg">分页</param>
+        /// <param name="ac">是否详情</param>
+        /// <param name="f"></param>
+        /// <param name="ids"></param>
+        /// <param name="wd"></param>
+        /// <param name="play_url"></param>
         /// <returns></returns>
+        /// <exception cref="BusinessException"></exception>
         [HttpGet]
         public async Task<string> HomeAsync(string pwd, string rule, string? t, string? pg, string? ac, string? f, string? ids, string? wd, string? play_url)
         {
