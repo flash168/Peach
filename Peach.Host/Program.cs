@@ -28,6 +28,7 @@ var builder = WebApplication.CreateBuilder(new WebApplicationOptions()
     ContentRootPath = AppContext.BaseDirectory
 });
 
+
 builder.Services.AddSingleton<AppSettingsHelper>(new AppSettingsHelper(builder.Configuration));
 
 //  π”√Serilog
