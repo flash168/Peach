@@ -7,7 +7,7 @@ namespace Peach.Host.Configurations
     {
         public static void AddApplication(this IServiceCollection services)
         {
-            services.AddSingleton<IVodInfoService, VodInfoService>();
+            services.AddSingleton<IVodInfoService, RuleTestService>();
             //services.AddTransient<, VodInfoService>();
 
         }

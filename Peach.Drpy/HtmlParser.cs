@@ -15,6 +15,11 @@ using RestSharp;
 using System.Xml.Linq;
 using Jint;
 using System.Web;
+using Esprima.Ast;
+using Peach.Drpy;
+using System.Buffers.Text;
+using System.Data;
+using System.Reflection.PortableExecutable;
 
 namespace Peach.Drpy
 {
@@ -38,6 +43,7 @@ namespace Peach.Drpy
             //client.AddDefaultHeader("Accept", "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7");
         }
 
+
         /// <summary>
         /// okhttp封装的html请求，给js调用http请求的
         /// </summary>
@@ -46,8 +52,42 @@ namespace Peach.Drpy
         /// <returns></returns>
         public object request(string url, JsValue arguments)
         {
-            Uri uri = new Uri(url);
-            string Host = uri.Host;
+            //Uri uri = new Uri(url);
+            //string Host = uri.Host;
+
+            //if (arguments.IsObject())
+            //{
+            //    var jsObject = arguments.AsObject();
+
+            //    // 遍历对象的属性
+            //    foreach (var property in jsObject.GetOwnProperties())
+            //    {
+            //        var propertyName = property.Key;
+            //        var propertyValue = property.Value.Value;
+
+            //        // 处理属性值
+            //    }
+
+            //    // 遍历对象的元素（如果是数组）
+            //    if (jsObject.IsArray())
+            //    {
+            //        var array = jsObject.AsArray();
+
+            //        for (var i = 0; i < array.Count(); i++)
+            //        {
+            //            var daaa = i.ToString();
+            //            var elementValue = array.Get(i)?.ToString();
+
+            //            // 处理元素值
+            //        }
+            //    }
+            //}
+            //else
+            //{
+            //    // 处理其他类型的值
+            //}
+
+
             var method = arguments.Get("method")?.ToString();
             var _headers = arguments.AsObject()["headers"].AsObject();
             var Referer = _headers.Get("Referer")?.ToString();
@@ -76,7 +116,6 @@ namespace Peach.Drpy
                 // string post_data = JsonConvert.SerializeObject(Data);
                 // 将JSON参数添加至请求中
                 request.AddParameter("application/json", Data, ParameterType.RequestBody);
-
             }
 
             if (!string.IsNullOrEmpty(Body) && !Body.Equals("undefined"))
@@ -101,8 +140,6 @@ namespace Peach.Drpy
                     request.AddParameter(key, value);
                 }
             }
-
-
 
             if (!string.IsNullOrEmpty(UserAgent))
                 request.AddHeader("User-Agent", UserAgent);

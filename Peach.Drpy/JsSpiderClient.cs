@@ -3,6 +3,7 @@ using Jint.Native;
 using Jint.Native.Object;
 using System.Diagnostics;
 using System.IO.Compression;
+using System.Runtime.Intrinsics.Arm;
 using static System.Net.Mime.MediaTypeNames;
 
 namespace Peach.Drpy
@@ -10,12 +11,16 @@ namespace Peach.Drpy
     public class JsSpiderClient
     {
         public JsSpiderClient()
-        { }
+        {
+            console = new console();
+            hparser = new HtmlParser();
+        }
 
         private Engine engine;
         ObjectInstance ns;
+        public console console;
+        HtmlParser hparser;
 
-        HtmlParser hparser = new HtmlParser();
         public bool InitEngine(string dph, string rule)
         {
             try
@@ -23,14 +28,31 @@ namespace Peach.Drpy
                 if (string.IsNullOrEmpty(dph))
                     dph = AppContext.BaseDirectory;
 
-                string drpy = "";
-                drpy = File.ReadAllText(Path.Combine(dph, "libs", "drpy2.min.js"));
                 //drpy = drpy.Replace("console.log", "consolelog");
 
+                var ext = File.ReadAllText(Path.Combine(dph, "js", $"{rule}.js"));
+
+                return InitEngine(string.Empty, dph, ext);
+            }
+            catch (Exception ex)
+            {
+                return false;
+            }
+        }
+
+        public bool InitEngine(string drpy, string path, string ext)
+        {
+            if (string.IsNullOrEmpty(path))
+                path = AppContext.BaseDirectory;
+
+            if (string.IsNullOrEmpty(drpy))
+                drpy = File.ReadAllText(Path.Combine(path, "libs", "drpy2.min.js"));
+            try
+            {
                 engine = new Engine(cfg =>
                 {
                     cfg.AllowClr();
-                    cfg.EnableModules(new RequireModuleLoader("", dph));
+                    cfg.EnableModules(new RequireModuleLoader("", path));
                 });
                 //engine.SetValue("consolelog", new Action<object>(g => { Debug.WriteLine(g); }));
 
@@ -43,18 +65,17 @@ namespace Peach.Drpy
                 engine.SetValue("req", new Func<string, JsValue, object>(hparser.request));
 
                 engine.SetValue("local", new Local());
-                engine.SetValue("console", new console());
+                engine.SetValue("console", console);
 
                 engine.AddModule("drpyModel", drpy);
                 ns = engine.ImportModule("drpyModel");
-
-                var ext = File.ReadAllText(Path.Combine(dph, "js", $"{rule}.js"));
 
                 engine.Invoke(ns.Get("default").Get("init"), ext);
             }
             catch (Exception ex)
             {
                 return false;
+                throw;
             }
             return true;
         }
