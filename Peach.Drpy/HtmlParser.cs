@@ -90,8 +90,8 @@ namespace Peach.Drpy
 
             var method = arguments.Get("method")?.ToString();
             var _headers = arguments.AsObject()["headers"].AsObject();
-            var Referer = _headers.Get("Referer")?.ToString();
-            var UserAgent = _headers.Get("User-Agent")?.ToString();
+            //var Referer = _headers.Get("Referer")?.ToString();
+            //var UserAgent = _headers.Get("User-Agent")?.ToString();
             var Cookie = _headers.Get("Cookie")?.ToString();
             var ContentType = _headers.Get("Content-Type")?.ToString();
 
@@ -141,10 +141,21 @@ namespace Peach.Drpy
                 }
             }
 
-            if (!string.IsNullOrEmpty(UserAgent))
-                request.AddHeader("User-Agent", UserAgent);
-            if (!string.IsNullOrEmpty(Referer))
-                request.AddHeader("Referer", Referer);
+            foreach (var property in _headers.GetOwnProperties())
+            {
+                var propertyName = property.Key.ToString();
+                if (!propertyName.Contains("Cookie", StringComparison.OrdinalIgnoreCase))
+                {
+                    var propertyValue = property.Value.Value?.ToString();
+                    if (!string.IsNullOrEmpty(propertyValue))
+                        request.AddHeader(propertyName, propertyValue);
+                }
+            }
+
+            //if (!string.IsNullOrEmpty(UserAgent))
+            //    request.AddHeader("User-Agent", UserAgent);
+            //if (!string.IsNullOrEmpty(Referer))
+            //    request.AddHeader("Referer", Referer);
 
             if (!string.IsNullOrEmpty(Cookie) && !Cookie.Equals("undefined"))
             {
