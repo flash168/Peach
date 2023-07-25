@@ -19,10 +19,10 @@ jobs:
           dotnet-version: '6.0.x'
 
       - name: Build Web API package
-        run: dotnet publish path/to/webapi/project.csproj --configuration Release --output ./build/webapi --self-contained true --runtime linux-x64
+        run: dotnet publish Peach.Host/Peach.Host.csproj --configuration Release --output ./build/webapi --self-contained true --runtime linux-x64
 
       - name: Build WPF Client package
-        run: dotnet publish path/to/wpfclient/project.csproj --configuration Release --output ./build/wpfclient --self-contained true --runtime win-x64
+        run: dotnet publish RuleTest/RuleTest.csproj --configuration Release --output ./build/wpfclient --self-contained true --runtime win-x64
 
       - name: Generate version number
         id: version
