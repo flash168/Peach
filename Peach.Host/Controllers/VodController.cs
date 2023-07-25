@@ -57,7 +57,7 @@ namespace Peach.Host.Controllers
             else if (!string.IsNullOrEmpty(wd))//搜索
                 return await vodInfoService.SearchAsync(rule, wd);
             else if (!string.IsNullOrEmpty(play_url))//播放
-                return await vodInfoService.SniffingAsync(rule, play_url);
+                return await vodInfoService.SniffingAsync(string.Empty, play_url);
             else
                 return await vodInfoService.HomeAsync(rule);
         }

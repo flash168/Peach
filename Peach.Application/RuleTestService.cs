@@ -139,11 +139,11 @@ namespace Peach.Application.VodInfos
         /// </summary>
         /// <param name="input"></param>
         /// <returns></returns>
-        public async Task<string> SniffingAsync(string rule, string purl)
+        public async Task<string> SniffingAsync(string line, string purl)
         {
             try
             {
-                var clas = await Site.GetPlayInfo(rule, purl, "");
+                var clas = await Site.GetPlayInfo(line, purl, "");
                 return clas;
                 // return JsonSerializer.Deserialize<ClassifyDto>(clas);
             }

@@ -176,7 +176,18 @@ namespace Peach.Drpy
                 {
                     foreach (var item in response.Headers)
                     {
-                        header.Set(item.Name, item.Value == null ? "" : item.Value.ToString());
+                        var ck = response.Headers.Where(s => s.Name == item.Name).ToList();
+                        if (ck.Count > 1)
+                        {
+                            var cks = new JsArray(_headers.Engine);
+                            foreach (var c in ck)
+                            {
+                                cks.Push(c.Value?.ToString());
+                            }
+                            header.Set(item.Name, cks);
+                        }
+                        else
+                            header.Set(item.Name, item.Value == null ? "" : item.Value.ToString());
                     }
                 }
 

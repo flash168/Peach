@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:avalonEdit="http://icsharpcode.net/sharpdevelop/avalonedit"
         xmlns:local="clr-namespace:RuleTest"
-        mc:Ignorable="d" Title="规则编辑器" Height="450" Width="800">
+        mc:Ignorable="d" Title="规则编辑器" Height="450" Width="1000">
     <Grid>
 
         <Grid.RowDefinitions>
@@ -48,6 +48,11 @@
             <TextBlock Margin="3,0,0,0" Grid.Column="1" VerticalAlignment="Center" Text="wd:"/>
             <TextBox Width="50" Margin="3" Grid.Column="1" VerticalAlignment="Center" x:Name="txt_qe"/>
             <Button Width="30" Margin="3" Grid.Column="1" VerticalAlignment="Center" Click="Bnt_Search" Content="搜索"/>
+            <TextBlock Margin="3,0,0,0" Grid.Column="1" VerticalAlignment="Center" Text="line:"/>
+            <TextBox Width="50" Margin="3" Grid.Column="1" VerticalAlignment="Center" x:Name="txt_line"/>
+            <TextBlock Margin="3,0,0,0" Grid.Column="1" VerticalAlignment="Center" Text="playurl:"/>
+            <TextBox Width="150" Margin="3" Grid.Column="1" VerticalAlignment="Center" x:Name="txt_pl"/> 
+            <Button Width="30" Margin="3" Grid.Column="1" VerticalAlignment="Center" Click="Bnt_Play" Content="播放"/>
         </StackPanel>
 
         <TabControl Grid.Row="2">

@@ -1,0 +1,57 @@
+name: Build and Versioning
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v1
+        with:
+          dotnet-version: '6.0.x'
+
+      - name: Build Web API package
+        run: dotnet publish path/to/webapi/project.csproj --configuration Release --output ./build/webapi --self-contained true --runtime linux-x64
+
+      - name: Build WPF Client package
+        run: dotnet publish path/to/wpfclient/project.csproj --configuration Release --output ./build/wpfclient --self-contained true --runtime win-x64
+
+      - name: Generate version number
+        id: version
+        run: echo "::set-output name=version::$(date +'%Y%m%d%H%M%S')"
+
+      - name: Create release
+        uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name: ${{ steps.version.outputs.version }}
+          release_name: Release ${{ steps.version.outputs.version }}
+          draft: false
+          prerelease: false
+
+      - name: Upload Web API package
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: ./build/webapi
+          asset_name: webapi.zip
+
+      - name: Upload WPF Client package
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: ./build/wpfclient
+          asset_name: wpfclient.zip

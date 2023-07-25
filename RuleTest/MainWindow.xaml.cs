@@ -88,6 +88,10 @@ namespace RuleTest
             AddMeg(req);
         }
 
-
+        private async void Bnt_Play(object sender, RoutedEventArgs e)
+        {
+            var req = await testService.SniffingAsync(txt_line.Text.Trim(), txt_pl.Text.Trim());
+            AddMeg(req);
+        }
     }
 }

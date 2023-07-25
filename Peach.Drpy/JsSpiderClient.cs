@@ -126,13 +126,13 @@ namespace Peach.Drpy
             }, ids);
         }
 
-        public Task<string> GetPlayInfo(string flag, string id, string flags)
+        public Task<string> GetPlayInfo(string line, string id, string flags)
         {
             if (engine == null) return null;
             return Task.Factory.StartNew(_id =>
             {
-                //flag线路名, id, array(vipFlags)全局配置需要解析的标识列表flags
-                return engine.Invoke(ns["default"].Get("play"), flag, _id, flags).AsString();
+                //line线路名, id, array(vipFlags)全局配置需要解析的标识列表flags
+                return engine.Invoke(ns["default"].Get("play"), line, _id, flags).AsString();
             }, id);
         }
 
