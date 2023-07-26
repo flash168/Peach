@@ -22,17 +22,17 @@ jobs:
         run: dotnet restore Peach.sln
 
       - name: Build and Publish WebAPI
-        run: dotnet publish Peach.Host/Peach.Host.csproj --configuration Release --output ./publish/webapi --self-contained true --runtime linux-x64
+        run: dotnet publish Peach.Host/Peach.Host.csproj -r win-x64 -c Release --self-contained true /p:PublishSingleFile=true /p:IncludeNativeLibrariesForSelfExtract=true -o ./publish/webapi
 
       - name: Build and Publish WPFApp
-        run: dotnet publish RuleTest/RuleTest.csproj --configuration Release --output ./publish/wpf --runtime win-x64 --self-contained true
+        run: dotnet publish RuleTest/RuleTest.csproj -r win-x64 -c Release --self-contained true /p:PublishSingleFile=true /p:IncludeNativeLibrariesForSelfExtract=true -o ./publish/ruleTest
         
-      - name: Create zip files
-        run: |
-          $version = $env:GITHUB_RUN_NUMBER
-          Compress-Archive -Path ./publish/webapi -DestinationPath ./publish/webapi.zip
-          Compress-Archive -Path ./publish/wpf -DestinationPath ./publish/wpf.zip
-
+      - name: Zip artifacts
+        run: zip -r webapi.zip ./publish/webapi
+        
+      - name: Zip artifacts
+        run: zip -r ruleTest.zip ./publish/ruleTest
+        
 
       - name: Create Release
         id: create_release
@@ -46,15 +46,23 @@ jobs:
             Release v1.0.$version
           draft: false
           prerelease: false
-
-      - name: Upload WebAPI artifact
-        uses: actions/upload-artifact@v2
+          
+      - name: Upload Release Asset
+        id: upload_release_asset
+        uses: actions/upload-release-asset@v1
         with:
-          name: WebAPI
-          path: ./publish/webapi.zip
-
-      - name: Upload WPF artifact
-        uses: actions/upload-artifact@v2
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: ./publish/webapi/webapi.zip
+          asset_name: webapi.zip
+          asset_content_type: application/zip
+          
+      - name: Upload Release Asset
+        id: upload_release_asset
+        uses: actions/upload-release-asset@v1
         with:
-          name: WPF
-          path: ./publish/wpf.zip
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: ./publish/ruleTest/ruleTest.zip
+          asset_name: ruleTest.zip
+          asset_content_type: ruleTest/zip
+          
+          
