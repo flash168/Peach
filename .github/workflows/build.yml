@@ -33,8 +33,8 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.PEACHTOKEN }}
         with:
-          tag_name: ${{ format('{0}.{1:00}', formatDateTime(now(), 'yyyyMMdd'), github.run_number) | replace('.', '') }}
-          release_name: Release ${{ format('{0}.{1:00}', formatDateTime(now(), 'yyyyMMdd'), github.run_number) }}
+          tag_name: $(date +'%Y%m%d').$(printf "%02d" ${{ github.run_number }})
+          release_name: Release $(date +'%Y%m%d').$(printf "%02d" ${{ github.run_number }})
           draft: false
           prerelease: false
 
