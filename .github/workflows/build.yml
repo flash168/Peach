@@ -33,12 +33,12 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.PEACHTOKEN }}
         with:
-          tag_name: $(date +'%Y%m%d').$(printf "%02d" ${{ github.run_number }})
-          release_name: Release $(date +'%Y%m%d').$(printf "%02d" ${{ github.run_number }})
+          tag_name: ${{ github.run_number }}
+          release_name: Release ${{ github.event.repository.name }}  ${{ steps.branch-name.outputs.current_branch }} v${{ github.run_number }}.${{ github.run_attempt }}
           draft: false
           prerelease: false
 
-      - name: Upload Web API Release Asset
+      - name: Upload WebAPI Release Asset
         id: upload_webapi_asset
         uses: actions/upload-release-asset@v1
         env:
