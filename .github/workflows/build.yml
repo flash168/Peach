@@ -21,18 +21,10 @@ jobs:
       - name: Restore NuGet packages
         run: dotnet restore
 
-      - name: Build WebAPI
-        run: dotnet build WebAPIProject/WebAPIProject.csproj --configuration Release --output ./WebAPIArtifact
-
-      - name: Build WPF
-        run: dotnet build WPFProject/WPFProject.csproj --configuration Release --output ./WPFArtifact
-
-
-
-      - name: Build and Publish Web API
+      - name: Build and Publish WebAPI
         run: dotnet publish Peach.Host/Peach.Host.csproj --configuration Release --output ./publish/webapi --self-contained true --runtime linux-x64
 
-      - name: Build and Publish WPF App
+      - name: Build and Publish WPFApp
         run: dotnet publish RuleTest/RuleTest.csproj --configuration Release --output ./publish/wpf --runtime win-x64 --self-contained true
         
       - name: Create Release
