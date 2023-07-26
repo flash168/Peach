@@ -28,10 +28,10 @@ jobs:
         run: dotnet publish RuleTest/RuleTest.csproj -r win-x64 -c Release --self-contained true /p:PublishSingleFile=true /p:IncludeNativeLibrariesForSelfExtract=true -o ./publish/ruleTest-s
         
       - name: Build and Publish WebAPI
-        run: dotnet publish Peach.Host/Peach.Host.csproj -r win-x64 -c Release true /p:PublishSingleFile=true /p:IncludeNativeLibrariesForSelfExtract=true -o ./publish/webapi
+        run: dotnet publish Peach.Host/Peach.Host.csproj -r win-x64 -c Release /p:PublishSingleFile=true /p:IncludeNativeLibrariesForSelfExtract=true -o ./publish/webapi
 
       - name: Build and Publish WPFApp
-        run: dotnet publish RuleTest/RuleTest.csproj -r win-x64 -c Release true /p:PublishSingleFile=true /p:IncludeNativeLibrariesForSelfExtract=true -o ./publish/ruleTest
+        run: dotnet publish RuleTest/RuleTest.csproj -r win-x64 -c Release /p:PublishSingleFile=true /p:IncludeNativeLibrariesForSelfExtract=true -o ./publish/ruleTest
         
       - name: Create WebAPI-self ZIP archive
         uses: montudor/action-zip@v0.1.0
