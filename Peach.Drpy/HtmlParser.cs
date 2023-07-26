@@ -223,7 +223,7 @@ namespace Peach.Drpy
 
         private static Regex p = new Regex("url\\((.*?)\\)", RegexOptions.Multiline | RegexOptions.Singleline);
         private static Regex NOAdd_INDEX = new Regex(":eq|:lt|:gt|:first|:last|^body$|^#");
-        private static Regex URLJOIN_ATTR = new Regex("(url|src|href|-original|-src|-play|-url)$", RegexOptions.Multiline | RegexOptions.IgnoreCase);
+        private static Regex URLJOIN_ATTR = new Regex("(url|src|href|-original|-src|-play|-url|style)$", RegexOptions.Multiline | RegexOptions.IgnoreCase);
 
 
         public string joinUrl(string parent, string child)
