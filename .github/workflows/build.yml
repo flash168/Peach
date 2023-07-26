@@ -1,4 +1,4 @@
-name: Build and Versioning
+name: Build and Release
 
 on:
   push:
@@ -16,42 +16,47 @@ jobs:
       - name: Setup .NET
         uses: actions/setup-dotnet@v1
         with:
-          dotnet-version: '6.0.x'
+          dotnet-version: 6.0.x
 
-      - name: Build Web API package
-        run: dotnet publish Peach.Host/Peach.Host.csproj --configuration Release --output ./build/webapi --self-contained true --runtime linux-x64
+      - name: Build and Publish Web API
+        run: dotnet publish Peach.Host/Peach.Host.csproj --configuration Release --output ./publish/webapi --self-contained true --runtime linux-x64
 
-      - name: Build WPF Client package
-        run: dotnet publish RuleTest/RuleTest.csproj --configuration Release --output ./build/wpfclient --self-contained true --runtime win-x64
-
+      - name: Build and Publish WPF App
+        run: dotnet publish RuleTest/RuleTest.csproj --configuration Release --output ./publish/wpf --runtime win-x64 --self-contained true
+        
       - name: Generate version number
         id: version
         run: echo "::set-output name=version::$(date +'%Y%m%d%H%M%S')"
 
-      - name: Create release
+      - name: Create Release
+        id: create_release
         uses: actions/create-release@v1
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.PEACHTOKEN }}
         with:
           tag_name: ${{ steps.version.outputs.version }}
           release_name: Release ${{ steps.version.outputs.version }}
           draft: false
           prerelease: false
 
-      - name: Upload Web API package
+      - name: Upload Web API Release Asset
+        id: upload_webapi_asset
         uses: actions/upload-release-asset@v1
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.PEACHTOKEN }}
         with:
           upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: ./build/webapi
-          asset_name: webapi.zip
+          asset_path: ./publish/webapi/Peach.Host.zip
+          asset_name: Peach.Host.zip
+          asset_content_type: application/zip
 
-      - name: Upload WPF Client package
+      - name: Upload WPF Release Asset
+        id: upload_wpf_asset
         uses: actions/upload-release-asset@v1
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.PEACHTOKEN }}
         with:
           upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: ./build/wpfclient
-          asset_name: wpfclient.zip
+          asset_path: ./publish/wpf/RuleTest.zip
+          asset_name: RuleTest.zip
+          asset_content_type: application/zip
