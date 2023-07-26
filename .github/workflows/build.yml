@@ -33,34 +33,44 @@ jobs:
       - name: Build and Publish WPFApp
         run: dotnet publish RuleTest/RuleTest.csproj -r win-x64 -c Release /p:PublishSingleFile=true /p:IncludeNativeLibrariesForSelfExtract=true -o ./publish/ruleTest
         
+        # 执行你的构建和发布步骤，生成发布目录
+
+      #- name: Install 7-Zip
+      #  run: |
+      #      [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
+      #      Invoke-WebRequest -Uri 'https://www.7-zip.org/a/7z2104-x64.msi' -OutFile '7z.msi'
+      #      Start-Process -Wait -FilePath 'msiexec' -ArgumentList '/i', '7z.msi', '/quiet', '/norestart'
+      
+      #- name: Install 7-Zip
+      #  run: |
+      #      [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
+      #      Invoke-WebRequest -Uri 'https://www.7-zip.org/a/7z2104-x64.msi' -OutFile '7z.msi'
+      #      Start-Process -Wait -FilePath 'msiexec' -ArgumentList '/i', '7z.msi', '/quiet', '/norestart'
+
+     
       - name: Create WebAPI-self ZIP archive
-        uses: montudor/action-zip@v0.1.0
+        uses: edgarrc/action-7z@v1
         with:
          files: ./publish/webapi-s/**/*
-         out-dir: ./release
-         out-name: WebApi-self-v1.0.${{ github.run_number }}.zip
+         args: a ./release/WebApi-self-v1.0.${{ github.run_number }}.zip
          
       - name: Create ruleTest-self ZIP archive
-        uses: montudor/action-zip@v0.1.0
+        uses: edgarrc/action-7z@v1
         with:
          files: ./publish/ruleTest-s/**/*
-         out-dir: ./release
-         out-name: ruleTest-self-v1.0.${{ github.run_number }}.zip
+         args: a ./release/ruleTest-self-v1.0.${{ github.run_number }}.zip
 
       - name: Create WebAPI ZIP archive
-        uses: montudor/action-zip@v0.1.0
+        uses: edgarrc/action-7z@v1
         with:
          files: ./publish/webapi/**/*
-         out-dir: ./release
-         out-name: WebApi-v1.0.${{ github.run_number }}.zip
+         args: a ./release/WebApi-v1.0.${{ github.run_number }}.zip
          
       - name: Create ruleTest ZIP archive
-        uses: montudor/action-zip@v0.1.0
+        uses: edgarrc/action-7z@v1
         with:
          files: ./publish/ruleTest/**/*
-         out-dir: ./release
-         out-name: ruleTest-v1.0.${{ github.run_number }}.zip
-
+         args: a ./release/ruleTest-v1.0.${{ github.run_number }}.zip
 
 
       - name: Create GitHub Release
