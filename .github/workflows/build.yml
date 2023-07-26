@@ -4,7 +4,7 @@ on:
   push:
     branches:
       - master
-
+      
 jobs:
   build:
     runs-on: windows-latest
@@ -19,7 +19,7 @@ jobs:
           dotnet-version: 6.0.x
 
       - name: Restore NuGet packages
-        run: dotnet restore
+        run: dotnet restore Peach.sln
 
       - name: Build and Publish WebAPI
         run: dotnet publish Peach.Host/Peach.Host.csproj --configuration Release --output ./publish/webapi --self-contained true --runtime linux-x64
@@ -27,35 +27,34 @@ jobs:
       - name: Build and Publish WPFApp
         run: dotnet publish RuleTest/RuleTest.csproj --configuration Release --output ./publish/wpf --runtime win-x64 --self-contained true
         
+      - name: Create zip files
+        run: |
+          $version = $env:GITHUB_RUN_NUMBER
+          Compress-Archive -Path ./publish/webapi -DestinationPath ./publish/webapi.zip
+          Compress-Archive -Path ./publish/wpf -DestinationPath ./publish/wpf.zip
+
+
       - name: Create Release
         id: create_release
         uses: actions/create-release@v1
         env:
           GITHUB_TOKEN: ${{ secrets.PEACHTOKEN }}
         with:
-          tag_name: ${{ github.run_number }}
-          release_name: Release ${{ github.event.repository.name }}  ${{ steps.branch-name.outputs.current_branch }} v${{ github.run_number }}.${{ github.run_attempt }}
+          tag_name: ${{ github.run_number }} #v1.0.$version
+          release_name: Release ${{ github.event.repository.name }}  ${{ steps.branch-name.outputs.current_branch }} v${{ github.run_number }}.${{ github.run_attempt }} #Release v1.0.$version
+          body: |
+            Release v1.0.$version
           draft: false
           prerelease: false
 
-      - name: Upload WebAPI Release Asset
-        id: upload_webapi_asset
-        uses: actions/upload-release-asset@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.PEACHTOKEN }}
+      - name: Upload WebAPI artifact
+        uses: actions/upload-artifact@v2
         with:
-          upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: ./publish/webapi/Peach.Host.zip
-          asset_name: Peach.Host.zip
-          asset_content_type: application/zip
+          name: WebAPI
+          path: ./publish/webapi.zip
 
-      - name: Upload WPF Release Asset
-        id: upload_wpf_asset
-        uses: actions/upload-release-asset@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.PEACHTOKEN }}
+      - name: Upload WPF artifact
+        uses: actions/upload-artifact@v2
         with:
-          upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: ./publish/wpf/RuleTest.zip
-          asset_name: RuleTest.zip
-          asset_content_type: application/zip
+          name: WPF
+          path: ./publish/wpf.zip
