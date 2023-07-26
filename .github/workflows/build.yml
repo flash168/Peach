@@ -18,51 +18,111 @@ jobs:
         with:
           dotnet-version: 6.0.x
 
-      - name: Restore NuGet packages
-        run: dotnet restore Peach.sln
+      #- name: Restore NuGet packages
+      #  run: dotnet restore Peach.sln
 
+      - name: Build and Publish WebAPI-self
+        run: dotnet publish Peach.Host/Peach.Host.csproj -r win-x64 -c Release --self-contained true /p:PublishSingleFile=true /p:IncludeNativeLibrariesForSelfExtract=true -o ./publish/webapi-s
+
+      - name: Build and Publish WPFApp-self
+        run: dotnet publish RuleTest/RuleTest.csproj -r win-x64 -c Release --self-contained true /p:PublishSingleFile=true /p:IncludeNativeLibrariesForSelfExtract=true -o ./publish/ruleTest-s
+        
       - name: Build and Publish WebAPI
-        run: dotnet publish Peach.Host/Peach.Host.csproj -r win-x64 -c Release --self-contained true /p:PublishSingleFile=true /p:IncludeNativeLibrariesForSelfExtract=true -o ./publish/webapi
+        run: dotnet publish Peach.Host/Peach.Host.csproj -r win-x64 -c Release true /p:PublishSingleFile=true /p:IncludeNativeLibrariesForSelfExtract=true -o ./publish/webapi
 
       - name: Build and Publish WPFApp
-        run: dotnet publish RuleTest/RuleTest.csproj -r win-x64 -c Release --self-contained true /p:PublishSingleFile=true /p:IncludeNativeLibrariesForSelfExtract=true -o ./publish/ruleTest
+        run: dotnet publish RuleTest/RuleTest.csproj -r win-x64 -c Release true /p:PublishSingleFile=true /p:IncludeNativeLibrariesForSelfExtract=true -o ./publish/ruleTest
         
-      - name: Zip artifacts
-        run: zip -r webapi.zip ./publish/webapi
-        
-      - name: Zip artifacts
-        run: zip -r ruleTest.zip ./publish/ruleTest
-        
+      - name: Create WebAPI-self ZIP archive
+        uses: montudor/action-zip@v0.1.0
+        with:
+         files: ./publish/webapi-s/**/*
+         out-dir: ./release
+         out-name: WebApi-self-v1.0.${{ github.run_number }}.zip
+         
+      - name: Create ruleTest-self ZIP archive
+        uses: montudor/action-zip@v0.1.0
+        with:
+         files: ./publish/ruleTest-s/**/*
+         out-dir: ./release
+         out-name: ruleTest-self-v1.0.${{ github.run_number }}.zip
 
-      - name: Create Release
+      - name: Create WebAPI ZIP archive
+        uses: montudor/action-zip@v0.1.0
+        with:
+         files: ./publish/webapi/**/*
+         out-dir: ./release
+         out-name: WebApi-v1.0.${{ github.run_number }}.zip
+         
+      - name: Create ruleTest ZIP archive
+        uses: montudor/action-zip@v0.1.0
+        with:
+         files: ./publish/ruleTest/**/*
+         out-dir: ./release
+         out-name: ruleTest-v1.0.${{ github.run_number }}.zip
+
+
+
+      - name: Create GitHub Release
         id: create_release
         uses: actions/create-release@v1
         env:
-          GITHUB_TOKEN: ${{ secrets.PEACHTOKEN }}
+            GITHUB_TOKEN: ${{ secrets.PEACHTOKEN }}
         with:
-          tag_name: ${{ github.run_number }} #v1.0.$version
-          release_name: Release ${{ github.event.repository.name }}  ${{ steps.branch-name.outputs.current_branch }} v${{ github.run_number }}.${{ github.run_attempt }} #Release v1.0.$version
-          body: |
-            Release v1.0.$version
-          draft: false
-          prerelease: false
-          
-      - name: Upload Release Asset
-        id: upload_release_asset
+            tag_name: v1.0.${{ github.run_number }}
+            release_name: Release v1.0.${{ github.run_number }}.${{ github.run_attempt }}  
+            #    release_name: Release ${{ github.event.repository.name }}  ${{ steps.branch-name.outputs.current_branch }} v${{ github.run_number }}.${{ github.run_attempt }} #Release v1.0.$version
+            #    body: |
+            #      Release v1.0.$version
+            draft: false
+            prerelease: false
+
+      - name: Upload WebAPI-self release artifact
+        id: upload_webapi_s_release_asset
         uses: actions/upload-release-asset@v1
+        env:
+            GITHUB_TOKEN: ${{ secrets.PEACHTOKEN }}
         with:
-          upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: ./publish/webapi/webapi.zip
-          asset_name: webapi.zip
-          asset_content_type: application/zip
-          
-      - name: Upload Release Asset
-        #id: upload_release_asset
+            upload_url: ${{ steps.create_release.outputs.upload_url }}
+            asset_path: ./release/WebApi-self-v1.0.${{ github.run_number }}.zip
+            asset_name: WebApi-self-v1.0.${{ github.run_number }}.zip
+            asset_content_type: application/zip
+            
+      - name: Upload WebAPI release artifact
+        id: upload_webapi_release_asset
         uses: actions/upload-release-asset@v1
+        env:
+            GITHUB_TOKEN: ${{ secrets.PEACHTOKEN }}
         with:
-          upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: ./publish/ruleTest/ruleTest.zip
-          asset_name: ruleTest.zip
-          asset_content_type: ruleTest/zip
+            upload_url: ${{ steps.create_release.outputs.upload_url }}
+            asset_path: ./release/WebApi-v1.0.${{ github.run_number }}.zip
+            asset_name: WebApi-v1.0.${{ github.run_number }}.zip
+            asset_content_type: application/zip
+            
+      - name: Upload ruleTest-self release artifact
+        id: upload_ruleTest_s_release_asset
+        uses: actions/upload-release-asset@v1
+        env:
+            GITHUB_TOKEN: ${{ secrets.PEACHTOKEN }}
+        with:
+            upload_url: ${{ steps.create_release.outputs.upload_url }}
+            asset_path: ./release/ruleTest-self-v1.0.${{ github.run_number }}.zip
+            asset_name: ruleTest-self-v1.0.${{ github.run_number }}.zip
+            asset_content_type: application/zip
+
+      - name: Upload WebAPI release artifact
+        id: upload_ruleTest_release_asset
+        uses: actions/upload-release-asset@v1
+        env:
+            GITHUB_TOKEN: ${{ secrets.PEACHTOKEN }}
+        with:
+            upload_url: ${{ steps.create_release.outputs.upload_url }}
+            asset_path: ./release/ruleTest-v1.0.${{ github.run_number }}.zip
+            asset_name: ruleTest-v1.0.${{ github.run_number }}.zip
+            asset_content_type: application/zip
+
+            
+
+          
           
           
