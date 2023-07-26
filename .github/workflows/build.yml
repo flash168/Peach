@@ -18,24 +18,31 @@ jobs:
         with:
           dotnet-version: 6.0.x
 
+      - name: Restore NuGet packages
+        run: dotnet restore
+
+      - name: Build WebAPI
+        run: dotnet build WebAPIProject/WebAPIProject.csproj --configuration Release --output ./WebAPIArtifact
+
+      - name: Build WPF
+        run: dotnet build WPFProject/WPFProject.csproj --configuration Release --output ./WPFArtifact
+
+
+
       - name: Build and Publish Web API
         run: dotnet publish Peach.Host/Peach.Host.csproj --configuration Release --output ./publish/webapi --self-contained true --runtime linux-x64
 
       - name: Build and Publish WPF App
         run: dotnet publish RuleTest/RuleTest.csproj --configuration Release --output ./publish/wpf --runtime win-x64 --self-contained true
         
-      - name: Generate version number
-        id: version
-        run: echo "::set-output name=version::$(date +'%Y%m%d%H%M%S')"
-
       - name: Create Release
         id: create_release
         uses: actions/create-release@v1
         env:
           GITHUB_TOKEN: ${{ secrets.PEACHTOKEN }}
         with:
-          tag_name: ${{ steps.version.outputs.version }}
-          release_name: Release ${{ steps.version.outputs.version }}
+          tag_name: $(date +'%Y%m%d').$(printf "%02d" ${{ github.run_number }})
+          release_name: Release $(date +'%Y%m%d').$(printf "%02d" ${{ github.run_number }})
           draft: false
           prerelease: false
 
