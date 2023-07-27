@@ -34,55 +34,24 @@ jobs:
         run: dotnet publish RuleTest/RuleTest.csproj -r win-x64 -c Release /p:PublishSingleFile=true /p:IncludeNativeLibrariesForSelfExtract=true -o ./publish/ruleTest
         
         # 执行你的构建和发布步骤，生成发布目录
-
-      #- name: Install 7-Zip
-      #  run: |
-      #      [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
-      #      Invoke-WebRequest -Uri 'https://www.7-zip.org/a/7z2104-x64.msi' -OutFile '7z.msi'
-      #      Start-Process -Wait -FilePath 'msiexec' -ArgumentList '/i', '7z.msi', '/quiet', '/norestart'
-      
-      #- name: Install 7-Zip
-      #  run: |
-      #      [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
-      #      Invoke-WebRequest -Uri 'https://www.7-zip.org/a/7z2104-x64.msi' -OutFile '7z.msi'
-      #      Start-Process -Wait -FilePath 'msiexec' -ArgumentList '/i', '7z.msi', '/quiet', '/norestart'
-
+        
       #- name: Install 7-Zip
       #  run: |
       #      [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
       #      Invoke-WebRequest -Uri 'https://www.7-zip.org/a/7z2301-x64.exe' -OutFile '7z.msi'
       #      Start-Process -Wait -FilePath 'msiexec' -ArgumentList '/i', '7z.msi', '/quiet', '/norestart'
             
-      - name: zip
-        run:  Compress-Archive -Path "./publish/webapi-s/" -DestinationPath "publish/WebApi-self-v1.0.${{ github.run_number }}.zip"
-
       - name: Create WebAPI-self ZIP archive
-        uses: edgarrc/action-7z@v1
-        with:
-         files: ./publish/webapi-s/**/*
-         out-dir:  ./release
-         out-name: WebApi-self-v1.0.${{ github.run_number }}.zip
+        run:  Compress-Archive -Path "./publish/webapi-s/" -DestinationPath "publish/WebApi-self-v1.0.${{ github.run_number }}.zip"
          
       - name: Create ruleTest-self ZIP archive
-        uses: edgarrc/action-7z@v1
-        with:
-         files: ./publish/ruleTest-s/**/*
-         out-dir:  ./release
-         out-name: ruleTest-self-v1.0.${{ github.run_number }}.zip
-
+        run:  Compress-Archive -Path "./publish/ruleTest-s/" -DestinationPath "publish/ruleTest-self-v1.0.${{ github.run_number }}.zip"
+        
       - name: Create WebAPI ZIP archive
-        uses: edgarrc/action-7z@v1
-        with:
-         files: ./publish/webapi/**/*
-         out-dir:  ./release
-         out-name: WebApi-v1.0.${{ github.run_number }}.zip
+        run:  Compress-Archive -Path "./publish/webapi/" -DestinationPath "publish/WebApi-v1.0.${{ github.run_number }}.zip"
          
       - name: Create ruleTest ZIP archive
-        uses: edgarrc/action-7z@v1
-        with:
-         files: ./publish/ruleTest/**/*
-         out-dir:  ./release
-         out-name: ruleTest-v1.0.${{ github.run_number }}.zip
+        run:  Compress-Archive -Path "./publish/ruleTest/" -DestinationPath "publish/ruleTest-v1.0.${{ github.run_number }}.zip"
 
 
       - name: Create GitHub Release
@@ -106,7 +75,7 @@ jobs:
             GITHUB_TOKEN: ${{ secrets.PEACHTOKEN }}
         with:
             upload_url: ${{ steps.create_release.outputs.upload_url }}
-            asset_path: ./release/WebApi-self-v1.0.${{ github.run_number }}.zip
+            asset_path: ./publish/WebApi-self-v1.0.${{ github.run_number }}.zip
             asset_name: WebApi-self-v1.0.${{ github.run_number }}.zip
             asset_content_type: application/zip
             
@@ -117,7 +86,7 @@ jobs:
             GITHUB_TOKEN: ${{ secrets.PEACHTOKEN }}
         with:
             upload_url: ${{ steps.create_release.outputs.upload_url }}
-            asset_path: ./release/WebApi-v1.0.${{ github.run_number }}.zip
+            asset_path: ./publish/WebApi-v1.0.${{ github.run_number }}.zip
             asset_name: WebApi-v1.0.${{ github.run_number }}.zip
             asset_content_type: application/zip
             
@@ -128,7 +97,7 @@ jobs:
             GITHUB_TOKEN: ${{ secrets.PEACHTOKEN }}
         with:
             upload_url: ${{ steps.create_release.outputs.upload_url }}
-            asset_path: ./release/ruleTest-self-v1.0.${{ github.run_number }}.zip
+            asset_path: ./publish/ruleTest-self-v1.0.${{ github.run_number }}.zip
             asset_name: ruleTest-self-v1.0.${{ github.run_number }}.zip
             asset_content_type: application/zip
 
@@ -139,7 +108,7 @@ jobs:
             GITHUB_TOKEN: ${{ secrets.PEACHTOKEN }}
         with:
             upload_url: ${{ steps.create_release.outputs.upload_url }}
-            asset_path: ./release/ruleTest-v1.0.${{ github.run_number }}.zip
+            asset_path: ./publish/ruleTest-v1.0.${{ github.run_number }}.zip
             asset_name: ruleTest-v1.0.${{ github.run_number }}.zip
             asset_content_type: application/zip
 
