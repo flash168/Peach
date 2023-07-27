@@ -47,14 +47,14 @@ jobs:
       #      Invoke-WebRequest -Uri 'https://www.7-zip.org/a/7z2104-x64.msi' -OutFile '7z.msi'
       #      Start-Process -Wait -FilePath 'msiexec' -ArgumentList '/i', '7z.msi', '/quiet', '/norestart'
 
-      - name: Install 7-Zip
-        run: |
-            [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
-            Invoke-WebRequest -Uri 'https://www.7-zip.org/a/7z2301-x64.exe' -OutFile '7z.msi'
-            Start-Process -Wait -FilePath 'msiexec' -ArgumentList '/i', '7z.msi', '/quiet', '/norestart'
+      #- name: Install 7-Zip
+      #  run: |
+      #      [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
+      #      Invoke-WebRequest -Uri 'https://www.7-zip.org/a/7z2301-x64.exe' -OutFile '7z.msi'
+      #      Start-Process -Wait -FilePath 'msiexec' -ArgumentList '/i', '7z.msi', '/quiet', '/norestart'
             
       - name: zip
-        run:  Compress-Archive -Path "./publish/webapi-s/" -DestinationPath "release/WebApi-self-v1.0.${{ github.run_number }}.zip"
+        run:  Compress-Archive -Path "./publish/webapi-s/" -DestinationPath "publish/WebApi-self-v1.0.${{ github.run_number }}.zip"
 
       - name: Create WebAPI-self ZIP archive
         uses: edgarrc/action-7z@v1
