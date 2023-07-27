@@ -52,16 +52,9 @@ jobs:
             [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
             Invoke-WebRequest -Uri 'https://www.7-zip.org/a/7z2301-x64.exe' -OutFile '7z.msi'
             Start-Process -Wait -FilePath 'msiexec' -ArgumentList '/i', '7z.msi', '/quiet', '/norestart'
-
-      - name: Create ZIP archive
-        uses: montudor/action-zip@v0.1.0
-        with:
-            files: "publish/**/*" # 替换为你的源目录路径
-            out-dir: "./release"
-            out-name: my_release.zip
-     
+            
       - name: Create WebAPI-self ZIP archive
-        uses: edgarrc/action-7z@v1
+        uses: 7zipper/zip-archive@v2
         with:
          files: ./publish/webapi-s/**/*
          out-dir:  ./release
