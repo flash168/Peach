@@ -47,30 +47,46 @@ jobs:
       #      Invoke-WebRequest -Uri 'https://www.7-zip.org/a/7z2104-x64.msi' -OutFile '7z.msi'
       #      Start-Process -Wait -FilePath 'msiexec' -ArgumentList '/i', '7z.msi', '/quiet', '/norestart'
 
+      - name: Install 7-Zip
+        run: |
+            [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
+            Invoke-WebRequest -Uri 'https://www.7-zip.org/a/7z2104-x64.msi' -OutFile '7z.msi'
+            Start-Process -Wait -FilePath 'msiexec' -ArgumentList '/i', '7z.msi', '/quiet', '/norestart'
+
+      - name: Create ZIP archive
+        uses: montudor/action-zip@v0.1.0
+        with:
+            files: "publish/**/*" # 替换为你的源目录路径
+            out-dir: "./release"
+            out-name: my_release.zip
      
       - name: Create WebAPI-self ZIP archive
         uses: edgarrc/action-7z@v1
         with:
          files: ./publish/webapi-s/**/*
-         args: a ./release/WebApi-self-v1.0.${{ github.run_number }}.zip
+         out-dir:  ./release
+         out-name: WebApi-self-v1.0.${{ github.run_number }}.zip
          
       - name: Create ruleTest-self ZIP archive
         uses: edgarrc/action-7z@v1
         with:
          files: ./publish/ruleTest-s/**/*
-         args: a ./release/ruleTest-self-v1.0.${{ github.run_number }}.zip
+         out-dir:  ./release
+         out-name: ruleTest-self-v1.0.${{ github.run_number }}.zip
 
       - name: Create WebAPI ZIP archive
         uses: edgarrc/action-7z@v1
         with:
          files: ./publish/webapi/**/*
-         args: a ./release/WebApi-v1.0.${{ github.run_number }}.zip
+         out-dir:  ./release
+         out-name: WebApi-v1.0.${{ github.run_number }}.zip
          
       - name: Create ruleTest ZIP archive
         uses: edgarrc/action-7z@v1
         with:
          files: ./publish/ruleTest/**/*
-         args: a ./release/ruleTest-v1.0.${{ github.run_number }}.zip
+         out-dir:  ./release
+         out-name: ruleTest-v1.0.${{ github.run_number }}.zip
 
 
       - name: Create GitHub Release
