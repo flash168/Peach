@@ -54,7 +54,7 @@ jobs:
             Start-Process -Wait -FilePath 'msiexec' -ArgumentList '/i', '7z.msi', '/quiet', '/norestart'
             
       - name: Create WebAPI-self ZIP archive
-        uses: 7zipper/zip-archive@v2
+        uses: edgarrc/action-7z@v1
         with:
          files: ./publish/webapi-s/**/*
          out-dir:  ./release
