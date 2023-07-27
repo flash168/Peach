@@ -50,7 +50,7 @@ jobs:
       - name: Install 7-Zip
         run: |
             [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
-            Invoke-WebRequest -Uri 'https://www.7-zip.org/a/7z2104-x64.msi' -OutFile '7z.msi'
+            Invoke-WebRequest -Uri 'https://www.7-zip.org/a/7z2301-x64.exe' -OutFile '7z.msi'
             Start-Process -Wait -FilePath 'msiexec' -ArgumentList '/i', '7z.msi', '/quiet', '/norestart'
 
       - name: Create ZIP archive
