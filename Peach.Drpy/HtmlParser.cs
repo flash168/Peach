@@ -159,14 +159,29 @@ namespace Peach.Drpy
 
             if (!string.IsNullOrEmpty(Cookie) && !Cookie.Equals("undefined"))
             {
-                string[] cooks = Cookie.Split(';');
-                foreach (var item in cooks)
+                
+                //string[] cooks = Cookie.Split(';');
+                //foreach (var item in cooks)
                 {
-                    string[] cook = item.Split('=');
-                    if (cook.Length == 2)
-                        client.AddDefaultHeader("Cookie", Cookie);
+                    //string[] cook = item.Split('=');
+                    //if (cook.Length == 2)
+                    
+                    var options = new RestClientOptions()
+                    {
+                        RemoteCertificateValidationCallback = (a, c, d, v) => true,
+                        //MaxTimeout = 100000,
+                        ThrowOnAnyError = true,  //设置不然不会报异常
+                        //UserAgent = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/110.0.0.0 Safari/537.36"
+                    };
+                    client = new RestClient(options);
+                    
+
+                    client.AddDefaultHeader("Cookie", Cookie);
                     //client.AddCookie(cook[0].Trim(), cook[1].Trim(), "/", Host);
                 }
+                
+
+
             }
             string rContent = "";
             JsObject header = new(_headers.Engine);
