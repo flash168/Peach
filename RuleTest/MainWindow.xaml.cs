@@ -55,7 +55,10 @@ namespace RuleTest
         {
             txt_Meg1.Text = "";
         }
-
+        private void Btn_Copy1(object sender, RoutedEventArgs e)
+        {
+            Clipboard.SetText(txt_Meg1.SelectedText);
+        }
         private void Bnt_Init(object sender, RoutedEventArgs e)
         {
             if (string.IsNullOrEmpty(txt_rule.Text.Trim()))

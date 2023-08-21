@@ -29,7 +29,7 @@
                     </ComboBox>
                 </StackPanel>
             </GroupBox.Header>
-            <avalonEdit:TextEditor SyntaxHighlighting="{Binding ElementName=tmb_Hl,Path=SelectedItem.Content}" ShowLineNumbers="True" x:Name="txt_rule"/>
+            <avalonEdit:TextEditor SyntaxHighlighting="{Binding ElementName=tmb_Hl,Path=SelectedItem.Content}" ShowLineNumbers="True" x:Name="txt_rule" VerticalScrollBarVisibility="Auto" WordWrap="True"/>
             <!--<TextBox x:Name="txt_rule" TextWrapping="Wrap" AcceptsReturn="True"/>-->
         </GroupBox>
 
@@ -61,6 +61,7 @@
                     <TextBox.ContextMenu>
                         <ContextMenu>
                             <MenuItem Header="清空" Click="Btn_Clear"/>
+                            
                         </ContextMenu>
                     </TextBox.ContextMenu>
                 </TextBox>
@@ -70,6 +71,7 @@
                     <TextBox.ContextMenu>
                         <ContextMenu>
                             <MenuItem Header="清空" Click="Btn_Clear1"/>
+                            <MenuItem Header="复制" Click="Btn_Copy1"/>
                         </ContextMenu>
                     </TextBox.ContextMenu>
                 </TextBox>
