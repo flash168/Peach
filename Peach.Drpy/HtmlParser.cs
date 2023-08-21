@@ -227,7 +227,8 @@ namespace Peach.Drpy
                 }
                 else
                 {
-                    return new { headers = header, content = rContent };
+                    //return new { headers = header, content = rContent };
+                    return new { headers = header, content = Encoding.UTF8.GetString(response.RawBytes) };
                 }
             }
             catch (Exception)
