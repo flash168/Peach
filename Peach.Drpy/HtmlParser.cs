@@ -223,7 +223,7 @@ namespace Peach.Drpy
                 }
                 else if (Buffer == "2")
                 {
-                    return new { headers = header, content = Convert.ToBase64String(Encoding.UTF8.GetBytes(rContent)) };
+                    return new { headers = header, content = Convert.ToBase64String(response.RawBytes) };
                 }
                 else
                 {
