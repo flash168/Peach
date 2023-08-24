@@ -20,6 +20,10 @@ using Peach.Drpy;
 using System.Buffers.Text;
 using System.Data;
 using System.Reflection.PortableExecutable;
+using System.Diagnostics;
+using System.Net.Http.Json;
+//using Newtonsoft.Json;
+//using Newtonsoft.Json.Linq;
 
 namespace Peach.Drpy
 {
@@ -97,10 +101,16 @@ namespace Peach.Drpy
 
 
             var Data = arguments.AsObject()["data"]?.ToString();
+            //var Data = arguments.Get("data")?.ToString();
+            
             var Body = arguments.AsObject()["body"]?.ToString();
-
+            
+            Body = Uri.UnescapeDataString(Body);//取消escape转码
+            //Body=HttpUtility.HtmlDecode(Body);
+            //var Body = arguments.Get("body")?.ToString();
             var Buffer = arguments.AsObject()["buffer"]?.ToString();
-
+            Debug.WriteLine(Body);
+            Console.WriteLine(Body);
 
             String charset = "utf-8";
             if (ContentType != null && ContentType.Split("charset=").Length > 1)
@@ -112,10 +122,23 @@ namespace Peach.Drpy
 
             if (!string.IsNullOrEmpty(Data) && !Data.Equals("undefined"))
             {
+                Data = "";
+                var _Data1 = arguments.AsObject()["data"].AsObject();
+                foreach (var property in _Data1.GetOwnProperties())
+                {
+                    var propertyName = property.Key.ToString();
+                    var propertyValue = property.Value.Value?.ToString();
+                    if (!string.IsNullOrEmpty(propertyValue))
+                        request.AddParameter(propertyName, propertyValue);
+
+                }
+
                 // 序列化JSON数据
-                // string post_data = JsonConvert.SerializeObject(Data);
+                //string post_data = JsonConvert.SerializeObject(Data);
+
                 // 将JSON参数添加至请求中
-                request.AddParameter("application/json", Data, ParameterType.RequestBody);
+                //Data = JObject.Parse(Data);
+                //request.AddParameter(Data, ParameterType.RequestBody);
             }
 
             if (!string.IsNullOrEmpty(Body) && !Body.Equals("undefined"))
