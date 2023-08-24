@@ -20,6 +20,10 @@ using Peach.Drpy;
 using System.Buffers.Text;
 using System.Data;
 using System.Reflection.PortableExecutable;
+using System.Diagnostics;
+using System.Net.Http.Json;
+//using Newtonsoft.Json;
+//using Newtonsoft.Json.Linq;
 
 namespace Peach.Drpy
 {
@@ -97,10 +101,16 @@ namespace Peach.Drpy
 
 
             var Data = arguments.AsObject()["data"]?.ToString();
+            //var Data = arguments.Get("data")?.ToString();
+            
             var Body = arguments.AsObject()["body"]?.ToString();
-
+            
+            Body = Uri.UnescapeDataString(Body);//取消escape转码
+            //Body=HttpUtility.HtmlDecode(Body);
+            //var Body = arguments.Get("body")?.ToString();
             var Buffer = arguments.AsObject()["buffer"]?.ToString();
-
+            Debug.WriteLine(Body);
+            Console.WriteLine(Body);
 
             String charset = "utf-8";
             if (ContentType != null && ContentType.Split("charset=").Length > 1)
@@ -112,10 +122,23 @@ namespace Peach.Drpy
 
             if (!string.IsNullOrEmpty(Data) && !Data.Equals("undefined"))
             {
+                Data = "";
+                var _Data1 = arguments.AsObject()["data"].AsObject();
+                foreach (var property in _Data1.GetOwnProperties())
+                {
+                    var propertyName = property.Key.ToString();
+                    var propertyValue = property.Value.Value?.ToString();
+                    if (!string.IsNullOrEmpty(propertyValue))
+                        request.AddParameter(propertyName, propertyValue);
+
+                }
+
                 // 序列化JSON数据
-                // string post_data = JsonConvert.SerializeObject(Data);
+                //string post_data = JsonConvert.SerializeObject(Data);
+
                 // 将JSON参数添加至请求中
-                request.AddParameter("application/json", Data, ParameterType.RequestBody);
+                //Data = JObject.Parse(Data);
+                //request.AddParameter(Data, ParameterType.RequestBody);
             }
 
             if (!string.IsNullOrEmpty(Body) && !Body.Equals("undefined"))
@@ -159,14 +182,29 @@ namespace Peach.Drpy
 
             if (!string.IsNullOrEmpty(Cookie) && !Cookie.Equals("undefined"))
             {
-                string[] cooks = Cookie.Split(';');
-                foreach (var item in cooks)
+                
+                //string[] cooks = Cookie.Split(';');
+                //foreach (var item in cooks)
                 {
-                    string[] cook = item.Split('=');
-                    if (cook.Length == 2)
-                        client.AddDefaultHeader("Cookie", Cookie);
+                    //string[] cook = item.Split('=');
+                    //if (cook.Length == 2)
+                    
+                    var options = new RestClientOptions()
+                    {
+                        RemoteCertificateValidationCallback = (a, c, d, v) => true,
+                        //MaxTimeout = 100000,
+                        ThrowOnAnyError = true,  //设置不然不会报异常
+                        //UserAgent = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/110.0.0.0 Safari/537.36"
+                    };
+                    client = new RestClient(options);
+                    
+
+                    client.AddDefaultHeader("Cookie", Cookie);
                     //client.AddCookie(cook[0].Trim(), cook[1].Trim(), "/", Host);
                 }
+                
+
+
             }
             string rContent = "";
             JsObject header = new(_headers.Engine);
@@ -208,11 +246,12 @@ namespace Peach.Drpy
                 }
                 else if (Buffer == "2")
                 {
-                    return new { headers = header, content = Convert.ToBase64String(Encoding.UTF8.GetBytes(rContent)) };
+                    return new { headers = header, content = Convert.ToBase64String(response.RawBytes) };
                 }
                 else
                 {
-                    return new { headers = header, content = rContent };
+                    //return new { headers = header, content = rContent };
+                    return new { headers = header, content = Encoding.UTF8.GetString(response.RawBytes) };
                 }
             }
             catch (Exception)
