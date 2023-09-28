@@ -1,7 +1,9 @@
 ﻿using Jint;
 using Jint.Native;
 using Jint.Native.Object;
+using System.ComponentModel.Design;
 using System.Diagnostics;
+using System.IO;
 using System.IO.Compression;
 using System.Runtime.Intrinsics.Arm;
 using static System.Net.Mime.MediaTypeNames;
@@ -21,38 +23,19 @@ namespace Peach.Drpy
         public console console;
         HtmlParser hparser;
 
-        public bool InitEngine(string dph, string rule)
+        public bool InitEngine(string api, string ext)
         {
-            try
-            {
-                if (string.IsNullOrEmpty(dph))
-                    dph = AppContext.BaseDirectory;
+            if (string.IsNullOrEmpty(api))
+                api = File.ReadAllText(Path.Combine(AppContext.BaseDirectory, "libs", "drpy2.min.js"));
+            else
+                api = File.ReadAllText(Path.Combine(AppContext.BaseDirectory, "js", $"{api}.js"));
 
-                //drpy = drpy.Replace("console.log", "consolelog");
-
-                var ext = File.ReadAllText(Path.Combine(dph, "js", $"{rule}.js"));
-
-                return InitEngine(string.Empty, dph, ext);
-            }
-            catch (Exception ex)
-            {
-                return false;
-            }
-        }
-
-        public bool InitEngine(string drpy, string path, string ext)
-        {
-            if (string.IsNullOrEmpty(path))
-                path = AppContext.BaseDirectory;
-
-            if (string.IsNullOrEmpty(drpy))
-                drpy = File.ReadAllText(Path.Combine(path, "libs", "drpy2.min.js"));
             try
             {
                 engine = new Engine(cfg =>
                 {
                     cfg.AllowClr();
-                    cfg.EnableModules(new RequireModuleLoader("", path));
+                    cfg.EnableModules(new RequireModuleLoader("", AppContext.BaseDirectory));
                 });
                 //engine.SetValue("consolelog", new Action<object>(g => { Debug.WriteLine(g); }));
 
@@ -67,7 +50,7 @@ namespace Peach.Drpy
                 engine.SetValue("local", new Local());
                 engine.SetValue("console", console);
 
-                engine.AddModule("drpyModel", drpy);
+                engine.AddModule("drpyModel", api);
                 ns = engine.ImportModule("drpyModel");
 
                 engine.Invoke(ns.Get("default").Get("init"), ext);

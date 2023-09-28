@@ -40,7 +40,7 @@ namespace Peach.Application.VodInfos
             if (Sites?.Count <= 0 || !Sites.ContainsKey(rule))
             {
                 var jse = new JsSpiderClient();
-                var isok = jse.InitEngine(path, rule);
+                var isok = jse.InitEngine(rule, path);
                 if (!isok)
                     throw new BusinessException($"初始化[{rule}]-DRPY异常。");
                 Sites.Add(rule, jse);

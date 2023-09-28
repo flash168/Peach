@@ -18,7 +18,7 @@ using System.Threading.Tasks;
 
 namespace Peach.Application.VodInfos
 {
-    public class RuleTestService : IVodInfoService
+    public class RuleTestService : IRuleTestService
     {
         public RuleTestService()
         {
@@ -40,7 +40,7 @@ namespace Peach.Application.VodInfos
 
             Site = new JsSpiderClient();
             Site.console.WriterLog += WriterLog;
-            return Site.InitEngine(string.Empty, string.Empty, rule);
+            return Site.InitEngine(string.Empty, rule);
         }
 
         /// <summary>
@@ -49,6 +49,8 @@ namespace Peach.Application.VodInfos
         /// <returns></returns>
         public async Task<string> HomeAsync(string rule)
         {
+            if (Site == null)
+                InitSite(rule);
             try
             {
                 var clas = await Site.GetHome("");
