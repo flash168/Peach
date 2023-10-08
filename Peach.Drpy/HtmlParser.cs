@@ -20,6 +20,7 @@ using Peach.Drpy;
 using System.Buffers.Text;
 using System.Data;
 using System.Reflection.PortableExecutable;
+using System.Security.Cryptography;
 
 namespace Peach.Drpy
 {
@@ -504,5 +505,6 @@ namespace Peach.Drpy
             }
             return ret;
         }
+
     }
 }

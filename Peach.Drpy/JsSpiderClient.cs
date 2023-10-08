@@ -1,6 +1,7 @@
 ﻿using Jint;
 using Jint.Native;
 using Jint.Native.Object;
+using System.Buffers.Text;
 using System.ComponentModel.Design;
 using System.Diagnostics;
 using System.IO;
@@ -16,12 +17,14 @@ namespace Peach.Drpy
         {
             console = new console();
             hparser = new HtmlParser();
+            rSAHandle = new RSAHandle();
         }
 
         private Engine engine;
         ObjectInstance ns;
         public console console;
         HtmlParser hparser;
+        RSAHandle rSAHandle;
 
         public bool InitEngine(string api, string ext)
         {
@@ -46,6 +49,8 @@ namespace Peach.Drpy
                 engine.SetValue("pdfa", new Func<string, string, string[]>(hparser.parseDomForArray));
                 engine.SetValue("joinUrl", new Func<string, string, string>(hparser.joinUrl));
                 engine.SetValue("req", new Func<string, JsValue, object>(hparser.request));
+
+                engine.SetValue("rsaX", new Func<string, bool, bool, string, bool, string, bool, string>(rSAHandle.RSAX));
 
                 engine.SetValue("local", new Local());
                 engine.SetValue("console", console);
