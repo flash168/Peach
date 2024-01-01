@@ -1,26 +1,15 @@
-﻿using Jint.Native;
+﻿using Jint;
+using Jint.Native;
+using NSoup;
+using NSoup.Nodes;
+using NSoup.Select;
+using RestSharp;
+using System.Data;
 using System.Net;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Reflection.Metadata;
 using System.Text;
 using System.Text.RegularExpressions;
-using System.Threading.Tasks;
-using NSoup.Nodes;
-using NSoup;
-using NSoup.Select;
-using Document = NSoup.Nodes.Document;
-using RestSharp;
-using System.Xml.Linq;
-using Jint;
 using System.Web;
-using Esprima.Ast;
-using Peach.Drpy;
-using System.Buffers.Text;
-using System.Data;
-using System.Reflection.PortableExecutable;
-using System.Security.Cryptography;
+using Document = NSoup.Nodes.Document;
 
 namespace Peach.Drpy
 {

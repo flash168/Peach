@@ -1,13 +1,6 @@
 ﻿using Jint;
 using Jint.Native;
 using Jint.Native.Object;
-using System.Buffers.Text;
-using System.ComponentModel.Design;
-using System.Diagnostics;
-using System.IO;
-using System.IO.Compression;
-using System.Runtime.Intrinsics.Arm;
-using static System.Net.Mime.MediaTypeNames;
 
 namespace Peach.Drpy
 {

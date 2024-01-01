@@ -1,5 +1,4 @@
-﻿using Microsoft.AspNetCore.Cors.Infrastructure;
-using Peach.Application.VodInfos;
+﻿using Peach.Application.VodInfos;
 
 namespace Peach.Host.Configurations
 {

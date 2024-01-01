@@ -1,7 +1,5 @@
 using Microsoft.AspNetCore.StaticFiles;
-using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.FileProviders;
-using Microsoft.OpenApi.Models;
 using Peach.Application.Configuration;
 using Peach.Host.Configurations;
 using Peach.Host.Filters;
@@ -88,7 +86,7 @@ app.UseStaticFiles(new StaticFileOptions
         };
     },
     ServeUnknownFileTypes = true,
-   // DefaultContentType = "text/plain; charset=utf-8",
+    // DefaultContentType = "text/plain; charset=utf-8",
     ContentTypeProvider = provider,
     FileProvider = new PhysicalFileProvider(Path.Combine(AppDomain.CurrentDomain.BaseDirectory))
 });
