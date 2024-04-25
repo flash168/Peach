@@ -60,15 +60,6 @@ namespace Peach.Host.Controllers
             List<object> collection = new List<object>();
             string site;
 
-            //{
-            //"key": "dr_007影视",
-            // "name": "007影视(道长)",
-            // "type": 1,
-            // "api": "http://b.flash168.top/vod?rule=007影视",
-            // "searchable": 2,
-            // "quickSearch": 0,
-            // "filterable": 1
-            //},
             if (_type == type.js1)
                 foreach (var file in files)
                 {

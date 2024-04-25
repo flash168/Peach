@@ -15,6 +15,10 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Peach.Host", "Peach.Host\Pe
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RuleTest", "RuleTest\RuleTest.csproj", "{513948F2-2565-4688-BF5D-9B712C57E014}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PeachPlayer", "PeachPlayer\PeachPlayer.csproj", "{DA9068D2-6A6F-4265-B8F3-99222341B3AD}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PeachPlayer.Desktop", "PeachPlayer.Desktop\PeachPlayer.Desktop.csproj", "{666CCF7C-954B-4549-B2A9-03BC37C209CD}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -45,6 +49,14 @@ Global
 		{513948F2-2565-4688-BF5D-9B712C57E014}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{513948F2-2565-4688-BF5D-9B712C57E014}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{513948F2-2565-4688-BF5D-9B712C57E014}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DA9068D2-6A6F-4265-B8F3-99222341B3AD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DA9068D2-6A6F-4265-B8F3-99222341B3AD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DA9068D2-6A6F-4265-B8F3-99222341B3AD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DA9068D2-6A6F-4265-B8F3-99222341B3AD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{666CCF7C-954B-4549-B2A9-03BC37C209CD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{666CCF7C-954B-4549-B2A9-03BC37C209CD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{666CCF7C-954B-4549-B2A9-03BC37C209CD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{666CCF7C-954B-4549-B2A9-03BC37C209CD}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

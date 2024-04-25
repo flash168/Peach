@@ -1,0 +1,27 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:vm="clr-namespace:PeachPlayer.ViewModels"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             x:Class="PeachPlayer.Views.SearchView"
+             x:DataType="vm:SearchViewModel">
+	<Grid ColumnDefinitions="170,*">
+
+		<ScrollViewer>
+			<ItemsControl ItemsSource="{Binding ListItems}">
+				<ItemsControl.ItemTemplate>
+					<DataTemplate>
+						<TextBlock Margin="4"  Text="{Binding .}"/>
+					</DataTemplate>
+				</ItemsControl.ItemTemplate>
+			</ItemsControl>
+		</ScrollViewer>
+
+		<TabControl Grid.Column="1">
+			<TabItem Header="推荐">
+				<TextBlock Text="asdasd" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+			</TabItem>
+		</TabControl>
+	</Grid>
+</UserControl>

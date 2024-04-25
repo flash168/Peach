@@ -1,0 +1,121 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        x:Class="PeachPlayer.Views.MainWindow"
+        xmlns:views="clr-namespace:PeachPlayer.Views"
+        xmlns:vm="using:PeachPlayer.ViewModels"
+        x:DataType="vm:MainWindowModel"
+        WindowStartupLocation="CenterScreen"
+        ExtendClientAreaToDecorationsHint="True"
+        ExtendClientAreaChromeHints="NoChrome"
+        ExtendClientAreaTitleBarHeightHint="-1"
+        Icon="/Assets/Images/avalonia-logo.ico"
+        mc:Ignorable="d" d:DesignWidth="1000" d:DesignHeight="450"
+        Title="PeachPlayer" Background="#F2F3F5">
+	<Window.DataContext>
+		<vm:MainWindowModel/>
+	</Window.DataContext>
+	<!--<Window.KeyBindings>
+		<KeyBinding Gesture="CTRL+Q"
+					Command="{Binding QuitProgramCommand}"></KeyBinding>
+	</Window.KeyBindings>-->
+
+	<Grid ColumnDefinitions="80,*" RowDefinitions="45,*">
+		<Panel Grid.ColumnSpan="2" x:Name="bg" Background="Transparent"/>
+
+		<Image Source="/Assets/Images/avalonia-logo.ico" Height="35" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+		<Border Grid.Column="1" Background="#E5E5E5" CornerRadius="20" Height="33" HorizontalAlignment="Left" Margin="5,0">
+			<StackPanel Orientation="Horizontal" Margin="7,0">
+				<TextBox Width="200" Height="18" Name="txt_Search" Watermark="搜索全网资源" BorderThickness="0" HorizontalContentAlignment="Left" HorizontalAlignment="Center" Background="Transparent"/>
+				<Button Command="{Binding SearchCommand}" CommandParameter="{Binding Text,ElementName=txt_Search}">
+					<Button.Content>
+						<TextBlock Text="&#xe624;" FontFamily="../Assets/Fonts/iconfont.ttf#iconfont"/>
+					</Button.Content>
+				</Button>
+			</StackPanel>
+		</Border>
+
+		<TextBlock Grid.Column="1" HorizontalAlignment="Center" VerticalAlignment="Center" Text=""/>
+
+		<StackPanel Grid.Column="1" Orientation="Horizontal" HorizontalAlignment="Right">
+			<ToggleButton Content="深色" x:Name="darkThemeToggleButton" IsCheckedChanged="DarkTheme_IsCheckedChanged"/>
+			<Button Content="打赏">
+				<!--<Button.Flyout>
+						<Image Source="/Assets/Images/logo.png"/>
+				</Button.Flyout>-->
+			</Button>
+
+			<TextBlock VerticalAlignment="Center" Text="|" Margin="3,0"/>
+
+			<Button Width="46" VerticalAlignment="Stretch" HorizontalContentAlignment="Center" BorderThickness="0" Name="MinimizeButton" ToolTip.Tip="最小化">
+				<Button.Styles>
+					<Style Selector="Button:pointerover /template/ ContentPresenter#PART_ContentPresenter">
+						<Setter Property="Background" Value="#44AAAAAA"/>
+					</Style>
+					<Style Selector="Button:not(:pointerover) /template/ ContentPresenter#PART_ContentPresenter">
+						<Setter Property="Background" Value="Transparent"/>
+					</Style>
+				</Button.Styles>
+				<Path Margin="10,0,10,0" Stretch="Uniform" VerticalAlignment="Center"
+					  Fill="{DynamicResource SystemControlForegroundBaseHighBrush}"  Data="M2048 1229v-205h-2048v205h2048z"/>
+			</Button>
+
+			<Button Width="46" VerticalAlignment="Stretch" BorderThickness="0" Name="MaximizeButton">
+				<ToolTip.Tip>
+					<ToolTip Content="最大化" Name="MaximizeToolTip"/>
+				</ToolTip.Tip>
+				<Button.Styles>
+					<Style Selector="Button:pointerover /template/ ContentPresenter#PART_ContentPresenter">
+						<Setter Property="Background" Value="#44AAAAAA"/>
+					</Style>
+					<Style Selector="Button:not(:pointerover) /template/ ContentPresenter#PART_ContentPresenter">
+						<Setter Property="Background" Value="Transparent"/>
+					</Style>
+				</Button.Styles>
+				<Path VerticalAlignment="Center" Margin="10,0,10,0" Stretch="Uniform" Fill="{DynamicResource SystemControlForegroundBaseHighBrush}"
+					  Name="MaximizeIcon" Data="M2048 2048v-2048h-2048v2048h2048zM1843 1843h-1638v-1638h1638v1638z"/>
+			</Button>
+
+			<Button Width="46"
+					VerticalAlignment="Stretch"
+					BorderThickness="0"
+					Name="CloseButton"
+					ToolTip.Tip="关闭">
+				<Button.Styles>
+					<Style Selector="Button:pointerover /template/ ContentPresenter#PART_ContentPresenter">
+						<Setter Property="Background" Value="Red"/>
+					</Style>
+					<Style Selector="Button:not(:pointerover) /template/ ContentPresenter#PART_ContentPresenter">
+						<Setter Property="Background" Value="Transparent"/>
+					</Style>
+					<Style Selector="Button:pointerover > Path">
+						<Setter Property="Fill" Value="White"/>
+					</Style>
+					<Style Selector="Button:not(:pointerover) > Path">
+						<Setter Property="Fill" Value="{DynamicResource SystemControlForegroundBaseHighBrush}"/>
+					</Style>
+				</Button.Styles>
+				<Path Margin="10,0,10,0" VerticalAlignment="Center" Stretch="Uniform"
+					  Data="M1169 1024l879 -879l-145 -145l-879 879l-879 -879l-145 145l879 879l-879 879l145 145l879 -879l879 879l145 -145z"/>
+			</Button>
+
+		</StackPanel>
+
+		<StackPanel Grid.Row="1" Margin="0,5" HorizontalAlignment="Center" >
+			<RadioButton GroupName="a" Width="65" Height="60" Margin="5" Content="影视" HorizontalContentAlignment="Center" Background="Transparent" Command="{Binding SwitchMenuCommand}" CommandParameter="FilmTelevisionViewModel"/>
+			<RadioButton GroupName="a" Width="65" Height="60" Margin="5" Content="电视" HorizontalContentAlignment="Center" Background="Transparent" Command="{Binding SwitchMenuCommand}" CommandParameter="LiveBroadcastViewModel"/>
+			<RadioButton GroupName="a" Width="65" Height="60" Margin="5" Content="网盘" HorizontalContentAlignment="Center" Background="Transparent" Command="{Binding SwitchMenuCommand}" CommandParameter="NetdiskViewModel"/>
+			<RadioButton GroupName="a" Width="65" Height="60" Margin="5" Content="过刻" HorizontalContentAlignment="Center" Background="Transparent" Command="{Binding SwitchMenuCommand}" CommandParameter="PlayHistoryViewModel"/>
+		</StackPanel>
+
+		<StackPanel Grid.Row="1" Margin="0,5" HorizontalAlignment="Center" VerticalAlignment="Bottom">
+			<Button Content="设置" Command="{Binding SetUpCommand}"/>
+		</StackPanel>
+
+		<Border Grid.Row="1" Grid.Column="1" Background="#FBFBFB" CornerRadius="10" Margin="5">
+			<ContentControl Margin="10" Content="{Binding ContentViewModel}"/>
+		</Border>
+	</Grid>
+
+</Window>

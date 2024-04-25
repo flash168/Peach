@@ -1,0 +1,32 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:vm="clr-namespace:PeachPlayer.ViewModels"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             x:Class="PeachPlayer.Views.FilmTelevisionView"
+             x:DataType="vm:FilmTelevisionViewModel">
+	
+	<Grid ColumnDefinitions="170,*">
+		
+		<ScrollViewer>
+			<ItemsControl ItemsSource="{Binding ListItems}">
+				<ItemsControl.ItemTemplate>
+					<DataTemplate>
+						<Border Margin="0,10,0,0" CornerRadius="5" BorderBrush="Gray" BorderThickness="1" Padding="5">
+							<TextBlock Margin="4" Text="{Binding .}"/>
+						</Border>
+					</DataTemplate>
+				</ItemsControl.ItemTemplate>
+			</ItemsControl>
+		</ScrollViewer>
+
+		<TabStrip Grid.Column="1" Margin="5">
+			<TabItem Header="推荐"/>
+			<TabItem Header="电影"/>
+			<TabItem Header="电视剧"/>
+			<TabItem Header="动漫"/>
+		</TabStrip>
+	</Grid>
+
+</UserControl>
