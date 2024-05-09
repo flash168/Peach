@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
-using Peach.Application.Configuration;
+using Peach.Infrastructure.Configuration;
 
 namespace Peach.Host.Filters
 {

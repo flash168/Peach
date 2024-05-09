@@ -1,11 +1,18 @@
 ﻿using Jint;
 using Jint.Native;
 using Jint.Native.Object;
+using Peach.Model;
 
 namespace Peach.Drpy
 {
-    public class JsSpiderClient
+    public class JsSpiderClient : ISpider
     {
+        private Engine engine;
+        ObjectInstance ns;
+        public console console;
+        HtmlParser hparser;
+        RSAHandle rSAHandle;
+
         public JsSpiderClient()
         {
             console = new console();
@@ -13,64 +20,60 @@ namespace Peach.Drpy
             rSAHandle = new RSAHandle();
         }
 
-        private Engine engine;
-        ObjectInstance ns;
-        public console console;
-        HtmlParser hparser;
-        RSAHandle rSAHandle;
-
-        public bool InitEngine(string api, string ext)
+        public Task<bool> InitSpiderAsync(string api, string ext)
         {
             if (string.IsNullOrEmpty(api))
-                api = File.ReadAllText(Path.Combine(AppContext.BaseDirectory, "libs", "drpy2.min.js"));
+                api = File.ReadAllText(Path.Combine(AppContext.BaseDirectory, "drpy_libs", "drpy2.min.js"));
             else
                 api = File.ReadAllText(Path.Combine(AppContext.BaseDirectory, "js", $"{api}.js"));
 
-            try
+            return Task.Factory.StartNew(() =>
             {
-                engine = new Engine(cfg =>
+                try
                 {
-                    cfg.AllowClr();
-                    cfg.EnableModules(new RequireModuleLoader("", AppContext.BaseDirectory));
-                });
-                //engine.SetValue("consolelog", new Action<object>(g => { Debug.WriteLine(g); }));
+                    engine = new Engine(cfg =>
+                    {
+                        cfg.AllowClr();
+                        cfg.EnableModules(new RequireModuleLoader("", AppContext.BaseDirectory));
+                    });
+                    //engine.SetValue("consolelog", new Action<object>(g => { Debug.WriteLine(g); }));
 
-                // 将 C# 函数转换为 JavaScript 函数，并将其添加到 engine 中
-                engine.SetValue("pdfh", new Func<string, string, string>(hparser.parseDomForUrl));
-                engine.SetValue("pd", new Func<string, string, string, string>(hparser.parseDom));
-                engine.SetValue("pdfl", new Func<string, string, string, string, string, string[]>(hparser.parseDomForList));
-                engine.SetValue("pdfa", new Func<string, string, string[]>(hparser.parseDomForArray));
-                engine.SetValue("joinUrl", new Func<string, string, string>(hparser.joinUrl));
-                engine.SetValue("req", new Func<string, JsValue, object>(hparser.request));
+                    // 将 C# 函数转换为 JavaScript 函数，并将其添加到 engine 中
+                    engine.SetValue("pdfh", new Func<string, string, string>(hparser.parseDomForUrl));
+                    engine.SetValue("pd", new Func<string, string, string, string>(hparser.parseDom));
+                    engine.SetValue("pdfl", new Func<string, string, string, string, string, string[]>(hparser.parseDomForList));
+                    engine.SetValue("pdfa", new Func<string, string, string[]>(hparser.parseDomForArray));
+                    engine.SetValue("joinUrl", new Func<string, string, string>(hparser.joinUrl));
+                    engine.SetValue("req", new Func<string, JsValue, object>(hparser.request));
 
-                engine.SetValue("rsaX", new Func<string, bool, bool, string, bool, string, bool, string>(rSAHandle.RSAX));
+                    engine.SetValue("rsaX", new Func<string, bool, bool, string, bool, string, bool, string>(rSAHandle.RSAX));
 
-                engine.SetValue("local", new Local());
-                engine.SetValue("console", console);
+                    engine.SetValue("local", new Local());
+                    engine.SetValue("console", console);
 
-                engine.AddModule("drpyModel", api);
-                ns = engine.ImportModule("drpyModel");
+                    engine.AddModule("drpyModel", api);
+                    ns = engine.ImportModule("drpyModel");
 
-                engine.Invoke(ns.Get("default").Get("init"), ext);
-            }
-            catch (Exception ex)
-            {
-                return false;
-                throw;
-            }
-            return true;
+                    engine.Invoke(ns.Get("default").Get("init"), ext);
+                }
+                catch (Exception ex)
+                {
+                    return false;
+                    throw;
+                }
+                return true;
+            });
         }
 
-        public Task<string> GetHome(string fidier)
+        public Task<string> HomeAsync(string filter)
         {
             if (engine == null) return null;
-            Task<string> task = Task.Factory.StartNew(_fidier =>
+            return Task.Factory.StartNew(_filier =>
             {
-                return engine.Invoke(ns["default"].Get("home"), _fidier).AsString();
-            }, fidier);
-            return task;
+                return engine.Invoke(ns["default"].Get("home"), _filier).AsString();
+            }, filter);
         }
-        public Task<string> GetHomeVod(string fidier)
+        public Task<string> HomeVodAsync(string fidier)
         {
             if (engine == null) return null;
             return Task.Factory.StartNew(_fidier =>
@@ -78,8 +81,7 @@ namespace Peach.Drpy
                 return engine.Invoke(ns["default"].Get("homeVod"), _fidier).AsString();
             }, fidier);
         }
-
-        public Task<string> GetCategory(string tid, string pg, string filter, string extend)
+        public Task<string> CategoryAsync(string tid, string pg, string filter, string extend)
         {
             if (engine == null) return null;
             return Task.Factory.StartNew(() =>
@@ -88,17 +90,7 @@ namespace Peach.Drpy
             });
         }
 
-        public Task<string> Search(string fidier, bool quick = true)
-        {
-            if (engine == null) return null;
-            return Task.Factory.StartNew(_filter =>
-            {
-                return engine.Invoke(ns["default"].Get("search"), _filter, quick).AsString();
-            }, fidier);
-        }
-
-        //play search detail
-        public Task<string> GetDetails(string ids)
+        public Task<string> DetailsAsync(string ids)
         {
             if (engine == null) return null;
             return Task.Factory.StartNew(_ids =>
@@ -107,7 +99,16 @@ namespace Peach.Drpy
             }, ids);
         }
 
-        public Task<string> GetPlayInfo(string line, string id, string flags)
+        public Task<string> SearchAsync(string filter, bool quick = true)
+        {
+            if (engine == null) return null;
+            return Task.Factory.StartNew(_filter =>
+            {
+                return engine.Invoke(ns["default"].Get("search"), _filter, quick).AsString();
+            }, filter);
+        }
+
+        public Task<string> PlayAsync(string line, string id, string flags)
         {
             if (engine == null) return null;
             return Task.Factory.StartNew(_id =>
@@ -116,8 +117,5 @@ namespace Peach.Drpy
                 return engine.Invoke(ns["default"].Get("play"), line, _id, flags).AsString();
             }, id);
         }
-
-
-
     }
 }

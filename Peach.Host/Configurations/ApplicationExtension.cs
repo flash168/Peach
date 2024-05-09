@@ -1,4 +1,5 @@
-﻿using Peach.Application.VodInfos;
+﻿using Peach.Application.Interfaces;
+using Peach.Application.Services;
 
 namespace Peach.Host.Configurations
 {

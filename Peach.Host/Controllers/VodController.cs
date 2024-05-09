@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Peach.Application.Configuration;
-using Peach.Application.VodInfos;
+using Peach.Application.Interfaces;
 using Peach.Domain;
+using Peach.Infrastructure.Configuration;
 
 namespace Peach.Host.Controllers
 {

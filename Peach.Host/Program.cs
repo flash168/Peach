@@ -1,8 +1,8 @@
 using Microsoft.AspNetCore.StaticFiles;
 using Microsoft.Extensions.FileProviders;
-using Peach.Application.Configuration;
 using Peach.Host.Configurations;
 using Peach.Host.Filters;
+using Peach.Infrastructure.Configuration;
 using Serilog;
 using Serilog.Events;
 using System.Text;

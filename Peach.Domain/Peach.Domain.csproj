@@ -8,5 +8,9 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
   </PropertyGroup>
+  <ItemGroup>
+    <Folder Include="Repository\" />
+    <Folder Include="Models\" />
+  </ItemGroup>
 
 </Project>

@@ -31,7 +31,7 @@ namespace Peach.Drpy
                 {
                     var tp = _basePaths.First(s => url.IndexOf(s) >= 0);
 
-                    fileName = Path.Combine(_basePath, url.Replace(tp, "libs/")).Replace('\\', '/');
+                    fileName = Path.Combine(_basePath, url.Replace(tp, "drpy_libs/")).Replace('\\', '/');
                 }
                 else
                     fileName = Path.Combine(_basePath, url).Replace('\\', '/');
@@ -56,7 +56,7 @@ namespace Peach.Drpy
                 //    {
                 //        var tp = _basePaths.First(s => url.IndexOf(s) >= 0);
 
-                //        fileName = Path.Combine(_basePath, url.Replace(tp, "libs/")).Replace('\\', '/');
+                //        fileName = Path.Combine(_basePath, url.Replace(tp, "drpy_libs/")).Replace('\\', '/');
                 //    }
                 //    else
                 //        fileName = Path.Combine(_basePath, url).Replace('\\', '/');

@@ -1,50 +1,57 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
-  <PropertyGroup>
-    <TargetFramework>net6.0</TargetFramework>
-    <Nullable>enable</Nullable>
-    <LangVersion>latest</LangVersion>
-    <AvaloniaUseCompiledBindingsByDefault>true</AvaloniaUseCompiledBindingsByDefault>
-  </PropertyGroup>
+	<PropertyGroup>
+		<TargetFramework>net6.0</TargetFramework>
+		<Nullable>enable</Nullable>
+		<LangVersion>latest</LangVersion>
+		<AvaloniaUseCompiledBindingsByDefault>true</AvaloniaUseCompiledBindingsByDefault>
+	</PropertyGroup>
 
-  
-  <ItemGroup>
-    <AvaloniaResource Include="Assets\**" />
-  </ItemGroup>
 
-  
-  <ItemGroup>
-    <None Remove="Assets\Images\pay\weixinpay.jpg" />
-    <None Remove="Assets\Images\pay\zhifubaopay.jpg" />
-  </ItemGroup>
+	<ItemGroup>
+		<AvaloniaResource Include="Assets\**" />
+	</ItemGroup>
 
-  <ItemGroup>
-    <PackageReference Include="Avalonia" Version="$(AvaloniaVersion)" />
-    <PackageReference Include="Avalonia.AvaloniaEdit" Version="11.0.6" />
-    <PackageReference Include="Avalonia.Themes.Fluent" Version="$(AvaloniaVersion)" />
-    <PackageReference Include="Avalonia.Fonts.Inter" Version="$(AvaloniaVersion)" />
-    <PackageReference Include="Avalonia.ReactiveUI" Version="$(AvaloniaVersion)" />
-    <!--Condition below is needed to remove Avalonia.Diagnostics package from build output in Release configuration.-->
-    <PackageReference Condition="'$(Configuration)' == 'Debug'" Include="Avalonia.Diagnostics" Version="$(AvaloniaVersion)" />
-    <PackageReference Include="Avalonia.Xaml.Behaviors" Version="11.0.10.9" />
-  </ItemGroup>
+	<ItemGroup>
+		<None Remove="Assets\Images\pay\weixinpay.jpg" />
+		<None Remove="Assets\Images\pay\zhifubaopay.jpg" />
+	</ItemGroup>
 
-  <ItemGroup>
-    <ProjectReference Include="..\Peach.Application\Peach.Application.csproj" />
-    <ProjectReference Include="..\Peach.Drpy\Peach.Drpy.csproj" />
-  </ItemGroup>
+	<ItemGroup>
+		<PackageReference Include="Avalonia" Version="$(AvaloniaVersion)" />
+		<PackageReference Include="Avalonia.AvaloniaEdit" Version="11.0.6" />
+		<PackageReference Include="Avalonia.Themes.Fluent" Version="$(AvaloniaVersion)" />
+		<PackageReference Include="Avalonia.Fonts.Inter" Version="$(AvaloniaVersion)" />
+		<PackageReference Include="Avalonia.ReactiveUI" Version="$(AvaloniaVersion)" />
+		<!--Condition below is needed to remove Avalonia.Diagnostics package from build output in Release configuration.-->
+		<PackageReference Condition="'$(Configuration)' == 'Debug'" Include="Avalonia.Diagnostics" Version="$(AvaloniaVersion)" />
+		<PackageReference Include="Avalonia.Xaml.Behaviors" Version="11.0.10.9" />
+	</ItemGroup>
 
-  <ItemGroup>
-    <Compile Update="Views\SearchView.axaml.cs">
-      <DependentUpon>SearchView.axaml</DependentUpon>
-    </Compile>
-    <Compile Update="Views\PlayHistoryView.axaml.cs">
-      <DependentUpon>PlayHistoryView.axaml</DependentUpon>
-    </Compile>
-    <Compile Update="Views\NetdiskView.axaml.cs">
-      <DependentUpon>NetdiskView.axaml</DependentUpon>
-    </Compile>
-    <Compile Update="Views\FilmTelevisionView.axaml.cs">
-      <DependentUpon>FilmTelevisionView.axaml</DependentUpon>
-    </Compile>
-  </ItemGroup>
+	<ItemGroup>
+		<ProjectReference Include="..\Peach.Application\Peach.Application.csproj" />
+		<ProjectReference Include="..\Peach.Model\Peach.Model.csproj" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<Compile Update="Views\MainWindow.axaml.cs">
+			<DependentUpon>MainWindow.axaml</DependentUpon>
+		</Compile>
+		<Compile Update="Views\SearchView.axaml.cs">
+			<DependentUpon>SearchView.axaml</DependentUpon>
+		</Compile>
+		<Compile Update="Views\PlayHistoryView.axaml.cs">
+			<DependentUpon>PlayHistoryView.axaml</DependentUpon>
+		</Compile>
+		<Compile Update="Views\NetdiskView.axaml.cs">
+			<DependentUpon>NetdiskView.axaml</DependentUpon>
+		</Compile>
+		<Compile Update="Views\FilmTelevisionView.axaml.cs">
+			<DependentUpon>FilmTelevisionView.axaml</DependentUpon>
+		</Compile>
+	</ItemGroup>
+
+	<ItemGroup>
+	  <Folder Include="Foundation\" />
+	</ItemGroup>
+
 </Project>
