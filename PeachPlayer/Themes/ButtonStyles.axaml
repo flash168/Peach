@@ -41,34 +41,28 @@
 	<Style Selector="RadioButton.Ico">
 		<Setter Property="Background" Value="Transparent"/>
 		<Setter Property="FontSize" Value="14"/>
-		<Setter Property="Foreground" Value="Black"/>
-		<Setter Property="BorderThickness" Value="1"/>
-		<Setter Property="BorderBrush" Value="Black"/>
-		<Setter Property="Padding" Value="5"/>
+		<Setter Property="Foreground" Value="{DynamicResource ButtonForeground}"/>
+		<Setter Property="BorderThickness" Value="0"/>
+		<Setter Property="BorderBrush" Value="Transparent"/>
+		<Setter Property="Padding" Value="2"/>
 		<Setter Property="Template">
 			<Setter.Value>
-				<ControlTemplate TargetType="Button">
+				<ControlTemplate TargetType="RadioButton">
 					<Border Background="{TemplateBinding Background}"
 							BorderThickness="{TemplateBinding BorderThickness}"
 							BorderBrush="{TemplateBinding BorderBrush}"
-							CornerRadius="5">
-						<StackPanel>
-							<TextBlock Text="" FontFamily="../Assets/Fonts/iconfont.ttf#iconfont" HorizontalAlignment="Center" VerticalAlignment="Center"/>
-							<ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
-						</StackPanel>
+							CornerRadius="5" Name="bg">
+							<ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" Content="{TemplateBinding Content}"/>
 					</Border>
 				</ControlTemplate>
 			</Setter.Value>
 		</Setter>
 
-		<Style Selector="^:pointerover">
-			<Setter Property="Foreground" Value="Red"/>
+		<Style Selector="^:checked /template/ Border">
+			<Setter Property="Background" Value="{DynamicResource SystemBaseLowColor}"/>
 		</Style>
 
 	</Style>
-
-
-
 
 
 

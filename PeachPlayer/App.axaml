@@ -9,6 +9,7 @@
 	</Application.DataTemplates>
     <Application.Styles>
         <FluentTheme />
-		<!--<StyleInclude Source="/Themes/ButtonStyles.axaml"/>-->
+		<StyleInclude Source="/Themes/ButtonStyles.axaml"/>
+		<!--<StyleInclude Source="/Themes/TextBoxStyles.axaml"/>-->
     </Application.Styles>
 </Application>

@@ -12,9 +12,15 @@ public class MainWindowModel : ViewModelBase
     public ViewModelBase ContentViewModel
     {
         get => _contentViewModel;
-        private set => this.RaiseAndSetIfChanged(ref _contentViewModel, value);
+        private set { SetSelectView(value); this.RaiseAndSetIfChanged(ref _contentViewModel, value); }
     }
 
+    private int selectView;
+    public int SelectView
+    {
+        get => selectView;
+        private set => this.RaiseAndSetIfChanged(ref selectView, value);
+    }
 
 
     public ReactiveCommand<string, Unit> SwitchMenuCommand { get; }
@@ -25,8 +31,7 @@ public class MainWindowModel : ViewModelBase
     public MainWindowModel()
     {
         var main = new FilmTelevisionViewModel();
-        _contentViewModel = main;
-
+        ContentViewModel = main;
 
         SwitchMenuCommand = ReactiveCommand.Create<string>(SwitchMenu);
         SetUpCommand = ReactiveCommand.Create(() => ContentViewModel = new SetUpViewModel());
@@ -34,6 +39,27 @@ public class MainWindowModel : ViewModelBase
 
     }
 
+    private void SetSelectView(ViewModelBase viewModel)
+    {
+        switch (viewModel.ToString().Replace("PeachPlayer.ViewModels.", ""))
+        {
+            case "FilmTelevisionViewModel":
+                SelectView = 1;
+                break;
+            case "LiveBroadcastViewModel":
+                SelectView = 2;
+                break;
+            case "NetdiskViewModel":
+                SelectView = 3;
+                break;
+            case "PlayHistoryViewModel":
+                SelectView = 4;
+                break;
+            default:
+                SelectView = 0;
+                break;
+        }
+    }
 
     public void SwitchMenu(string parameter)
     {

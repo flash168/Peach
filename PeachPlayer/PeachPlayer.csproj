@@ -11,6 +11,12 @@
     <AvaloniaResource Include="Assets\**" />
   </ItemGroup>
 
+  
+  <ItemGroup>
+    <None Remove="Assets\Images\pay\weixinpay.jpg" />
+    <None Remove="Assets\Images\pay\zhifubaopay.jpg" />
+  </ItemGroup>
+
   <ItemGroup>
     <PackageReference Include="Avalonia" Version="$(AvaloniaVersion)" />
     <PackageReference Include="Avalonia.AvaloniaEdit" Version="11.0.6" />
@@ -19,6 +25,7 @@
     <PackageReference Include="Avalonia.ReactiveUI" Version="$(AvaloniaVersion)" />
     <!--Condition below is needed to remove Avalonia.Diagnostics package from build output in Release configuration.-->
     <PackageReference Condition="'$(Configuration)' == 'Debug'" Include="Avalonia.Diagnostics" Version="$(AvaloniaVersion)" />
+    <PackageReference Include="Avalonia.Xaml.Behaviors" Version="11.0.10.9" />
   </ItemGroup>
 
   <ItemGroup>
