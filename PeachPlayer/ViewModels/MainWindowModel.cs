@@ -1,5 +1,7 @@
 ﻿using Avalonia;
+using Peach.Application.Interfaces;
 using ReactiveUI;
+using Splat;
 using System.Reactive;
 using System.Windows.Input;
 
@@ -27,11 +29,10 @@ public class MainWindowModel : ViewModelBase
     public ReactiveCommand<string, Unit> SearchCommand { get; }
 
     public ICommand SetUpCommand { get; }
-
+   
     public MainWindowModel()
     {
-        var main = new FilmTelevisionViewModel();
-        ContentViewModel = main;
+        ContentViewModel = new FilmTelevisionViewModel();
 
         SwitchMenuCommand = ReactiveCommand.Create<string>(SwitchMenu);
         SetUpCommand = ReactiveCommand.Create(() => ContentViewModel = new SetUpViewModel());

@@ -11,7 +11,7 @@ namespace Peach.Model.Models
         public string Wallpaper { get; set; }
         public List<LiveModel> Lives { get; set; }
         public List<SiteModel> Sites { get; set; }
-        public string Parses { get; set; }
+        public List<ParseModel> Parses { get; set; }
         public List<string> Flags { get; set; }
         public List<string> Ads { get; set; }
 

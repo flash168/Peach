@@ -1,10 +1,11 @@
-﻿using Peach.Model.Models;
-using System.Net.Http.Json;
+﻿using Newtonsoft.Json;
+using Peach.Application.Interfaces;
+using Peach.Model.Models;
 
 
 namespace Peach.Application.Services
 {
-    public class SourceService
+    public class SourceService : ISourceService
     {
         private readonly HttpClient httpClient;
         public SourceService()
@@ -26,7 +27,7 @@ namespace Peach.Application.Services
             var req = await httpClient.GetAsync(url);
             if (req.IsSuccessStatusCode)
             {
-                Source = await req.Content.ReadFromJsonAsync<SourceModel>();
+                Source = JsonConvert.DeserializeObject<SourceModel>(await req.Content.ReadAsStringAsync());
                 return true;
             }
             else

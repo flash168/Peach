@@ -1,6 +1,8 @@
-﻿namespace Peach.Application.Services
+﻿using Peach.Application.Interfaces;
+
+namespace Peach.Application.Services
 {
-    public class SpiderService
+    public class SpiderService: ISpiderService
     {
 
         //源列表

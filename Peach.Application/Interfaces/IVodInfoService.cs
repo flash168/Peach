@@ -1,13 +1,23 @@
-﻿namespace Peach.Application.Interfaces
+﻿using Peach.Model.Models;
+
+namespace Peach.Application.Interfaces
 {
     public interface IVodInfoService
     {
+        Task<bool> InitSite(SiteModel site);
+
         /// <summary>
-        /// 分类和首页推荐
+        /// 分类
         /// </summary>
         /// <returns></returns>
-        Task<string> HomeAsync(string rule);
+        Task<HomeModel> HomeAsync(string rule);
 
+
+        /// <summary>
+        /// 首页推荐
+        /// </summary>
+        /// <returns></returns>
+        Task<VodListModel> HomeVodAsync(string rule);
 
         /// <summary>
         /// 一级分类
