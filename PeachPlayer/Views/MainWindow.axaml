@@ -154,7 +154,7 @@
 		</Border>
 
 
-		<WrapPanel Grid.Column="1" Grid.Row="2" Orientation="Vertical" Margin="20" HorizontalAlignment="Right" Background="Silver">
+		<WrapPanel Grid.Column="1" Grid.Row="2" Orientation="Vertical" Margin="20" HorizontalAlignment="Right" Background="Silver" IsVisible="False">
 			<WrapPanel.Resources>
 				<Color x:Key="SystemAltHighColor">#FFFFFFFF</Color>
 				<Color x:Key="SystemAltLowColor">#33FFFFFF</Color>

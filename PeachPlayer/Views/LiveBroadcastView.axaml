@@ -18,6 +18,7 @@
 				</ItemsControl.ItemTemplate>
 			</ItemsControl>
 		</ScrollViewer>
+		<TextBlock IsVisible="{Binding !ListItems.Count}">No results found</TextBlock>
 
 		<TabControl Grid.Column="1">
 			<TabItem Header="推荐">
