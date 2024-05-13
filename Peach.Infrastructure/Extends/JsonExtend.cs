@@ -17,6 +17,7 @@ namespace Peach.Infrastructure.Extends
         {
             JsonSerializerSettings jsetting = new JsonSerializerSettings()
             {
+                ReferenceLoopHandling = ReferenceLoopHandling.Ignore,
                 NullValueHandling = NullValueHandling.Ignore,
                 ContractResolver = new CamelCasePropertyNamesContractResolver()
             };

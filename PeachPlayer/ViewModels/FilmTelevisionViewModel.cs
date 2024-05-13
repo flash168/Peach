@@ -17,6 +17,10 @@ public class FilmTelevisionViewModel : ViewModelBase
     //    get => listItems;
     //    private set => this.RaiseAndSetIfChanged(ref listItems, value);
     //}
+    [Reactive]
+    public ObservableCollection<ClassModel> Types { get; set; }
+    [Reactive]
+    public ObservableCollection<SmallVodModel> VodList { get; set; }
 
     public ReactiveCommand<SiteModel, Unit> SwitchSiteCommand { get; }
 
@@ -24,9 +28,11 @@ public class FilmTelevisionViewModel : ViewModelBase
     public ObservableCollection<SiteModel> ListItems { get; set; }
 
     private ISourceService source;
+    private IVodInfoService vod;
     public FilmTelevisionViewModel(ISourceService _source = null)
     {
         source = _source ?? Locator.Current.GetService<ISourceService>();
+        vod = Locator.Current.GetService<IVodInfoService>();
         SwitchSiteCommand = ReactiveCommand.Create<SiteModel>(SwitchSite);
         LoadSource();
     }
@@ -36,14 +42,18 @@ public class FilmTelevisionViewModel : ViewModelBase
         string url = "http://drpy.nokia.press/config/2?ver=2";
         string url1 = "https://jihulab.com/yw88075/tvbox/-/raw/main/dr/js.json";
         //测试加载数据
-        var req = await source.LoadConfig(url1);
+        var req = await source.LoadConfig(url);
         if (req)
             ListItems = new ObservableCollection<SiteModel>(source.Source.Sites);
     }
 
-    public void SwitchSite(SiteModel site)
+    public async void SwitchSite(SiteModel site)
     {
-
+        await vod.InitSite(site);
+        var filter = await vod.HomeAsync();
+        Types = new ObservableCollection<ClassModel>(filter.Class);
+        //var vods = await vod.HomeVodAsync("");
+        //VodList = new ObservableCollection<SmallVodModel>(vods.List);
     }
 
 

@@ -4,6 +4,7 @@ using NSoup;
 using NSoup.Nodes;
 using NSoup.Select;
 using RestSharp;
+using System;
 using System.Data;
 using System.Net;
 using System.Text;
@@ -32,7 +33,11 @@ namespace Peach.Drpy
             //client.AddDefaultHeader("Content-Type", "application/json");
             //client.AddDefaultHeader("Accept", "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7");
         }
-
+        public string GetHtml(string url)
+        {
+            var request = new RestRequest(url);
+            return client.Get(request).Content;
+        }
 
         /// <summary>
         /// okhttp封装的html请求，给js调用http请求的

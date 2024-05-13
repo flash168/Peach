@@ -10,21 +10,21 @@ namespace Peach.Application.Interfaces
         /// 分类
         /// </summary>
         /// <returns></returns>
-        Task<HomeModel> HomeAsync(string rule);
+        Task<HomeModel> HomeAsync(string filter = "");
 
 
         /// <summary>
         /// 首页推荐
         /// </summary>
         /// <returns></returns>
-        Task<VodListModel> HomeVodAsync(string rule);
+        Task<VodListModel> HomeVodAsync(string filter);
 
         /// <summary>
         /// 一级分类
         /// </summary>
         /// <param name="input"></param>
         /// <returns></returns>
-        Task<string> ClassifyAsync(string rule, string tid, string pg, string filter, string extend);
+        Task<string> ClassifyAsync(string tid, string pg, string filter, string extend);
 
 
         /// <summary>
@@ -32,7 +32,7 @@ namespace Peach.Application.Interfaces
         /// </summary>
         /// <param name="input"></param>
         /// <returns></returns>
-        Task<string> DetailsAsync(string rule, string ids);
+        Task<string> DetailsAsync(string ids);
 
 
         /// <summary>
@@ -40,7 +40,7 @@ namespace Peach.Application.Interfaces
         /// </summary>
         /// <param name="input"></param>
         /// <returns></returns>
-        Task<string> SearchAsync(string rule, string filter);
+        Task<string> SearchAsync(string filter);
 
 
         /// <summary>
@@ -48,7 +48,7 @@ namespace Peach.Application.Interfaces
         /// </summary>
         /// <param name="input"></param>
         /// <returns></returns>
-        Task<string> SniffingAsync(string rule, string url);
+        Task<string> SniffingAsync(string url);
 
 
     }

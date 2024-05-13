@@ -45,18 +45,19 @@ namespace Peach.Host.Controllers
         {
             if (!pwd.ToLower().Equals(apiPwd.ToLower()))
                 throw new BusinessException("接口密码错误！");
-            if (string.IsNullOrEmpty(pg))
-                pg = "1";
-            if (!string.IsNullOrEmpty(t) && !string.IsNullOrEmpty(ac))//一级分类
-                return await vodInfoService.ClassifyAsync(rule, t, pg, ac, f);
-            else if (!string.IsNullOrEmpty(ids) && !string.IsNullOrEmpty(ac) && ac.Length > 0)//二级详情
-                return await vodInfoService.DetailsAsync(rule, ids);
-            else if (!string.IsNullOrEmpty(wd))//搜索
-                return await vodInfoService.SearchAsync(rule, wd);
-            else if (!string.IsNullOrEmpty(play_url))//播放
-                return await vodInfoService.SniffingAsync(string.Empty, play_url);
-            else
-                return await vodInfoService.HomeAsync(rule);
+            //if (string.IsNullOrEmpty(pg))
+            //    pg = "1";
+            //if (!string.IsNullOrEmpty(t) && !string.IsNullOrEmpty(ac))//一级分类
+            //    return await vodInfoService.ClassifyAsync(rule, t, pg, ac, f);
+            //else if (!string.IsNullOrEmpty(ids) && !string.IsNullOrEmpty(ac) && ac.Length > 0)//二级详情
+            //    return await vodInfoService.DetailsAsync(rule, ids);
+            //else if (!string.IsNullOrEmpty(wd))//搜索
+            //    return await vodInfoService.SearchAsync(rule, wd);
+            //else if (!string.IsNullOrEmpty(play_url))//播放
+            //    return await vodInfoService.SniffingAsync(string.Empty, play_url);
+            //else
+            //    return await vodInfoService.HomeAsync(rule);
+            return "";
         }
 
 

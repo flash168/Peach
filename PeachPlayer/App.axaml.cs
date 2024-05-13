@@ -4,8 +4,10 @@ using Avalonia.Markup.Xaml;
 using Peach.Application.Interfaces;
 using Peach.Application.Services;
 using PeachPlayer.Views;
+using ReactiveUI;
 using Splat;
 using System;
+using System.Threading.Tasks;
 
 namespace PeachPlayer;
 
@@ -14,6 +16,11 @@ public partial class App : Application
     public override void Initialize()
     {
         AvaloniaXamlLoader.Load(this);
+        TaskScheduler.UnobservedTaskException += TaskScheduler_UnobservedTaskException;
+    }
+
+    private void TaskScheduler_UnobservedTaskException(object? sender, UnobservedTaskExceptionEventArgs e)
+    {
     }
 
     public override void OnFrameworkInitializationCompleted()
@@ -38,6 +45,7 @@ public partial class App : Application
 
     private void ConfigureServiceProvider()
     {
+        Locator.CurrentMutable.RegisterConstant(new VodInfoService(), typeof(IVodInfoService));
         Locator.CurrentMutable.RegisterConstant(new RuleTestService(), typeof(IRuleTestService));
         Locator.CurrentMutable.RegisterConstant(new SourceService(), typeof(ISourceService));
         Locator.CurrentMutable.RegisterConstant(new SpiderService(), typeof(ISpiderService));
@@ -45,5 +53,7 @@ public partial class App : Application
         //Locator.Current.GetService<IRuleTestService>();
 
     }
+
+
 
 }

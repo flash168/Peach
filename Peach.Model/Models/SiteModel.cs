@@ -14,7 +14,8 @@ namespace Peach.Model.Models
         public int QuickSearch { get; set; }
         public int PlayerType { get; set; }
         public int Filterable { get; set; }
-        public string? Ext { get; set; }
+        public object? Ext { get; set; }
+        public string? Jar { get; set; }
 
     }
 }

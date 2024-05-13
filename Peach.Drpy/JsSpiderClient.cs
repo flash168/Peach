@@ -24,8 +24,19 @@ namespace Peach.Drpy
         {
             if (string.IsNullOrEmpty(api))
                 api = File.ReadAllText(Path.Combine(AppContext.BaseDirectory, "drpy_libs", "drpy2.min.js"));
+            else if (api.ToLower().StartsWith("drpy2."))
+                api = File.ReadAllText(Path.Combine(AppContext.BaseDirectory, "drpy_libs", "drpy2.min.js"));
+            else if (api.ToLower().StartsWith("alist."))
+                api = File.ReadAllText(Path.Combine(AppContext.BaseDirectory, "drpy_libs", "alist.min.js"));
+            else if (api.ToLower().StartsWith("http"))
+            {
+                api = hparser.GetHtml(api);
+            }
             else
                 api = File.ReadAllText(Path.Combine(AppContext.BaseDirectory, "js", $"{api}.js"));
+
+            if (!string.IsNullOrWhiteSpace(ext.Trim()) && ext.ToLower().StartsWith("http"))
+                ext = hparser.GetHtml(ext);
 
             return Task.Factory.StartNew(() =>
             {

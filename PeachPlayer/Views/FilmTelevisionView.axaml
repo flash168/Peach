@@ -3,12 +3,13 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:vm="clr-namespace:PeachPlayer.ViewModels"
+			 xmlns:md="using:Peach.Model.Models"
+			 xmlns:vods="clr-namespace:PeachPlayer.Views"
              x:DataType="vm:FilmTelevisionViewModel"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
              x:Class="PeachPlayer.Views.FilmTelevisionView">
 
 	<Grid ColumnDefinitions="170,1,*">
-
 		<ScrollViewer>
 			<ItemsControl ItemsSource="{Binding ListItems,Mode=TwoWay}" Margin="1,0,10,0" >
 				<ItemsControl.ItemTemplate>
@@ -22,12 +23,19 @@
 
 		<Rectangle Grid.Column="1" Width="2" Stroke="{DynamicResource SystemListLowColor}" Fill="{DynamicResource SystemListLowColor}"/>
 
-		<TabStrip Grid.Column="2" Margin="5">
-			<TabItem Header="推荐"/>
-			<TabItem Header="电影"/>
-			<TabItem Header="电视剧"/>
-			<TabItem Header="动漫"/>
-		</TabStrip>
+		<TabControl ItemsSource="{Binding Types}" Grid.Column="2" Margin="5">
+			<TabControl.ItemTemplate>
+				<DataTemplate>
+					<TextBlock Text="{Binding Type_Name}"/>
+				</DataTemplate>
+			</TabControl.ItemTemplate>
+			<TabControl.ContentTemplate>
+				<DataTemplate  x:DataType="md:ClassModel">
+					<vods:VideoView TypeId="{Binding Type_Id}" />
+				</DataTemplate>
+			</TabControl.ContentTemplate>
+		</TabControl>
+
 	</Grid>
 
 </UserControl>

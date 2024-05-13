@@ -13,8 +13,8 @@ namespace Peach.Model.Models
 
     public class ClassModel
     {
-        public string? TypeId { get; set; }
-        public string? TypeName { get; set; }
+        public string? Type_Id { get; set; }
+        public string? Type_Name { get; set; }
     }
 
     public class FilterModel

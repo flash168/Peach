@@ -1,6 +1,9 @@
 ﻿using Newtonsoft.Json;
 using Peach.Application.Interfaces;
 using Peach.Model.Models;
+using System;
+using System.Net.Http;
+using System.Xml.Linq;
 
 
 namespace Peach.Application.Services
@@ -11,6 +14,9 @@ namespace Peach.Application.Services
         public SourceService()
         {
             httpClient = new HttpClient();
+            httpClient.DefaultRequestHeaders.Add("User-Agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/57.0.2987.133 Safari/537.36");
+
+           // httpClient.setHeader("User-Agent", "Mozilla/5.0(Windows NT 6.1;Win64; x64; rv:50.0) Gecko/20100101 Firefox/50.0");
         }
         //源
         public SourceModel Source { get; set; }
@@ -35,6 +41,22 @@ namespace Peach.Application.Services
                 return false;
             }
         }
+
+        public async Task<string> GetHtml(string url)
+        {
+            if (string.IsNullOrEmpty(url)) return "";
+            Url = url;
+            var req = await httpClient.GetAsync(url);
+            if (req.IsSuccessStatusCode)
+            {
+                return await req.Content.ReadAsStringAsync();
+            }
+            else
+            {
+                return "";
+            }
+        }
+
 
     }
 }

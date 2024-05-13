@@ -2,6 +2,7 @@
 using Peach.Domain;
 using Peach.Drpy;
 using Peach.Infrastructure.Extends;
+using Peach.Model;
 using Peach.Model.Models;
 using System.Text.Encodings.Web;
 using System.Text.Json;
@@ -23,16 +24,15 @@ namespace Peach.Application.Services
         };
 
         //js引擎实例集合
-        private SiteModel Site;
+        public SiteModel Site;
         private JsSpiderClient jsSpider;
         //获取引擎（有了拿出来，没有则初始化）
         public Task<bool> InitSite(SiteModel site)
         {
             Site = site;
-            JsSpiderClient jse = new JsSpiderClient();
-            return jse.InitSpiderAsync(site.Api, site.Ext);
+            jsSpider = new JsSpiderClient();
+            return jsSpider.InitSpiderAsync(site.Api, site.Ext.ToString());
         }
-
 
         /// <summary>
         /// 分类
@@ -71,12 +71,12 @@ namespace Peach.Application.Services
         /// </summary>
         /// <param name="input"></param>
         /// <returns></returns>
-        public async Task<string> ClassifyAsync(string rule, string tid, string pg, string filter, string extend)
+        public async Task<string> ClassifyAsync(string tid, string pg, string filter, string extend)
         {
             try
             {
                 return await jsSpider.HomeVodAsync(filter);
-              //  return clas.ToObjectByJson<VodListModel>();
+                //  return clas.ToObjectByJson<VodListModel>();
             }
             catch (Exception e)
             {
@@ -90,12 +90,12 @@ namespace Peach.Application.Services
         /// </summary>
         /// <param name="input"></param>
         /// <returns></returns>
-        public async Task<string> DetailsAsync(string rule, string ids)
+        public async Task<string> DetailsAsync(string ids)
         {
 
             try
             {
-                return await jsSpider.HomeVodAsync(rule);
+                return await jsSpider.HomeVodAsync(ids);
                 //  return clas.ToObjectByJson<VodListModel>();
             }
             catch (Exception e)
@@ -110,7 +110,7 @@ namespace Peach.Application.Services
         /// </summary>
         /// <param name="input"></param>
         /// <returns></returns>
-        public async Task<string> SearchAsync(string rule, string filter)
+        public async Task<string> SearchAsync(string filter)
         {
 
             try
@@ -130,12 +130,12 @@ namespace Peach.Application.Services
         /// </summary>
         /// <param name="input"></param>
         /// <returns></returns>
-        public async Task<string> SniffingAsync(string rule, string purl)
+        public async Task<string> SniffingAsync(string purl)
         {
 
             try
             {
-                return await jsSpider.HomeVodAsync(rule);
+                return await jsSpider.HomeVodAsync(purl);
                 //  return clas.ToObjectByJson<VodListModel>();
             }
             catch (Exception e)
