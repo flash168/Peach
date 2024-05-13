@@ -24,9 +24,9 @@ namespace Peach.Drpy
         {
             if (string.IsNullOrEmpty(api))
                 api = File.ReadAllText(Path.Combine(AppContext.BaseDirectory, "drpy_libs", "drpy2.min.js"));
-            else if (api.ToLower().StartsWith("drpy2."))
+            else if (api.ToLower().Contains("drpy2."))
                 api = File.ReadAllText(Path.Combine(AppContext.BaseDirectory, "drpy_libs", "drpy2.min.js"));
-            else if (api.ToLower().StartsWith("alist."))
+            else if (api.ToLower().Contains("alist."))
                 api = File.ReadAllText(Path.Combine(AppContext.BaseDirectory, "drpy_libs", "alist.min.js"));
             else if (api.ToLower().StartsWith("http"))
             {
