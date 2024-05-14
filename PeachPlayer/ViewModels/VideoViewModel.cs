@@ -1,22 +1,23 @@
 ﻿
+using Peach.Model.Models;
+
 namespace PeachPlayer.ViewModels
 {
-    internal class VideoViewModel : ViewModelBase
+    public class VideoViewModel : ViewModelBase
     {
 
-        public VideoViewModel()
-        {
+        private readonly SmallVodModel Vod;
 
+        public VideoViewModel(SmallVodModel vod)
+        {
+            Vod = vod;
         }
 
-
-        private string typeId;
-
-        public string TypeId
-        {
-            get { return typeId; }
-            set { typeId = value; }
-        }
+        public string Vid => Vod.vod_id;
+        public string Vname => Vod.vod_name;
+        public string VRemarks => Vod.vod_remarks;
+        public string VPoc => Vod.vod_pic;
+        public string VContent => Vod.vod_content;
 
     }
 }

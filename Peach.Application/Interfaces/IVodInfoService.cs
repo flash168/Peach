@@ -24,7 +24,7 @@ namespace Peach.Application.Interfaces
         /// </summary>
         /// <param name="input"></param>
         /// <returns></returns>
-        Task<string> ClassifyAsync(string tid, string pg, string filter, string extend);
+        Task<VodListModel> ClassifyAsync(string tid, int pg, string filter, string extend);
 
 
         /// <summary>

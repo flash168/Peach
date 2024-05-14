@@ -1,9 +1,6 @@
 ﻿using Newtonsoft.Json;
 using Peach.Application.Interfaces;
 using Peach.Model.Models;
-using System;
-using System.Net.Http;
-using System.Xml.Linq;
 
 
 namespace Peach.Application.Services

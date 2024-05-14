@@ -1,5 +1,6 @@
 ﻿using Jint;
 using Jint.Native;
+using Jint.Runtime;
 using NSoup;
 using NSoup.Nodes;
 using NSoup.Select;
@@ -47,41 +48,8 @@ namespace Peach.Drpy
         /// <returns></returns>
         public object request(string url, JsValue arguments)
         {
-            //Uri uri = new Uri(url);
-            //string Host = uri.Host;
-
-            //if (arguments.IsObject())
-            //{
-            //    var jsObject = arguments.AsObject();
-
-            //    // 遍历对象的属性
-            //    foreach (var property in jsObject.GetOwnProperties())
-            //    {
-            //        var propertyName = property.Key;
-            //        var propertyValue = property.Value.Value;
-
-            //        // 处理属性值
-            //    }
-
-            //    // 遍历对象的元素（如果是数组）
-            //    if (jsObject.IsArray())
-            //    {
-            //        var array = jsObject.AsArray();
-
-            //        for (var i = 0; i < array.Count(); i++)
-            //        {
-            //            var daaa = i.ToString();
-            //            var elementValue = array.Get(i)?.ToString();
-
-            //            // 处理元素值
-            //        }
-            //    }
-            //}
-            //else
-            //{
-            //    // 处理其他类型的值
-            //}
-
+            Uri uri = new Uri(url);
+            string Host = uri.Host;
 
             var method = arguments.Get("method")?.ToString();
             var _headers = arguments.AsObject()["headers"].AsObject();
@@ -159,7 +127,8 @@ namespace Peach.Drpy
                 {
                     string[] cook = item.Split('=');
                     if (cook.Length == 2)
-                        client.AddDefaultHeader("Cookie", Cookie);
+                        request.AddCookie(cook[0].Trim(), cook[1].Trim(), "/", Host);
+                    // client.AddDefaultHeader("Cookie", Cookie);
                     //client.AddCookie(cook[0].Trim(), cook[1].Trim(), "/", Host);
                 }
             }

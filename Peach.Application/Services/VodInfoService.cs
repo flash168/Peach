@@ -71,12 +71,12 @@ namespace Peach.Application.Services
         /// </summary>
         /// <param name="input"></param>
         /// <returns></returns>
-        public async Task<string> ClassifyAsync(string tid, string pg, string filter, string extend)
+        public async Task<VodListModel> ClassifyAsync(string tid, int pg, string filter, string extend)
         {
             try
             {
-                return await jsSpider.HomeVodAsync(filter);
-                //  return clas.ToObjectByJson<VodListModel>();
+                var cate = await jsSpider.CategoryAsync(tid, pg.ToString(), filter, extend);
+                return cate.ToObjectByJson<VodListModel>();
             }
             catch (Exception e)
             {

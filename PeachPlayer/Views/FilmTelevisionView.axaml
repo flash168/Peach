@@ -23,17 +23,12 @@
 
 		<Rectangle Grid.Column="1" Width="2" Stroke="{DynamicResource SystemListLowColor}" Fill="{DynamicResource SystemListLowColor}"/>
 
-		<TabControl ItemsSource="{Binding Types}" Grid.Column="2" Margin="5">
+		<TabControl ItemsSource="{Binding Types}" Grid.Column="2" Margin="5" SelectedItem="{Binding SelectedType}">
 			<TabControl.ItemTemplate>
 				<DataTemplate>
 					<TextBlock Text="{Binding Type_Name}"/>
 				</DataTemplate>
 			</TabControl.ItemTemplate>
-			<TabControl.ContentTemplate>
-				<DataTemplate  x:DataType="md:ClassModel">
-					<vods:VideoView TypeId="{Binding Type_Id}" />
-				</DataTemplate>
-			</TabControl.ContentTemplate>
 		</TabControl>
 
 	</Grid>

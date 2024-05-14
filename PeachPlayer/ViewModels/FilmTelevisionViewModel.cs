@@ -1,9 +1,12 @@
-﻿using Peach.Application.Interfaces;
+﻿using DynamicData;
+using Jint.Runtime;
+using Peach.Application.Interfaces;
 using Peach.Model.Models;
 using ReactiveUI;
 using ReactiveUI.Fody.Helpers;
 using Splat;
 using System.Collections.ObjectModel;
+using System.Linq;
 using System.Reactive;
 
 namespace PeachPlayer.ViewModels;
@@ -18,9 +21,16 @@ public class FilmTelevisionViewModel : ViewModelBase
     //    private set => this.RaiseAndSetIfChanged(ref listItems, value);
     //}
     [Reactive]
-    public ObservableCollection<ClassModel> Types { get; set; }
-    [Reactive]
-    public ObservableCollection<SmallVodModel> VodList { get; set; }
+    public ObservableCollection<ClassifyListViewModel> Types { get; set; } = new();
+
+
+    private ClassifyListViewModel selectedType;
+
+    public ClassifyListViewModel SelectedType
+    {
+        get { return selectedType; }
+        set { selectedType = value; this.RaiseAndSetIfChanged(ref selectedType, value); selectedType?.LoadVodList(); }
+    }
 
     public ReactiveCommand<SiteModel, Unit> SwitchSiteCommand { get; }
 
@@ -49,11 +59,23 @@ public class FilmTelevisionViewModel : ViewModelBase
 
     public async void SwitchSite(SiteModel site)
     {
+        Types.Clear();
         await vod.InitSite(site);
         var filter = await vod.HomeAsync();
-        Types = new ObservableCollection<ClassModel>(filter.Class);
-        //var vods = await vod.HomeVodAsync("");
-        //VodList = new ObservableCollection<SmallVodModel>(vods.List);
+        if (filter != null && filter?.Class?.Count > 0)
+        {
+            var classify = filter.Class.Select(x =>
+            {
+                if (filter.filters?.ContainsKey(x.Type_Id) == true)
+                    return new ClassifyListViewModel(x, filter.filters[x.Type_Id]);
+                else
+                    return new ClassifyListViewModel(x);
+            });
+            foreach (var item in classify)
+            {
+                Types.Add(item);
+            }
+        }
     }
 
 
