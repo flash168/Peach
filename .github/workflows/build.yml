@@ -24,17 +24,22 @@ jobs:
       - name: Build and Publish WebAPI-self
         run: dotnet publish Peach.Host/Peach.Host.csproj -r win-x64 -c Release --self-contained true /p:PublishSingleFile=true /p:IncludeNativeLibrariesForSelfExtract=true -o ./publish/webapi-s
 
-      - name: Build and Publish WPFApp-self
-        run: dotnet publish RuleTest/RuleTest.csproj -r win-x64 -c Release --self-contained true /p:PublishSingleFile=true /p:IncludeNativeLibrariesForSelfExtract=true -o ./publish/ruleTest-s
-        
       - name: Build and Publish WebAPI
         run: dotnet publish Peach.Host/Peach.Host.csproj -r win-x64 -c Release --self-contained false /p:PublishSingleFile=true /p:IncludeNativeLibrariesForSelfExtract=true -o ./publish/webapi
 
-      - name: Build and Publish WPFApp
-        run: dotnet publish RuleTest/RuleTest.csproj -r win-x64 -c Release --self-contained false /p:PublishSingleFile=true /p:IncludeNativeLibrariesForSelfExtract=true -o ./publish/ruleTest
+      - name: Build and Publish AVAPC-self
+        run: dotnet publish PeachPlayer.Desktop/PeachPlayer.Desktop.csproj -r win-x64 -c Release --self-contained true /p:PublishSingleFile=true /p:IncludeNativeLibrariesForSelfExtract=true -o ./publish/AVAPC-s
+
+      - name: Build and Publish AVAPC
+        run: dotnet publish PeachPlayer.Desktop/PeachPlayer.Desktop.csproj -r win-x64 -c Release --self-contained false /p:PublishSingleFile=true /p:IncludeNativeLibrariesForSelfExtract=true -o ./publish/AVAPC
         
-        # 执行你的构建和发布步骤，生成发布目录
-        
+      - name: Copy Libs Publish AVAPC
+        run: cp -r ./Peach.Drpy/drpy_libs ./publish/AVAPC
+
+      - name: Copy Libs Publish AVAPC-s
+        run: cp -r ./Peach.Drpy/drpy_libs ./publish/AVAPC-s
+
+      # 鎵ц浣犵殑鏋勫缓鍜屽彂甯冩楠わ紝鐢熸垚鍙戝竷鐩綍
       #- name: Install 7-Zip
       #  run: |
       #      [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
@@ -43,15 +48,15 @@ jobs:
             
       - name: Create WebAPI-self ZIP archive
         run:  Compress-Archive -Path "./publish/webapi-s/" -DestinationPath "publish/WebApi-self-v1.0.${{ github.run_number }}.zip"
-         
-      - name: Create ruleTest-self ZIP archive
-        run:  Compress-Archive -Path "./publish/ruleTest-s/" -DestinationPath "publish/ruleTest-self-v1.0.${{ github.run_number }}.zip"
-        
+
       - name: Create WebAPI ZIP archive
-        run:  Compress-Archive -Path "./publish/webapi/" -DestinationPath "publish/WebApi-v1.0.${{ github.run_number }}.zip"
+        run: Compress-Archive -Path "./publish/webapi/" -DestinationPath "publish/WebApi-v1.0.${{ github.run_number }}.zip"
          
-      - name: Create ruleTest ZIP archive
-        run:  Compress-Archive -Path "./publish/ruleTest/" -DestinationPath "publish/ruleTest-v1.0.${{ github.run_number }}.zip"
+      - name: Create AVAPC-self ZIP archive
+        run:  Compress-Archive -Path "./publish/AVAPC-s/" -DestinationPath "publish/AVAPC-self-v1.0.${{ github.run_number }}.zip"
+         
+      - name: Create AVAPC ZIP archive
+        run:  Compress-Archive -Path "./publish/AVAPC/" -DestinationPath "publish/AVAPC-v1.0.${{ github.run_number }}.zip"
 
 
       - name: Create GitHub Release
@@ -90,26 +95,26 @@ jobs:
             asset_name: WebApi-v1.0.${{ github.run_number }}.zip
             asset_content_type: application/zip
             
-      - name: Upload ruleTest-self release artifact
-        id: upload_ruleTest_s_release_asset
+      - name: Upload AVAPC-self release artifact
+        id: upload_AVAPC_s_release_asset
         uses: actions/upload-release-asset@v1
         env:
             GITHUB_TOKEN: ${{ secrets.PEACHTOKEN }}
         with:
             upload_url: ${{ steps.create_release.outputs.upload_url }}
-            asset_path: ./publish/ruleTest-self-v1.0.${{ github.run_number }}.zip
-            asset_name: ruleTest-self-v1.0.${{ github.run_number }}.zip
+            asset_path: ./publish/AVAPC-self-v1.0.${{ github.run_number }}.zip
+            asset_name: AVAPC-self-v1.0.${{ github.run_number }}.zip
             asset_content_type: application/zip
 
-      - name: Upload WebAPI release artifact
-        id: upload_ruleTest_release_asset
+      - name: Upload AVAPC release artifact
+        id: upload_AVAPC_release_asset
         uses: actions/upload-release-asset@v1
         env:
             GITHUB_TOKEN: ${{ secrets.PEACHTOKEN }}
         with:
             upload_url: ${{ steps.create_release.outputs.upload_url }}
-            asset_path: ./publish/ruleTest-v1.0.${{ github.run_number }}.zip
-            asset_name: ruleTest-v1.0.${{ github.run_number }}.zip
+            asset_path: ./publish/AVAPC-v1.0.${{ github.run_number }}.zip
+            asset_name: AVAPC-v1.0.${{ github.run_number }}.zip
             asset_content_type: application/zip
 
             
