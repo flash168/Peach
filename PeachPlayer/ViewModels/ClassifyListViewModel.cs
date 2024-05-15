@@ -1,4 +1,5 @@
 ﻿using Avalonia;
+using Avalonia.Controls;
 using Peach.Application.Interfaces;
 using Peach.Model.Models;
 using ReactiveUI;
@@ -8,6 +9,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.Linq;
+using System.Reactive;
 
 namespace PeachPlayer.ViewModels
 {
@@ -28,23 +30,11 @@ namespace PeachPlayer.ViewModels
         }
         public ObservableCollection<VideoViewModel> Videos { get; } = new();
 
-        private Vector offset;
-        public Vector Offset
-        {
-            get { return offset; }
-            set { this.RaiseAndSetIfChanged(ref offset, value); Debug.WriteLine($"offset:{offset}"); }
-        }
-
-        private Size viewport;
-        public Size Viewport
-        {
-            get { return viewport; }
-            set { this.RaiseAndSetIfChanged(ref viewport, value);Debug.WriteLine($"verticalViewport:{viewport}"); }
-        }
-
+        public ReactiveCommand<object, Unit> ScrollCommand { get; }
 
         public ClassifyListViewModel(ClassModel _class, List<FilterModel> _filters = null)
         {
+            ScrollCommand = ReactiveCommand.Create<object>(Scroll);
             vod = Locator.Current.GetService<IVodInfoService>();
             Class = _class;
             filters = _filters;
@@ -64,18 +54,32 @@ namespace PeachPlayer.ViewModels
             }
         }
 
+        public void Scroll(object o)
+        {
+            var t = (ScrollViewer)o;
+            if (t.Offset.Length >= t.Extent.Height - (t.DesiredSize.Height * 1.2))
+            {
+                NextPage();
+            }
+        }
+
+        private bool IsLoadNext = false;
         public async void NextPage()
         {
+            if (IsLoadNext) return;
+            IsLoadNext = true;
             PgIndex++;
             var data = await vod?.ClassifyAsync(Class.Type_Id, PgIndex, "", "");
             if (data?.List?.Count > 0)
             {
+                PgIndex = data.page;
                 var vods = data.List.Select(x => new VideoViewModel(x));
                 foreach (var v in vods)
                 {
                     Videos.Add(v);
                 }
             }
+            IsLoadNext = false;
         }
 
 

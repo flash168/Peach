@@ -7,7 +7,7 @@
              mc:Ignorable="d" d:DesignWidth="160" d:DesignHeight="230"
              x:Class="PeachPlayer.Views.VideoView"
              x:DataType="vm:VideoViewModel">
-	<StackPanel Width="140" Height="200">
+	<StackPanel Width="140" Height="200" Margin="10,5">
 		<Panel Width="140" Height="180" HorizontalAlignment="Center">
 			<Image Stretch="Fill" asyncImageLoader:ImageLoader.Source="{Binding VPoc}"/>
 			<Border Margin="0,0,0,0" HorizontalAlignment="Left" VerticalAlignment="Top">
