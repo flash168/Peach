@@ -6,22 +6,46 @@
 			 xmlns:ia="clr-namespace:Avalonia.Xaml.Interactions.Core;assembly=Avalonia.Xaml.Interactions"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
              x:Class="PeachPlayer.Views.ClassifyListView"
+			 xmlns:local="clr-namespace:PeachPlayer.Views"
              xmlns:vm="using:PeachPlayer.ViewModels"
              x:DataType="vm:ClassifyListViewModel">
 
-	<ScrollViewer HorizontalScrollBarVisibility="Disabled" Name="sc">
+	<ScrollViewer Name="sc" HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto">
 		<i:Interaction.Behaviors>
 			<ia:EventTriggerBehavior EventName="ScrollChanged">
 				<ia:InvokeCommandAction Command="{Binding ScrollCommand}" CommandParameter="{Binding ElementName=sc}" />
 			</ia:EventTriggerBehavior>
 		</i:Interaction.Behaviors>
-		<ItemsControl ItemsSource="{Binding Videos}" Background="Transparent" Margin="0 10">
-			<ItemsControl.ItemsPanel>
-				<ItemsPanelTemplate>
-					<WrapPanel HorizontalAlignment="Center" />
-				</ItemsPanelTemplate>
-			</ItemsControl.ItemsPanel>
-		</ItemsControl>
+		<ItemsRepeater Name="repeater" Background="Transparent" ItemsSource="{Binding Videos}" >
+			<ItemsRepeater.ContextMenu>
+				<ContextMenu>
+					<MenuItem Header="追 剧"  />
+				</ContextMenu>
+			</ItemsRepeater.ContextMenu>
+			<ItemsRepeater.Layout>
+				<UniformGridLayout ItemsJustification="SpaceEvenly" MinRowSpacing="5" Orientation="Horizontal" />
+			</ItemsRepeater.Layout>
+			<ItemsRepeater.ItemTemplate>
+				<DataTemplate>
+					<local:VideoView />
+				</DataTemplate>
+			</ItemsRepeater.ItemTemplate>
+		</ItemsRepeater>
 	</ScrollViewer>
+
+	<!-- <ScrollViewer HorizontalScrollBarVisibility="Disabled" Name="sc"> -->
+	<!-- 	<i:Interaction.Behaviors> -->
+	<!-- 		<ia:EventTriggerBehavior EventName="ScrollChanged"> -->
+	<!-- 			<ia:InvokeCommandAction Command="{Binding ScrollCommand}" CommandParameter="{Binding ElementName=sc}" /> -->
+	<!-- 		</ia:EventTriggerBehavior> -->
+	<!-- 	</i:Interaction.Behaviors> -->
+	<!-- 	<ItemsControl ItemsSource="{Binding Videos}" Background="Transparent" Margin="0 10"> -->
+	<!-- 		<ItemsControl.ItemsPanel> -->
+	<!-- 			<ItemsPanelTemplate> -->
+	<!-- 				<WrapPanel HorizontalAlignment="Center" /> -->
+	<!-- 			</ItemsPanelTemplate> -->
+	<!-- 		</ItemsControl.ItemsPanel> -->
+	<!-- 	</ItemsControl> -->
+	<!-- </ScrollViewer> -->
 
 </UserControl>

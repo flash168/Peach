@@ -49,10 +49,11 @@ public class FilmTelevisionViewModel : ViewModelBase
 
     private async void LoadSource()
     {
-        string url = "http://drpy.nokia.press/config/2?ver=2";
-        string url1 = "https://jihulab.com/yw88075/tvbox/-/raw/main/dr/js.json";
+        if (string.IsNullOrEmpty(ConfigStorage.Instance.AppConfig.SourceUrl))
+            return;
+
         //测试加载数据
-        var req = await source.LoadConfig(url);
+        var req = await source.LoadConfig(ConfigStorage.Instance.AppConfig.SourceUrl);
         if (req)
             ListItems = new ObservableCollection<SiteModel>(source.Source.Sites);
     }
