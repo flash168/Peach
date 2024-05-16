@@ -2,21 +2,25 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+			 xmlns:i="clr-namespace:Avalonia.Xaml.Interactivity;assembly=Avalonia.Xaml.Interactivity"
+			 xmlns:ia="clr-namespace:Avalonia.Xaml.Interactions.Core;assembly=Avalonia.Xaml.Interactions"
 			 xmlns:asyncImageLoader="clr-namespace:AsyncImageLoader;assembly=AsyncImageLoader.Avalonia"
              xmlns:vm="using:PeachPlayer.ViewModels"
              mc:Ignorable="d" d:DesignWidth="160" d:DesignHeight="230"
              x:Class="PeachPlayer.Views.VideoView"
              x:DataType="vm:VideoViewModel">
-	<StackPanel Width="140" Height="200" Margin="10,5">
-		<Panel Width="140" Height="180" HorizontalAlignment="Center">
-			<Image Stretch="Fill" asyncImageLoader:ImageLoader.Source="{Binding VPoc}"/>
-			<Border Margin="0,0,0,0" HorizontalAlignment="Left" VerticalAlignment="Top">
-				<Panel>
-					<Border Background="Black" CornerRadius="0,0,5,0" Opacity=".4"/>
-					<TextBlock HorizontalAlignment="Center" Text="{Binding VRemarks}"/>
-				</Panel>
-			</Border>
-		</Panel>
-		<TextBlock HorizontalAlignment="Center" Text="{Binding Vname}"/>
-	</StackPanel>
+	<Button Background="Transparent" Command="{Binding PlayVodCommand}">
+		<StackPanel Width="140" Height="200" Margin="10,5">
+			<Panel Width="140" Height="180" HorizontalAlignment="Center">
+				<Image Stretch="Fill" asyncImageLoader:ImageLoader.Source="{Binding VPoc}"/>
+				<Border Margin="0,0,0,0" HorizontalAlignment="Left" VerticalAlignment="Top">
+					<Panel>
+						<Border Background="Black" CornerRadius="0,0,5,0" Opacity=".4"/>
+						<TextBlock HorizontalAlignment="Center" Text="{Binding VRemarks}"/>
+					</Panel>
+				</Border>
+			</Panel>
+			<TextBlock HorizontalAlignment="Center" Text="{Binding Vname}"/>
+		</StackPanel>
+	</Button>
 </UserControl>

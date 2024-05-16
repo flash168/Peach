@@ -1,8 +1,6 @@
-﻿using Avalonia.Labs.Controls;
-using ReactiveUI;
+﻿using ReactiveUI;
 using System;
 using System.Reactive;
-using static System.Net.Mime.MediaTypeNames;
 
 namespace PeachPlayer.ViewModels
 {
@@ -18,21 +16,23 @@ namespace PeachPlayer.ViewModels
             set => this.RaiseAndSetIfChanged(ref sourceUrl, value);
         }
 
+        ConfigStorage configStorage = ConfigStorage.Instance;
         public SetUpViewModel()
         {
             IObservable<bool> isInputValid = this.WhenAnyValue(x => x.SourceUrl,
                 x => !string.IsNullOrWhiteSpace(x) && x.ToLower().StartsWith("http"));
 
             SaveConfigCommand = ReactiveCommand.Create(SaveConfig, isInputValid);
+
+
+            SourceUrl = configStorage.AppConfig.SourceUrl;
         }
 
 
         public void SaveConfig()
         {
-            var configStorage = ConfigStorage.Instance;
             configStorage.AppConfig.SourceUrl = this.SourceUrl;
             configStorage.Save();
-
 
         }
 
