@@ -6,14 +6,38 @@
 		xmlns:ia="clr-namespace:Avalonia.Xaml.Interactions.Core;assembly=Avalonia.Xaml.Interactions"
 		xmlns:asyncImageLoader="clr-namespace:AsyncImageLoader;assembly=AsyncImageLoader.Avalonia"
         mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
-        TransparencyLevelHint="AcrylicBlur"
-        ExtendClientAreaToDecorationsHint="True"
 		xmlns:vm="using:PeachPlayer.ViewModels"
 		x:DataType="vm:VideoPlayViewModel"
         x:Class="PeachPlayer.Views.VideoPlayView"
         Title="VideoPlayView">
 
+	<Grid ColumnDefinitions="*,260">
+		<Border>
+			<Border.Background>
+				<ImageBrush Source="/Assets/Images/bg-player.jpg" Stretch="UniformToFill"/>
+			</Border.Background>
+		</Border>
 
+		<StackPanel Grid.Column="1" Margin="10,0">
+			<DockPanel Margin="0,15">
+				<CheckBox Content="追剧" Width="60" Height="30" DockPanel.Dock="Right" VerticalAlignment="Center"/>
+				<TextBlock FontSize="20" FontWeight="Black" FontStretch="Expanded" Text="{Binding VodName}" TextTrimming="CharacterEllipsis" VerticalAlignment="Center"/>
+			</DockPanel>
+			<Expander>
+				<Expander.Header>
+					<TextBlock Text="{Binding VodContent}" TextTrimming="CharacterEllipsis" />
+				</Expander.Header>
+				<Grid RowDefinitions="*,*" ColumnDefinitions="150,*">
+					<TextBlock Grid.Row="0" Grid.Column="0" VerticalAlignment="Center"/>
+					<TextBlock Grid.Row="0" Grid.Column="0" VerticalAlignment="Center"/>
+					<TextBlock Grid.Row="0" Grid.Column="0" VerticalAlignment="Center"/>
+				</Grid>
+			</Expander>
+			<TabControl>
+				<TabItem Header="线路1"/>
+				<TabItem Header="线路2"/>
+			</TabControl>
+		</StackPanel>
 
-	Welcome to Avalonia!
+	</Grid>
 </Window>

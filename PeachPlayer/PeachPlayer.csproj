@@ -12,6 +12,7 @@
 	</ItemGroup>
 
 	<ItemGroup>
+		<None Remove="Assets\Images\bg-player.jpg" />
 		<None Remove="Assets\Images\pay\weixinpay.jpg" />
 		<None Remove="Assets\Images\pay\zhifubaopay.jpg" />
 	</ItemGroup>

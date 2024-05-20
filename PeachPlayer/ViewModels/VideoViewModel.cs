@@ -1,22 +1,22 @@
 ﻿using Peach.Model.Models;
+using PeachPlayer.Services;
 using ReactiveUI;
+using Splat;
 using System.Reactive;
-using System.Reactive.Linq;
 
 namespace PeachPlayer.ViewModels
 {
     public class VideoViewModel : ViewModelBase
     {
 
-        public Interaction<VideoPlayViewModel, SmallVodModel?> ShowDialog { get; }
         public ReactiveCommand<Unit, Unit> PlayVodCommand { get; }
         private readonly SmallVodModel Vod;
-
+        private readonly IPlayerService player;
         public VideoViewModel(SmallVodModel vod)
         {
             Vod = vod;
-            ShowDialog = new Interaction<VideoPlayViewModel, SmallVodModel?>();
             PlayVodCommand = ReactiveCommand.Create(PlayVod);
+            player = Locator.Current.GetService<IPlayerService>();
         }
 
         public string Vid => Vod.vod_id;
@@ -30,7 +30,7 @@ namespace PeachPlayer.ViewModels
         {
             if (Vod.vod_id != null)
             {
-                var result = await ShowDialog.Handle(new VideoPlayViewModel(Vod));
+                player.Play(Vod);
             }
         }
 

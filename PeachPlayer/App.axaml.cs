@@ -4,6 +4,7 @@ using Avalonia.Controls.Notifications;
 using Avalonia.Markup.Xaml;
 using Peach.Application.Interfaces;
 using Peach.Application.Services;
+using PeachPlayer.Services;
 using PeachPlayer.Views;
 using ReactiveUI;
 using Splat;
@@ -33,7 +34,9 @@ public partial class App : Application
             {
                 // DataContext = new MainViewModel()
             };
-            Locator.CurrentMutable.RegisterConstant(new NotificationManager(desktop.MainWindow));
+            desktop.ShutdownMode = Avalonia.Controls.ShutdownMode.OnMainWindowClose;
+
+            //  Locator.CurrentMutable.RegisterConstant(new NotificationManager(desktop.MainWindow));
         }
         //else if (ApplicationLifetime is ISingleViewApplicationLifetime singleViewPlatform)
         //{
@@ -51,6 +54,8 @@ public partial class App : Application
         Locator.CurrentMutable.RegisterConstant(new RuleTestService(), typeof(IRuleTestService));
         Locator.CurrentMutable.RegisterConstant(new SourceService(), typeof(ISourceService));
         Locator.CurrentMutable.RegisterConstant(new SpiderService(), typeof(ISpiderService));
+
+        Locator.CurrentMutable.RegisterConstant(new PlayerService(), typeof(IPlayerService));
 
         //Locator.CurrentMutable.RegisterLazySingleton(() => new RuleTestService(), typeof(IRuleTestService));
         //Locator.Current.GetService<IRuleTestService>();
