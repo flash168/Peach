@@ -8,6 +8,7 @@ using Splat;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Reactive;
+using System.Reactive.Linq;
 using System.Threading.Tasks;
 
 namespace PeachPlayer.ViewModels;
@@ -51,7 +52,10 @@ public class FilmTelevisionViewModel : ViewModelBase
     private async void LoadSource()
     {
         if (string.IsNullOrEmpty(ConfigStorage.Instance.AppConfig.SourceUrl))
+        {
+            _ = Interactions.ShowError.Handle("请先配置数据源地址。");
             return;
+        }
         //测试加载数据
         var req = await source.LoadConfig(ConfigStorage.Instance.AppConfig.SourceUrl);
         if (req)
@@ -60,7 +64,7 @@ public class FilmTelevisionViewModel : ViewModelBase
 
     public async void SwitchSite(SiteModel site)
     {
-        var aa =  Interactions.ShowNote.Handle("cersasdaosdjiaodjoi阿斯达结算单");
+
         Types.Clear();
         await vod.InitSite(site);
         var filter = await vod.HomeAsync();

@@ -5,6 +5,7 @@ namespace PeachPlayer.Foundation
     {
 
         public static Interaction<string, bool?> ShowNote { get; } = new();
+        public static Interaction<string, bool?> ShowError { get; } = new();
 
     }
 }

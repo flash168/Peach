@@ -1,26 +1,23 @@
 ﻿using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Controls.Notifications;
+using Avalonia.Controls.Primitives;
 using Avalonia.Controls.Shapes;
 using Avalonia.Input;
-using Avalonia.LogicalTree;
-using Avalonia.Markup.Xaml;
+using Avalonia.Interactivity;
 using Avalonia.Media;
-using Avalonia.ReactiveUI;
 using Avalonia.Styling;
-using Avalonia.Xaml.Interactivity;
 using PeachPlayer.Foundation;
-using PeachPlayer.ViewModels;
 using ReactiveUI;
 using Splat;
 using System;
-using System.Reactive.Disposables;
 using System.Runtime.InteropServices;
 using System.Threading.Tasks;
 
+
 namespace PeachPlayer.Views;
 
-public partial class MainWindow : ReactiveWindow<MainWindowModel>
+public partial class MainWindow : Window
 {
     Path maximizeIcon;
     ToolTip maximizeToolTip;
@@ -51,8 +48,8 @@ public partial class MainWindow : ReactiveWindow<MainWindowModel>
         }
         SubscribeToWindowState();
 
-        this.WhenActivated(action =>
-              action(Interactions.ShowNote.RegisterHandler(NotifyMessage)));
+        Interactions.ShowNote.RegisterHandler(cxt => NotifyMessage(cxt));
+        Interactions.ShowError.RegisterHandler(cxt => NotifyMessage(cxt, NotificationType.Error));
 
     }
 
@@ -154,13 +151,31 @@ public partial class MainWindow : ReactiveWindow<MainWindowModel>
 
 
     WindowNotificationManager windowNotiManager;
-    public async Task NotifyMessage(IInteractionContext<string, bool?> context)
+
+    public void NotifyMessage(IInteractionContext<string, bool?> context, NotificationType notificationType = NotificationType.Information)
     {
+        var title = "信息";
+        switch (notificationType)
+        {
+            case NotificationType.Information:
+                title = "信息";
+                break;
+            case NotificationType.Success:
+                title = "成功";
+                break;
+            case NotificationType.Warning:
+                title = "警告";
+                break;
+            case NotificationType.Error:
+                title = "异常";
+                break;
+            default:
+                break;
+        }
         if (windowNotiManager == null)
             windowNotiManager = new WindowNotificationManager(TopLevel.GetTopLevel(this));
-        TaskCompletionSource source = new TaskCompletionSource();
-        windowNotiManager.Show(new Notification("提示", context.Input));
-        await source.Task;
+        windowNotiManager.Show(new Notification(title, context.Input, notificationType));
         context.SetOutput(true);
     }
+
 }
