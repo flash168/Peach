@@ -53,12 +53,12 @@ namespace Peach.Application.Services
         /// <summary>
         /// 首页推荐
         /// </summary>
-        public async Task<VodListModel> HomeVodAsync(string filter)
+        public async Task<SmallVodListModel> HomeVodAsync(string filter)
         {
             try
             {
                 var clas = await jsSpider.HomeVodAsync(filter);
-                return clas.ToObjectByJson<VodListModel>();
+                return clas.ToObjectByJson<SmallVodListModel>();
             }
             catch (Exception e)
             {
@@ -71,12 +71,12 @@ namespace Peach.Application.Services
         /// </summary>
         /// <param name="input"></param>
         /// <returns></returns>
-        public async Task<VodListModel> ClassifyAsync(string tid, int pg, string filter, string extend)
+        public async Task<SmallVodListModel> ClassifyAsync(string tid, int pg, string filter, string extend)
         {
             try
             {
                 var cate = await jsSpider.CategoryAsync(tid, pg.ToString(), filter, extend);
-                return cate.ToObjectByJson<VodListModel>();
+                return cate.ToObjectByJson<SmallVodListModel>();
             }
             catch (Exception e)
             {
@@ -90,13 +90,13 @@ namespace Peach.Application.Services
         /// </summary>
         /// <param name="input"></param>
         /// <returns></returns>
-        public async Task<string> DetailsAsync(string ids)
+        public async Task<VodListModel> DetailsAsync(string ids)
         {
 
             try
             {
-                return await jsSpider.HomeVodAsync(ids);
-                //  return clas.ToObjectByJson<VodListModel>();
+                var data = await jsSpider.DetailsAsync(ids);
+                return data.ToObjectByJson<VodListModel>();
             }
             catch (Exception e)
             {
@@ -110,13 +110,13 @@ namespace Peach.Application.Services
         /// </summary>
         /// <param name="input"></param>
         /// <returns></returns>
-        public async Task<string> SearchAsync(string filter)
+        public async Task<SmallVodListModel> SearchAsync(string filter)
         {
 
             try
             {
-                return await jsSpider.HomeVodAsync(filter);
-                //  return clas.ToObjectByJson<VodListModel>();
+                var data = await jsSpider.HomeVodAsync(filter);
+                return data.ToObjectByJson<SmallVodListModel>();
             }
             catch (Exception e)
             {

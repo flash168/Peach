@@ -1,18 +1,26 @@
 ﻿using Avalonia;
 using Avalonia.Controls;
+using Avalonia.Controls.Notifications;
 using Avalonia.Controls.Shapes;
 using Avalonia.Input;
+using Avalonia.LogicalTree;
 using Avalonia.Markup.Xaml;
 using Avalonia.Media;
+using Avalonia.ReactiveUI;
 using Avalonia.Styling;
+using Avalonia.Xaml.Interactivity;
+using PeachPlayer.Foundation;
 using PeachPlayer.ViewModels;
+using ReactiveUI;
+using Splat;
 using System;
+using System.Reactive.Disposables;
 using System.Runtime.InteropServices;
 using System.Threading.Tasks;
 
 namespace PeachPlayer.Views;
 
-public partial class MainWindow : Window
+public partial class MainWindow : ReactiveWindow<MainWindowModel>
 {
     Path maximizeIcon;
     ToolTip maximizeToolTip;
@@ -34,7 +42,6 @@ public partial class MainWindow : Window
         var bg = this.FindControl<Panel>("bg");
         bg.PointerPressed += MainWindow_PointerPressed;
 
-
         Application.Current.RequestedThemeVariant = ThemeVariant.Light;
 
         //不要在Linux上使用自定义标题栏，因为可能的选项太多了。
@@ -42,9 +49,13 @@ public partial class MainWindow : Window
         {
             UseNativeTitleBar();
         }
-
         SubscribeToWindowState();
+
+        this.WhenActivated(action =>
+              action(Interactions.ShowNote.RegisterHandler(NotifyMessage)));
+
     }
+
     private void DarkTheme_IsCheckedChanged(object sender, Avalonia.Interactivity.RoutedEventArgs e)
     {
         if (darkThemeToggleButton.IsChecked == true)
@@ -139,5 +150,17 @@ public partial class MainWindow : Window
         {
             this.BeginMoveDrag(e);
         }
+    }
+
+
+    WindowNotificationManager windowNotiManager;
+    public async Task NotifyMessage(IInteractionContext<string, bool?> context)
+    {
+        if (windowNotiManager == null)
+            windowNotiManager = new WindowNotificationManager(TopLevel.GetTopLevel(this));
+        TaskCompletionSource source = new TaskCompletionSource();
+        windowNotiManager.Show(new Notification("提示", context.Input));
+        await source.Task;
+        context.SetOutput(true);
     }
 }

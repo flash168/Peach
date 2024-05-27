@@ -1,8 +1,11 @@
 ﻿using Avalonia;
+using Avalonia.Controls;
+using Avalonia.Controls.Notifications;
 using Peach.Application.Interfaces;
 using ReactiveUI;
 using Splat;
 using System.Reactive;
+using System.Threading.Tasks;
 using System.Windows.Input;
 
 namespace PeachPlayer.ViewModels;
@@ -29,7 +32,7 @@ public class MainWindowModel : ViewModelBase
     public ReactiveCommand<string, Unit> SearchCommand { get; }
 
     public ICommand SetUpCommand { get; }
-   
+
     public MainWindowModel()
     {
         ContentViewModel = new FilmTelevisionViewModel();
@@ -83,5 +86,6 @@ public class MainWindowModel : ViewModelBase
         }
 
     }
+
 
 }

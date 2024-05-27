@@ -17,6 +17,7 @@
 				<ImageBrush Source="/Assets/Images/bg-player.jpg" Stretch="UniformToFill"/>
 			</Border.Background>
 		</Border>
+		<PlayerView x:Name="playerView"/>
 
 		<StackPanel Grid.Column="1" Margin="10,0">
 			<DockPanel Margin="0,15">

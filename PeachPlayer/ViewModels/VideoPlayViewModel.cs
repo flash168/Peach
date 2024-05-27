@@ -8,7 +8,7 @@ namespace PeachPlayer.ViewModels
 {
     public class VideoPlayViewModel : ViewModelBase
     {
-        private VodModel vod=new VodModel();
+        private VodModel vod = new VodModel();
         public VodModel Vod
         {
             get { return vod; }
@@ -21,21 +21,29 @@ namespace PeachPlayer.ViewModels
 
         public string Type_Remarks => Vod?.vod_remarks;
 
-        private IVodInfoService infoService;
         public VideoPlayViewModel()
         {
-            infoService = Locator.Current.GetService<IVodInfoService>();
         }
 
-        public async void Play(SmallVodModel vod)
+        public void Show(SmallVodModel svod)
         {
-            Vod.vod_id = vod.vod_id;
-            Vod.vod_name = vod.vod_name;
-            Vod.vod_content = vod.vod_content;
-            Vod.vod_pic = vod.vod_pic;
-            Vod.vod_remarks = vod.vod_remarks;
+            Vod.vod_id = svod.vod_id;
+            Vod.vod_name = svod.vod_name;
+            Vod.vod_content = svod.vod_content;
+            Vod.vod_pic = svod.vod_pic;
+            Vod.vod_remarks = svod.vod_remarks;
+            if (svod is VodModel vod)
+            {
+                Vod.typeName = vod.typeName;
+                Vod.typeName = vod.typeName;
 
-            await infoService.DetailsAsync(vod.vod_id);
+                Vod.vod_actor = vod.vod_actor;//": "贝拉·索恩 斯戴芬妮·斯考特 尼克·罗宾森 Mar",
+                Vod.vod_area = vod.vod_area;//": "",
+                Vod.vod_director = vod.vod_director;//": "戴斯·冯·施勒·梅耶",
+                Vod.vod_play_from = vod.vod_play_from;//": "非凡",
+                                                      // Vod.vod_play_url = vod.typeName;//": "HD中字$http://www.8kvod.com/p/121513-1-1/",
+                Vod.vod_year = vod.vod_year;//": ""
+            }
         }
 
         public void Stop()

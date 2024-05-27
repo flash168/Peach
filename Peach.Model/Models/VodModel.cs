@@ -3,10 +3,16 @@
 namespace Peach.Model.Models
 {
 
-
     public class VodListModel
     {
-        public VodListModel() { }
+        public List<VodModel> List { get; set; }
+
+    }
+
+
+    public class SmallVodListModel
+    {
+        public SmallVodListModel() { }
         public int limit { get; set; }
         public int page { get; set; }
         public int pagecount { get; set; }
@@ -34,19 +40,11 @@ namespace Peach.Model.Models
     /// <summary>
     /// 视频详情
     /// </summary>
-    public class VodModel
+    public class VodModel: SmallVodModel
     {
         public string? TypeId { get; set; }
         public string? typeName { get; set; }//": "剧情片美国2012",
 
-
-        public string vod_id { get; set; }
-        public string vod_name { get; set; }
-        public string? vod_content { get; set; }
-        public string? vod_pic { get; set; }
-        public string? vod_remarks { get; set; }//
-
-        
         public string? vod_actor { get; set; }//": "贝拉·索恩 斯戴芬妮·斯考特 尼克·罗宾森 Mar",
         public string? vod_area { get; set; }//": "",
         public string? vod_director { get; set; }//": "戴斯·冯·施勒·梅耶",

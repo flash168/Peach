@@ -1,13 +1,14 @@
-﻿using DynamicData;
-using Jint.Runtime;
+﻿using Avalonia.Controls.Notifications;
 using Peach.Application.Interfaces;
 using Peach.Model.Models;
+using PeachPlayer.Foundation;
 using ReactiveUI;
 using ReactiveUI.Fody.Helpers;
 using Splat;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Reactive;
+using System.Threading.Tasks;
 
 namespace PeachPlayer.ViewModels;
 
@@ -51,7 +52,6 @@ public class FilmTelevisionViewModel : ViewModelBase
     {
         if (string.IsNullOrEmpty(ConfigStorage.Instance.AppConfig.SourceUrl))
             return;
-
         //测试加载数据
         var req = await source.LoadConfig(ConfigStorage.Instance.AppConfig.SourceUrl);
         if (req)
@@ -60,6 +60,7 @@ public class FilmTelevisionViewModel : ViewModelBase
 
     public async void SwitchSite(SiteModel site)
     {
+        var aa =  Interactions.ShowNote.Handle("cersasdaosdjiaodjoi阿斯达结算单");
         Types.Clear();
         await vod.InitSite(site);
         var filter = await vod.HomeAsync();

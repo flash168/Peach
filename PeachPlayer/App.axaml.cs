@@ -36,7 +36,6 @@ public partial class App : Application
             };
             desktop.ShutdownMode = Avalonia.Controls.ShutdownMode.OnMainWindowClose;
 
-            //  Locator.CurrentMutable.RegisterConstant(new NotificationManager(desktop.MainWindow));
         }
         //else if (ApplicationLifetime is ISingleViewApplicationLifetime singleViewPlatform)
         //{
@@ -51,9 +50,9 @@ public partial class App : Application
     private void ConfigureServiceProvider()
     {
         Locator.CurrentMutable.RegisterConstant(new VodInfoService(), typeof(IVodInfoService));
-        Locator.CurrentMutable.RegisterConstant(new RuleTestService(), typeof(IRuleTestService));
+        //Locator.CurrentMutable.RegisterConstant(new RuleTestService(), typeof(IRuleTestService));
         Locator.CurrentMutable.RegisterConstant(new SourceService(), typeof(ISourceService));
-        Locator.CurrentMutable.RegisterConstant(new SpiderService(), typeof(ISpiderService));
+        //Locator.CurrentMutable.RegisterConstant(new SpiderService(), typeof(ISpiderService));
 
         Locator.CurrentMutable.RegisterConstant(new PlayerService(), typeof(IPlayerService));
 

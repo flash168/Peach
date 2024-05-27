@@ -17,14 +17,14 @@ namespace Peach.Application.Interfaces
         /// 首页推荐
         /// </summary>
         /// <returns></returns>
-        Task<VodListModel> HomeVodAsync(string filter);
+        Task<SmallVodListModel> HomeVodAsync(string filter);
 
         /// <summary>
         /// 一级分类
         /// </summary>
         /// <param name="input"></param>
         /// <returns></returns>
-        Task<VodListModel> ClassifyAsync(string tid, int pg, string filter, string extend);
+        Task<SmallVodListModel> ClassifyAsync(string tid, int pg, string filter, string extend);
 
 
         /// <summary>
@@ -32,7 +32,7 @@ namespace Peach.Application.Interfaces
         /// </summary>
         /// <param name="input"></param>
         /// <returns></returns>
-        Task<string> DetailsAsync(string ids);
+        Task<VodListModel> DetailsAsync(string ids);
 
 
         /// <summary>
@@ -40,7 +40,7 @@ namespace Peach.Application.Interfaces
         /// </summary>
         /// <param name="input"></param>
         /// <returns></returns>
-        Task<string> SearchAsync(string filter);
+        Task<SmallVodListModel> SearchAsync(string filter);
 
 
         /// <summary>
