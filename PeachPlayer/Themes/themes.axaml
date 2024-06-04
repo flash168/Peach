@@ -1,0 +1,19 @@
+﻿<Styles xmlns="https://github.com/avaloniaui" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+	<Styles.Resources>
+		<ResourceDictionary>
+			<ResourceDictionary.ThemeDictionaries>
+				<MergeResourceInclude x:Key="Dark" Source="./Dark.axaml" />
+				<MergeResourceInclude x:Key="Light" Source="./Light.axaml" />
+			</ResourceDictionary.ThemeDictionaries>
+			<ResourceDictionary.MergedDictionaries>
+				<ResourceInclude Source="../Controls/Controls.axaml" />
+			</ResourceDictionary.MergedDictionaries>
+		</ResourceDictionary>
+	</Styles.Resources>
+
+	<!--  Add Styles Here  -->
+
+	<StyleInclude Source="./ButtonStyles.axaml" />
+	<!--<StyleInclude Source="/Themes/TextBoxStyles.axaml"/>-->
+	
+</Styles>

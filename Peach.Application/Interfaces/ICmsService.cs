@@ -2,7 +2,7 @@
 
 namespace Peach.Application.Interfaces
 {
-    public interface IVodInfoService
+    public interface ICmsService
     {
         Task<bool> InitSite(SiteModel site);
 
@@ -24,7 +24,7 @@ namespace Peach.Application.Interfaces
         /// </summary>
         /// <param name="input"></param>
         /// <returns></returns>
-        Task<SmallVodListModel> ClassifyAsync(string tid, int pg, string filter, string extend);
+        Task<SmallVodListModel> CategoryAsync(string tid, int pg, string filter, string extend);
 
 
         /// <summary>
@@ -48,7 +48,7 @@ namespace Peach.Application.Interfaces
         /// </summary>
         /// <param name="input"></param>
         /// <returns></returns>
-        Task<string> SniffingAsync(string url);
+        Task<SniffingModel> SniffingAsync(string flag, string url);
 
 
     }

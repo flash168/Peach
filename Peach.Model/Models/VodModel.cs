@@ -19,7 +19,7 @@ namespace Peach.Model.Models
         public int total { get; set; }
 
         public List<SmallVodModel> List { get; set; }
-        
+
     }
 
 
@@ -40,7 +40,7 @@ namespace Peach.Model.Models
     /// <summary>
     /// 视频详情
     /// </summary>
-    public class VodModel: SmallVodModel
+    public class VodModel : SmallVodModel
     {
         public string? TypeId { get; set; }
         public string? typeName { get; set; }//": "剧情片美国2012",
@@ -53,4 +53,16 @@ namespace Peach.Model.Models
         public string? vod_year { get; set; }//": ""
 
     }
+
+
+    public class SniffingModel
+    {
+        public int parse { get; set; }
+        public string? playUrl { get; set; }
+        public string? url { get; set; }
+        public object header { get; set; }
+        public string? adRemove { get; set; }
+    }
+
+
 }

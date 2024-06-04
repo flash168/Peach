@@ -12,7 +12,7 @@ namespace PeachPlayer.ViewModels
 {
     public class ClassifyListViewModel : ViewModelBase
     {
-        private IVodInfoService vod;
+        private ICmsService vod;
         private readonly ClassModel Class;
         private readonly List<FilterModel> filters;
         private int PgIndex = 1;
@@ -32,7 +32,7 @@ namespace PeachPlayer.ViewModels
         public ClassifyListViewModel(ClassModel _class, List<FilterModel> _filters = null)
         {
             ScrollCommand = ReactiveCommand.Create<object>(Scroll);
-            vod = Locator.Current.GetService<IVodInfoService>();
+            vod = Locator.Current.GetService<ICmsService>();
             Class = _class;
             filters = _filters;
         }
@@ -40,7 +40,7 @@ namespace PeachPlayer.ViewModels
         public async void LoadVodList()
         {
             Videos.Clear();
-            var data = await vod?.ClassifyAsync(Class.Type_Id, PgIndex, "", "");
+            var data = await vod?.CategoryAsync(Class.Type_Id, PgIndex, "", "");
             if (data?.List?.Count > 0)
             {
                 var vods = data.List.Select(x => new VideoViewModel(x));
@@ -66,7 +66,7 @@ namespace PeachPlayer.ViewModels
             if (IsLoadNext) return;
             IsLoadNext = true;
             PgIndex++;
-            var data = await vod?.ClassifyAsync(Class.Type_Id, PgIndex, "", "");
+            var data = await vod?.CategoryAsync(Class.Type_Id, PgIndex, "", "");
             if (data?.List?.Count > 0)
             {
                 PgIndex = data.page;

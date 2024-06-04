@@ -6,7 +6,6 @@
 		</Border>
 	</Design.PreviewWith>
 
-
 	<!-- Add Styles Here -->
 	<Style Selector="Button.Close">
 		<Setter Property="Background" Value="Transparent"/>

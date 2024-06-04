@@ -49,7 +49,7 @@ public partial class App : Application
 
     private void ConfigureServiceProvider()
     {
-        Locator.CurrentMutable.RegisterConstant(new VodInfoService(), typeof(IVodInfoService));
+        Locator.CurrentMutable.RegisterConstant(new CmsService(), typeof(ICmsService));
         //Locator.CurrentMutable.RegisterConstant(new RuleTestService(), typeof(IRuleTestService));
         Locator.CurrentMutable.RegisterConstant(new SourceService(), typeof(ISourceService));
         //Locator.CurrentMutable.RegisterConstant(new SpiderService(), typeof(ISpiderService));

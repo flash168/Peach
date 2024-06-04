@@ -1,6 +1,6 @@
-﻿using Avalonia.Controls.Notifications;
-using Peach.Application.Interfaces;
+﻿using Peach.Application.Interfaces;
 using Peach.Model.Models;
+using PeachPlayer.Controls;
 using PeachPlayer.Foundation;
 using ReactiveUI;
 using ReactiveUI.Fody.Helpers;
@@ -9,25 +9,15 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Reactive;
 using System.Reactive.Linq;
-using System.Threading.Tasks;
 
 namespace PeachPlayer.ViewModels;
 
 public class FilmTelevisionViewModel : ViewModelBase
 {
-
-    //private ObservableCollection<SiteModel> listItems;
-    //public ObservableCollection<SiteModel> ListItems
-    //{
-    //    get => listItems;
-    //    private set => this.RaiseAndSetIfChanged(ref listItems, value);
-    //}
     [Reactive]
     public ObservableCollection<ClassifyListViewModel> Types { get; set; } = new();
 
-
     private ClassifyListViewModel selectedType;
-
     public ClassifyListViewModel SelectedType
     {
         get { return selectedType; }
@@ -39,12 +29,15 @@ public class FilmTelevisionViewModel : ViewModelBase
     [Reactive]
     public ObservableCollection<SiteModel> ListItems { get; set; }
 
+    [Reactive]
+    public bool IsLoading { get; set; }
+
     private ISourceService source;
-    private IVodInfoService vod;
+    private ICmsService vod;
     public FilmTelevisionViewModel(ISourceService _source = null)
     {
         source = _source ?? Locator.Current.GetService<ISourceService>();
-        vod = Locator.Current.GetService<IVodInfoService>();
+        vod = Locator.Current.GetService<ICmsService>();
         SwitchSiteCommand = ReactiveCommand.Create<SiteModel>(SwitchSite);
         LoadSource();
     }
@@ -56,15 +49,17 @@ public class FilmTelevisionViewModel : ViewModelBase
             _ = Interactions.ShowError.Handle("请先配置数据源地址。");
             return;
         }
+        IsLoading=true;
         //测试加载数据
         var req = await source.LoadConfig(ConfigStorage.Instance.AppConfig.SourceUrl);
         if (req)
             ListItems = new ObservableCollection<SiteModel>(source.Source.Sites);
+        IsLoading = false;
     }
 
     public async void SwitchSite(SiteModel site)
     {
-
+        IsLoading = true;
         Types.Clear();
         await vod.InitSite(site);
         var filter = await vod.HomeAsync();
@@ -82,6 +77,7 @@ public class FilmTelevisionViewModel : ViewModelBase
                 Types.Add(item);
             }
         }
+        IsLoading = false;
     }
 
 

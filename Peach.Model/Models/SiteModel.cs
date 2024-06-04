@@ -17,5 +17,7 @@ namespace Peach.Model.Models
         public object? Ext { get; set; }
         public string? Jar { get; set; }
 
+        public List<string> flags { get; set; }
+
     }
 }

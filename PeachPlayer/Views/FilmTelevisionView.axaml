@@ -3,6 +3,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:vm="clr-namespace:PeachPlayer.ViewModels"
+			 xmlns:u="clr-namespace:PeachPlayer.Controls;assembly=PeachPlayer"
 			 xmlns:md="using:Peach.Model.Models"
 			 xmlns:vods="clr-namespace:PeachPlayer.Views"
              x:DataType="vm:FilmTelevisionViewModel"
@@ -31,6 +32,7 @@
 			</TabControl.ItemTemplate>
 		</TabControl>
 
+		<u:LoadingContainer Grid.ColumnSpan="3" IsLoading="{Binding IsLoading}" LoadingMessage="拼命加载中..."/>
 	</Grid>
 
 </UserControl>

@@ -16,6 +16,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\Peach.Infrastructure\Peach.Infrastructure.csproj" />
     <ProjectReference Include="..\Peach.Model\Peach.Model.csproj" />
   </ItemGroup>
 

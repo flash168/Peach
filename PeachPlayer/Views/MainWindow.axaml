@@ -17,6 +17,18 @@
         mc:Ignorable="d" d:DesignWidth="1000" d:DesignHeight="450"
         Title="PeachPlayer">
 	<Window.Resources>
+		<!--修改最大化样式 <Style Selector="Window[WindowState=Normal]">
+						<Setter Property="ExtendClientAreaToDecorationsHint" Value="True" />
+						<Style Selector="^ Button#MaxBt">
+							<Setter Property="Content" Value="&#xe653;" />
+						</Style>
+					</Style>
+					<Style Selector="Window[WindowState=Maximized]">
+						<Setter Property="ExtendClientAreaToDecorationsHint" Value="False" />
+						<Style Selector="^ Button#MaxBt">
+							<Setter Property="Content" Value="&#xe692;" />
+						</Style>
+					</Style>-->
 	</Window.Resources>
 	<Window.DataContext>
 		<vm:MainWindowModel/>
@@ -124,21 +136,21 @@
 			<RadioButton Classes="Ico" GroupName="a" Width="65" Height="60" Margin="5" Content="电视" HorizontalContentAlignment="Center" Background="Transparent" Command="{Binding SwitchMenuCommand}" CommandParameter="LiveBroadcastViewModel"
 						 IsChecked="{Binding SelectView,Converter={x:Static fun:XConverter.InverseBooleanConverter},ConverterParameter=2}">
 				<StackPanel>
-						<TextBlock Text="&#xe699;" HorizontalAlignment="Center" Height="23" FontSize="22" FontFamily="../Assets/Fonts/iconfont.ttf#iconfont"/>
+					<TextBlock Text="&#xe699;" HorizontalAlignment="Center" Height="23" FontSize="22" FontFamily="../Assets/Fonts/iconfont.ttf#iconfont"/>
 					<TextBlock Text="直播"/>
 				</StackPanel>
 			</RadioButton>
 			<RadioButton Classes="Ico" GroupName="a" Width="65" Height="60" Margin="5" Content="网盘" HorizontalContentAlignment="Center" Background="Transparent" Command="{Binding SwitchMenuCommand}" CommandParameter="NetdiskViewModel"
 						 IsChecked="{Binding SelectView,Converter={x:Static fun:XConverter.InverseBooleanConverter},ConverterParameter=3}">
 				<StackPanel>
-						<TextBlock Text="&#xe65c;" HorizontalAlignment="Center" Height="23" FontSize="22" FontFamily="../Assets/Fonts/iconfont.ttf#iconfont"/>
+					<TextBlock Text="&#xe65c;" HorizontalAlignment="Center" Height="23" FontSize="22" FontFamily="../Assets/Fonts/iconfont.ttf#iconfont"/>
 					<TextBlock Text="网盘"/>
 				</StackPanel>
 			</RadioButton>
 			<RadioButton Classes="Ico" GroupName="a" Width="65" Height="60" Margin="5" Content="过刻" HorizontalContentAlignment="Center" Background="Transparent" Command="{Binding SwitchMenuCommand}" CommandParameter="PlayHistoryViewModel"
 						 IsChecked="{Binding SelectView,Converter={x:Static fun:XConverter.InverseBooleanConverter},ConverterParameter=4}">
 				<StackPanel>
-						<TextBlock Text="&#xe65b;" HorizontalAlignment="Center" Height="23" FontSize="22" FontFamily="../Assets/Fonts/iconfont.ttf#iconfont"/>
+					<TextBlock Text="&#xe65b;" HorizontalAlignment="Center" Height="23" FontSize="22" FontFamily="../Assets/Fonts/iconfont.ttf#iconfont"/>
 					<TextBlock Text="过刻"/>
 				</StackPanel>
 			</RadioButton>

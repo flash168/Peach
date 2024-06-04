@@ -2,9 +2,8 @@
 using PeachPlayer.Views;
 using Peach.Model.Models;
 using Avalonia.Controls;
-using Peach.Application.Interfaces;
 using Splat;
-using System;
+using Peach.Application.Interfaces;
 
 namespace PeachPlayer.Services
 {
@@ -23,10 +22,10 @@ namespace PeachPlayer.Services
             set { vod = value; }
         }
 
-        private IVodInfoService infoService;
+        private ICmsService infoService;
         public PlayerService()
         {
-            infoService = Locator.Current.GetService<IVodInfoService>();
+            infoService = Locator.Current.GetService<ICmsService>();
             videoPlayView = new VideoPlayView();
             videoPlayView.Closing += (s, e) =>
             {
@@ -58,7 +57,7 @@ namespace PeachPlayer.Services
                 videoPlayViewModel.Show(Vod);
             }
 
-            var playurl = await infoService.SniffingAsync(Vod.vod_play_url);
+            var playurl = await infoService.SniffingAsync("",Vod.vod_play_url);
 
             videoPlayView.Play("https://newcntv.qcloudcdn.com/asp/hls/4000/0303000a/3/default/28f751281bbf46b78417e4d297ec3f2f/4000.m3u8");
 

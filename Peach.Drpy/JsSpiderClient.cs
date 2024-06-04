@@ -1,7 +1,9 @@
 ﻿using Jint;
 using Jint.Native;
 using Jint.Native.Object;
+using Peach.Infrastructure.Extends;
 using Peach.Model;
+using Peach.Model.Models;
 
 namespace Peach.Drpy
 {
@@ -13,6 +15,7 @@ namespace Peach.Drpy
         HtmlParser hparser;
         RSAHandle rSAHandle;
 
+        SiteModel Site;
         public JsSpiderClient()
         {
             console = new console();
@@ -20,8 +23,11 @@ namespace Peach.Drpy
             rSAHandle = new RSAHandle();
         }
 
-        public Task<bool> InitSpiderAsync(string api, string ext)
+        public Task<bool> InitSpiderAsync(SiteModel _site)
         {
+            Site = _site;
+            var api = _site.Api;
+            var ext = _site.Ext?.ToString();
             if (string.IsNullOrEmpty(api))
                 api = File.ReadAllText(Path.Combine(AppContext.BaseDirectory, "drpy_libs", "drpy2.min.js"));
             else if (api.ToLower().Contains("drpy2."))
@@ -76,56 +82,62 @@ namespace Peach.Drpy
             });
         }
 
-        public Task<string> HomeAsync(string filter)
+        public Task<HomeModel> HomeAsync(string filter)
         {
             if (engine == null) return null;
             return Task.Factory.StartNew(_filier =>
             {
-                return engine.Invoke(ns["default"].Get("home"), _filier).AsString();
+                var data = engine.Invoke(ns["default"].Get("home"), _filier).AsString();
+                return data.ToObjectByJson<HomeModel>();
             }, filter);
         }
-        public Task<string> HomeVodAsync(string fidier)
+        public Task<SmallVodListModel> HomeVodAsync(string fidier)
         {
             if (engine == null) return null;
             return Task.Factory.StartNew(_fidier =>
             {
-                return engine.Invoke(ns["default"].Get("homeVod"), _fidier).AsString();
+                var data = engine.Invoke(ns["default"].Get("homeVod"), _fidier).AsString();
+                return data.ToObjectByJson<SmallVodListModel>();
             }, fidier);
         }
-        public Task<string> CategoryAsync(string tid, string pg, string filter, string extend)
+        public Task<SmallVodListModel> CategoryAsync(string tid, int pg, string filter, string extend)
         {
             if (engine == null) return null;
             return Task.Factory.StartNew(() =>
             {
-                return engine.Invoke(ns["default"].Get("category"), tid, pg, filter, extend).AsString();
+                var data = engine.Invoke(ns["default"].Get("category"), tid, pg, filter, extend).AsString();
+                return data.ToObjectByJson<SmallVodListModel>();
             });
         }
 
-        public Task<string> DetailsAsync(string ids)
+        public Task<VodListModel> DetailsAsync(string ids)
         {
             if (engine == null) return null;
             return Task.Factory.StartNew(_ids =>
             {
-                return engine.Invoke(ns["default"].Get("detail"), _ids).AsString();
+                var data = engine.Invoke(ns["default"].Get("detail"), _ids).AsString();
+                return data.ToObjectByJson<VodListModel>();
             }, ids);
         }
 
-        public Task<string> SearchAsync(string filter, bool quick = true)
+        public Task<SmallVodListModel> SearchAsync(string filter, bool quick = true)
         {
             if (engine == null) return null;
             return Task.Factory.StartNew(_filter =>
             {
-                return engine.Invoke(ns["default"].Get("search"), _filter, quick).AsString();
+                var data = engine.Invoke(ns["default"].Get("search"), _filter, quick).AsString();
+                return data.ToObjectByJson<SmallVodListModel>();
             }, filter);
         }
 
-        public Task<string> PlayAsync(string line, string id, string flags)
+        public Task<SniffingModel> SniffingAsync(string line, string id, string flags)
         {
             if (engine == null) return null;
             return Task.Factory.StartNew(_id =>
             {
                 //line线路名, id, array(vipFlags)全局配置需要解析的标识列表flags
-                return engine.Invoke(ns["default"].Get("play"), line, _id, flags).AsString();
+                var data = engine.Invoke(ns["default"].Get("play"), line, _id, flags).AsString();
+                return data.ToObjectByJson<SniffingModel>();
             }, id);
         }
     }

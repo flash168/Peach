@@ -13,13 +13,13 @@ namespace Peach.Host.Controllers
     // [ServiceFilter(typeof(VodValidationFilter))] // 添加自定义的验证过滤器
     public class VodController : ControllerBase
     {
-        private readonly IVodInfoService vodInfoService;
+        private readonly ICmsService vodInfoService;
         private readonly string apiPwd;
         /// <summary>
         /// 视频
         /// </summary>
         /// <param name="_vodInfoService"></param>
-        public VodController(IVodInfoService _vodInfoService)
+        public VodController(ICmsService _vodInfoService)
         {
             apiPwd = AppSettingsHelper.GetContent<string>("AppConfig", "ApiPwd");
 
