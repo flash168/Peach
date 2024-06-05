@@ -4,7 +4,7 @@ namespace PeachPlayer.Services
 {
     public interface IPlayerService
     {
-        void Play(SmallVodModel vod);
+        void Show(SmallVodModel vod);
 
     }
 }

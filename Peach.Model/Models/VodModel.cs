@@ -55,14 +55,36 @@ namespace Peach.Model.Models
     }
 
 
-    public class SniffingModel
+    public class PlayModel
     {
         public int parse { get; set; }
-        public string? playUrl { get; set; }
+        public string? jx { get; set; }
         public string? url { get; set; }
+        public string? js { get; set; }
         public object header { get; set; }
+        public string? parse_extra { get; set; }
+        public string? isVideo { get; set; }
         public string? adRemove { get; set; }
     }
 
+
+    public class LineModel
+    {
+        public string LineName { get; set; }
+
+        public List<JIShuModel> Episodes { get; set; }
+    }
+
+    public class JIShuModel
+    {
+        public JIShuModel() { }
+        public JIShuModel(string ji, string u)
+        {
+            JiShu = ji;
+            Url = u;
+        }
+        public string JiShu { get; set; }
+        public string Url { get; set; }
+    }
 
 }

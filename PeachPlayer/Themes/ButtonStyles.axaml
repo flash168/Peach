@@ -9,7 +9,6 @@
 	<!-- Add Styles Here -->
 	<Style Selector="Button.Close">
 		<Setter Property="Background" Value="Transparent"/>
-
 	</Style>
 
 	<Style Selector="Button.Ico">
@@ -26,15 +25,12 @@
 							BorderThickness="{TemplateBinding BorderThickness}"
 							BorderBrush="{TemplateBinding BorderBrush}"
 							CornerRadius="5">
-						<ContentPresenter FontFamily="../Assets/Fonts/iconfont.ttf#iconfont" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+						<ContentPresenter Margin="{TemplateBinding Padding}" FontFamily="../Assets/Fonts/iconfont.ttf#iconfont" HorizontalAlignment="Center" VerticalAlignment="Center"/>
 					</Border>
-
 				</ControlTemplate>
 			</Setter.Value>
 		</Setter>
 	</Style>
-
-
 
 	<!-- RadioButton Styles Here -->
 	<Style Selector="RadioButton.Ico">
@@ -51,18 +47,45 @@
 							BorderThickness="{TemplateBinding BorderThickness}"
 							BorderBrush="{TemplateBinding BorderBrush}"
 							CornerRadius="5" Name="bg">
-							<ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" Content="{TemplateBinding Content}"/>
+						<ContentPresenter Margin="{TemplateBinding Padding}" HorizontalAlignment="Center" VerticalAlignment="Center" Content="{TemplateBinding Content}"/>
 					</Border>
 				</ControlTemplate>
 			</Setter.Value>
 		</Setter>
-
 		<Style Selector="^:checked /template/ Border">
 			<Setter Property="Background" Value="{DynamicResource SystemBaseLowColor}"/>
 		</Style>
-
+		<Style Selector="^:pointerover /template/ Border">
+			<Setter Property="BorderBrush" Value="{DynamicResource SystemBaseLowColor}"/>
+		</Style>
 	</Style>
-
+	
+	<Style Selector="RadioButton.RBtn">
+		<Setter Property="Background" Value="Transparent"/>
+		<Setter Property="FontSize" Value="14"/>
+		<Setter Property="Foreground" Value="{DynamicResource ButtonForeground}"/>
+		<Setter Property="BorderThickness" Value="1"/>
+		<Setter Property="BorderBrush" Value="Transparent"/>
+		<Setter Property="Padding" Value="2"/>
+		<Setter Property="Template">
+			<Setter.Value>
+				<ControlTemplate TargetType="RadioButton">
+					<Border Background="{TemplateBinding Background}"
+							BorderThickness="{TemplateBinding BorderThickness}"
+							BorderBrush="{TemplateBinding BorderBrush}"
+							CornerRadius="5" Name="bg">
+						<ContentPresenter Margin="{TemplateBinding Padding}" HorizontalAlignment="Center" VerticalAlignment="Center" Content="{TemplateBinding Content}"/>
+					</Border>
+				</ControlTemplate>
+			</Setter.Value>
+		</Setter>
+		<Style Selector="^:checked /template/ Border">
+			<Setter Property="Background" Value="{DynamicResource SystemBaseLowColor}"/>
+		</Style>
+		<Style Selector="^:pointerover /template/ Border">
+			<Setter Property="BorderBrush" Value="{DynamicResource SystemBaseLowColor}"/>
+		</Style>
+	</Style>
 
 
 </Styles>

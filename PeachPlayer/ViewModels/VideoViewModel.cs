@@ -30,7 +30,7 @@ namespace PeachPlayer.ViewModels
         {
             if (Vod.vod_id != null)
             {
-                player.Play(Vod);
+                player.Show(Vod);
             }
         }
 

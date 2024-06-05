@@ -5,11 +5,12 @@
 		xmlns:i="clr-namespace:Avalonia.Xaml.Interactivity;assembly=Avalonia.Xaml.Interactivity"
 		xmlns:ia="clr-namespace:Avalonia.Xaml.Interactions.Core;assembly=Avalonia.Xaml.Interactions"
 		xmlns:asyncImageLoader="clr-namespace:AsyncImageLoader;assembly=AsyncImageLoader.Avalonia"
-        mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+        mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450" Width="800" Height="500"
+		WindowStartupLocation="CenterScreen"
 		xmlns:vm="using:PeachPlayer.ViewModels"
 		x:DataType="vm:VideoPlayViewModel"
         x:Class="PeachPlayer.Views.VideoPlayView"
-        Title="VideoPlayView">
+        Title="播放器">
 
 	<Grid ColumnDefinitions="*,260">
 		<Border>
@@ -17,27 +18,47 @@
 				<ImageBrush Source="/Assets/Images/bg-player.jpg" Stretch="UniformToFill"/>
 			</Border.Background>
 		</Border>
+
 		<PlayerView x:Name="playerView"/>
 
 		<StackPanel Grid.Column="1" Margin="10,0">
 			<DockPanel Margin="0,15">
 				<CheckBox Content="追剧" Width="60" Height="30" DockPanel.Dock="Right" VerticalAlignment="Center"/>
-				<TextBlock FontSize="20" FontWeight="Black" FontStretch="Expanded" Text="{Binding VodName}" TextTrimming="CharacterEllipsis" VerticalAlignment="Center"/>
+				<TextBlock FontSize="20" FontWeight="Black" FontStretch="Expanded" Text="{Binding Vod_name}" TextTrimming="CharacterEllipsis" VerticalAlignment="Center"/>
 			</DockPanel>
 			<Expander>
 				<Expander.Header>
-					<TextBlock Text="{Binding VodContent}" TextTrimming="CharacterEllipsis" />
+					<TextBlock Text="{Binding Vod_name}" TextTrimming="CharacterEllipsis" />
 				</Expander.Header>
 				<Grid RowDefinitions="*,*" ColumnDefinitions="150,*">
-					<TextBlock Grid.Row="0" Grid.Column="0" VerticalAlignment="Center"/>
-					<TextBlock Grid.Row="0" Grid.Column="0" VerticalAlignment="Center"/>
-					<TextBlock Grid.Row="0" Grid.Column="0" VerticalAlignment="Center"/>
+					<TextBlock Grid.Row="0" Grid.Column="0" VerticalAlignment="Center" Text="{Binding Vod.vod_actor}"/>
+					<TextBlock Grid.Row="0" Grid.Column="0" VerticalAlignment="Center" Text="{Binding Vod.vod_area}"/>
+					<TextBlock Grid.Row="0" Grid.Column="0" VerticalAlignment="Center" Text="{Binding Vod.vod_year}"/>
 				</Grid>
 			</Expander>
-			<TabControl>
-				<TabItem Header="线路1"/>
-				<TabItem Header="线路2"/>
-			</TabControl>
+			<ComboBox ItemsSource="{Binding Lines}" SelectedIndex="{Binding SelectedLine,Mode=TwoWay}">
+				<ComboBox.ItemTemplate>
+					<DataTemplate>
+						<TextBlock Text="{Binding LineName}"/>
+					</DataTemplate>
+				</ComboBox.ItemTemplate>
+			</ComboBox>
+			<ScrollView>
+				<ItemsControl ItemsSource="{Binding Selectedjishus}">
+					<ItemsControl.ItemsPanel>
+						<ItemsPanelTemplate>
+							<WrapPanel Margin="3"/>
+						</ItemsPanelTemplate>
+					</ItemsControl.ItemsPanel>
+					<ItemsControl.ItemTemplate>
+						<DataTemplate>
+							<RadioButton Classes="RBtn" GroupName="SelectedjishuList" Height="30" Padding="3,0" Margin="2,3" Background="Transparent" Content="{Binding JiShu}"
+										 Command="{Binding $parent[ItemsControl].((vm:VideoPlayViewModel)DataContext).SwitchJiShuCommand}" CommandParameter="{Binding Url}"/>
+						</DataTemplate>
+					</ItemsControl.ItemTemplate>
+				</ItemsControl>
+			</ScrollView>
+
 		</StackPanel>
 
 	</Grid>

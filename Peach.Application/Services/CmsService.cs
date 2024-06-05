@@ -57,9 +57,9 @@ namespace Peach.Application.Services
             return spider.SearchAsync(filter);
         }
 
-        public Task<SniffingModel> SniffingAsync(string flag, string url)
+        public Task<PlayModel> PlayAsync(string flag, string url)
         {
-            return spider.SniffingAsync(flag, url, Site.flags != null ? string.Join(",", Site.flags) : "");
+            return spider.PlayAsync(flag, url, Site.flags != null ? string.Join(",", Site.flags) : "");
         }
 
 

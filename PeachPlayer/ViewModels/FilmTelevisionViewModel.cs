@@ -1,14 +1,14 @@
 ﻿using Peach.Application.Interfaces;
 using Peach.Model.Models;
-using PeachPlayer.Controls;
 using PeachPlayer.Foundation;
-using ReactiveUI;
-using ReactiveUI.Fody.Helpers;
 using Splat;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Reactive;
 using System.Reactive.Linq;
+using ReactiveUI;
+using ReactiveUI.Fody.Helpers;
+using System;
 
 namespace PeachPlayer.ViewModels;
 
@@ -40,6 +40,10 @@ public class FilmTelevisionViewModel : ViewModelBase
         vod = Locator.Current.GetService<ICmsService>();
         SwitchSiteCommand = ReactiveCommand.Create<SiteModel>(SwitchSite);
         LoadSource();
+
+        // 接收消息
+        MessageBus.Current.Listen<bool>("IsLoading").Subscribe(x => IsLoading = x);
+       // MessageBus.Current.RegisterMessageSource(RootVisual.Events().KeyUpObs);
     }
 
     private async void LoadSource()
@@ -49,7 +53,7 @@ public class FilmTelevisionViewModel : ViewModelBase
             _ = Interactions.ShowError.Handle("请先配置数据源地址。");
             return;
         }
-        IsLoading=true;
+        IsLoading = true;
         //测试加载数据
         var req = await source.LoadConfig(ConfigStorage.Instance.AppConfig.SourceUrl);
         if (req)

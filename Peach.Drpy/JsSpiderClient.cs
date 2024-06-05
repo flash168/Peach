@@ -130,14 +130,14 @@ namespace Peach.Drpy
             }, filter);
         }
 
-        public Task<SniffingModel> SniffingAsync(string line, string id, string flags)
+        public Task<PlayModel> PlayAsync(string line, string id, string flags)
         {
             if (engine == null) return null;
             return Task.Factory.StartNew(_id =>
             {
                 //line线路名, id, array(vipFlags)全局配置需要解析的标识列表flags
                 var data = engine.Invoke(ns["default"].Get("play"), line, _id, flags).AsString();
-                return data.ToObjectByJson<SniffingModel>();
+                return data.ToObjectByJson<PlayModel>();
             }, id);
         }
     }

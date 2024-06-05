@@ -112,7 +112,7 @@ namespace Peach.Spider.Drpy
         }
 
         //&extend=http://www.smarth.top:5707/files/hipy/cntv央视.json&flag=CCTV&play=28f751281bbf46b78417e4d297ec3f2f
-        public async Task<SniffingModel> SniffingAsync(string line, string id, string flags)
+        public async Task<PlayModel> PlayAsync(string line, string id, string flags)
         {
             headers.Clear();
             headers["flag"] = line;
@@ -120,7 +120,7 @@ namespace Peach.Spider.Drpy
             var req = await client.ExecuteAsync(CreatRequest());
             if (req.IsSuccessful)
             {
-                return req.Content.ToObjectByJson<SniffingModel>();
+                return req.Content.ToObjectByJson<PlayModel>();
             }
             return null;
         }

@@ -3,6 +3,6 @@
     <!-- Add Resources Here -->
 
 	<SolidColorBrush x:Key="LoadingIconForeground" Color="#54A9FF" />
-	<SolidColorBrush x:Key="LoadingMaskBackground" Opacity="0.12" Color="White" />
+	<SolidColorBrush x:Key="LoadingMaskBackground" Opacity="0.3" Color="White" />
 	
 </ResourceDictionary>

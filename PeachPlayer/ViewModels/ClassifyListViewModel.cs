@@ -1,7 +1,10 @@
 ﻿using Avalonia.Controls;
+using Avalonia.Input;
 using Peach.Application.Interfaces;
 using Peach.Model.Models;
+using PeachPlayer.Controls;
 using ReactiveUI;
+using ReactiveUI.Fody.Helpers;
 using Splat;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -29,6 +32,8 @@ namespace PeachPlayer.ViewModels
 
         public ReactiveCommand<object, Unit> ScrollCommand { get; }
 
+        [Reactive]
+        public bool IsLoading { get; set; }
         public ClassifyListViewModel(ClassModel _class, List<FilterModel> _filters = null)
         {
             ScrollCommand = ReactiveCommand.Create<object>(Scroll);
@@ -39,6 +44,8 @@ namespace PeachPlayer.ViewModels
 
         public async void LoadVodList()
         {
+            IsLoading = true;
+            MessageBus.Current.SendMessage(IsLoading, "IsLoading");
             Videos.Clear();
             var data = await vod?.CategoryAsync(Class.Type_Id, PgIndex, "", "");
             if (data?.List?.Count > 0)
@@ -49,6 +56,8 @@ namespace PeachPlayer.ViewModels
                     Videos.Add(v);
                 }
             }
+            IsLoading = false;
+            MessageBus.Current.SendMessage(IsLoading, "IsLoading");
         }
 
         public void Scroll(object o)
@@ -60,11 +69,12 @@ namespace PeachPlayer.ViewModels
             }
         }
 
-        private bool IsLoadNext = false;
         public async void NextPage()
         {
-            if (IsLoadNext) return;
-            IsLoadNext = true;
+            if (IsLoading) return;
+
+            IsLoading = true;
+            MessageBus.Current.SendMessage(IsLoading, "IsLoading");
             PgIndex++;
             var data = await vod?.CategoryAsync(Class.Type_Id, PgIndex, "", "");
             if (data?.List?.Count > 0)
@@ -76,7 +86,8 @@ namespace PeachPlayer.ViewModels
                     Videos.Add(v);
                 }
             }
-            IsLoadNext = false;
+            IsLoading = false;
+            MessageBus.Current.SendMessage(IsLoading, "IsLoading");
         }
 
 

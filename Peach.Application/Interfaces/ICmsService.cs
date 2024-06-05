@@ -48,7 +48,7 @@ namespace Peach.Application.Interfaces
         /// </summary>
         /// <param name="input"></param>
         /// <returns></returns>
-        Task<SniffingModel> SniffingAsync(string flag, string url);
+        Task<PlayModel> PlayAsync(string flag, string url);
 
 
     }

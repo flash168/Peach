@@ -50,12 +50,12 @@ namespace Peach.Model
         Task<SmallVodListModel> SearchAsync(string filter, bool quick = true);
 
         /// <summary>
-        /// 嗅探播放
+        /// 播放
         /// </summary>
         /// <param name="line">线路</param>
         /// <param name="id">id</param>
         /// <param name="flags">标签</param>
-        Task<SniffingModel> SniffingAsync(string line, string id, string flags);
+        Task<PlayModel> PlayAsync(string line, string id, string flags);
 
     }
 }
