@@ -11,7 +11,11 @@
 			<TextBlock Margin="0, 10" VerticalAlignment="Center" Text="数据源："/>
 			<TextBox Text="{Binding SourceUrl}" Width="300" />
 		</WrapPanel>
-		
+		<WrapPanel Grid.Row="1" Margin="0, 10">
+			<TextBlock Margin="0, 10" VerticalAlignment="Center" Text="嗅探服务地址："/>
+			<TextBox Text="{Binding HipySnifferUrl}" Width="300" />
+		</WrapPanel>
+
 		<Button Grid.Row="8" Width="60" Height="33" Content="保 存" Command="{Binding SaveConfigCommand}"/>
 	</Grid>
 </UserControl>

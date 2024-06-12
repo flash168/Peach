@@ -9,6 +9,7 @@ using System.Reactive.Linq;
 using ReactiveUI;
 using ReactiveUI.Fody.Helpers;
 using System;
+using Peach.Application.Services;
 
 namespace PeachPlayer.ViewModels;
 
@@ -34,25 +35,32 @@ public class FilmTelevisionViewModel : ViewModelBase
 
     private ISourceService source;
     private ICmsService vod;
+    private ISnifferService snifferService;
     public FilmTelevisionViewModel(ISourceService _source = null)
     {
         source = _source ?? Locator.Current.GetService<ISourceService>();
+        snifferService = Locator.Current.GetService<ISnifferService>();
         vod = Locator.Current.GetService<ICmsService>();
         SwitchSiteCommand = ReactiveCommand.Create<SiteModel>(SwitchSite);
         LoadSource();
-
         // 接收消息
         MessageBus.Current.Listen<bool>("IsLoading").Subscribe(x => IsLoading = x);
-       // MessageBus.Current.RegisterMessageSource(RootVisual.Events().KeyUpObs);
+        // MessageBus.Current.RegisterMessageSource(RootVisual.Events().KeyUpObs);
     }
 
     private async void LoadSource()
     {
         if (string.IsNullOrEmpty(ConfigStorage.Instance.AppConfig.SourceUrl))
         {
-            _ = Interactions.ShowError.Handle("请先配置数据源地址。");
+            _ = Interactions.ShowError.Handle("没配置数据源地址我给你显示毛。");
             return;
         }
+        if (string.IsNullOrEmpty(ConfigStorage.Instance.AppConfig.HipySnifferUrl))
+        {
+            _ = Interactions.ShowError.Handle("没配置嗅探服务地址不能播放哦！");
+            return;
+        }
+        snifferService.InitSnifferAsync(ConfigStorage.Instance.AppConfig.HipySnifferUrl);
         IsLoading = true;
         //测试加载数据
         var req = await source.LoadConfig(ConfigStorage.Instance.AppConfig.SourceUrl);

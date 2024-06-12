@@ -8,5 +8,6 @@ namespace PeachPlayer
         public string zhuti { get; set; }
 
         public string SourceUrl { get; set; }
+        public string HipySnifferUrl { get; set; }
     }
 }

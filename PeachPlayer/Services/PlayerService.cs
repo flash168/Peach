@@ -12,8 +12,6 @@ namespace PeachPlayer.Services
 {
     public class PlayerService : IPlayerService
     {
-        //初始化嗅探器
-        private readonly string snifferPath = "sniffer/main.exe";
 
         private static VideoPlayView videoPlayView;
         private static VideoPlayViewModel videoPlayViewModel;
@@ -26,18 +24,21 @@ namespace PeachPlayer.Services
         }
 
         private ICmsService infoService;
+        private ISnifferService snifferService;
         public PlayerService()
         {
+            snifferService = Locator.Current.GetService<ISnifferService>();
             infoService = Locator.Current.GetService<ICmsService>();
             videoPlayView = new VideoPlayView();
             videoPlayView.Closing += (s, e) =>
             {
+                videoPlayView.Stop();
                 ((Window)s).Hide();
                 e.Cancel = true;
             };
             videoPlayViewModel = new VideoPlayViewModel();
             videoPlayView.DataContext = videoPlayViewModel;
-
+            //snifferClient.InitSnifferAsync("");
             // 接收消息
             MessageBus.Current.Listen<string>("SelectedJi").Subscribe(Play);
         }
@@ -95,12 +96,13 @@ namespace PeachPlayer.Services
         private async void Play(string url)
         {
             var playdata = await infoService.PlayAsync(videoPlayViewModel.Lines[videoPlayViewModel.SelectedLine].LineName, url);
-            if (playdata.parse == 0)
-                videoPlayView.Play("https://newcntv.qcloudcdn.com/asp/hls/4000/0303000a/3/default/28f751281bbf46b78417e4d297ec3f2f/4000.m3u8");
+            if (playdata.parse == 0 && !string.IsNullOrEmpty(playdata.url))
+                videoPlayView.Play(playdata.url);
             else
             {
-                //去嗅探 http://127.0.0.1:5708/sniffer?url=
-
+                var play = await snifferService.SnifferAsync(playdata.url);
+                if (play != null && play.code == 200)
+                    videoPlayView.Play(play.url);
             }
         }
 

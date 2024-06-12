@@ -12,7 +12,7 @@ namespace Peach.Application.Services
 
         //js引擎实例集合
         public SiteModel Site;
-        ISpider spider;
+        private ISpider spider;
         //获取引擎（有了拿出来，没有则初始化）
         public Task<bool> InitSite(SiteModel site)
         {
@@ -61,6 +61,9 @@ namespace Peach.Application.Services
         {
             return spider.PlayAsync(flag, url, Site.flags != null ? string.Join(",", Site.flags) : "");
         }
+
+
+
 
 
     }

@@ -1,4 +1,5 @@
-﻿using ReactiveUI;
+﻿using Peach.Application.Services;
+using ReactiveUI;
 using System;
 using System.Reactive;
 
@@ -16,6 +17,15 @@ namespace PeachPlayer.ViewModels
             set => this.RaiseAndSetIfChanged(ref sourceUrl, value);
         }
 
+        private string hipySnifferUrl;
+        public string HipySnifferUrl
+        {
+            get => hipySnifferUrl;
+            set => this.RaiseAndSetIfChanged(ref hipySnifferUrl, value);
+        }
+
+
+        
         ConfigStorage configStorage = ConfigStorage.Instance;
         public SetUpViewModel()
         {
@@ -24,7 +34,7 @@ namespace PeachPlayer.ViewModels
 
             SaveConfigCommand = ReactiveCommand.Create(SaveConfig, isInputValid);
 
-
+            HipySnifferUrl = configStorage.AppConfig.HipySnifferUrl;
             SourceUrl = configStorage.AppConfig.SourceUrl;
         }
 
@@ -32,6 +42,7 @@ namespace PeachPlayer.ViewModels
         public void SaveConfig()
         {
             configStorage.AppConfig.SourceUrl = this.SourceUrl;
+            configStorage.AppConfig.HipySnifferUrl = this.HipySnifferUrl;
             configStorage.Save();
 
         }

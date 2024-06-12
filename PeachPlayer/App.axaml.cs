@@ -53,7 +53,8 @@ public partial class App : Application
         //Locator.CurrentMutable.RegisterConstant(new RuleTestService(), typeof(IRuleTestService));
         Locator.CurrentMutable.RegisterConstant(new SourceService(), typeof(ISourceService));
         //Locator.CurrentMutable.RegisterConstant(new SpiderService(), typeof(ISpiderService));
-
+        
+        Locator.CurrentMutable.RegisterConstant(new SnifferService(), typeof(ISnifferService));
         Locator.CurrentMutable.RegisterConstant(new PlayerService(), typeof(IPlayerService));
 
         //Locator.CurrentMutable.RegisterLazySingleton(() => new RuleTestService(), typeof(IRuleTestService));

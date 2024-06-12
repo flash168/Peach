@@ -10,11 +10,16 @@ public partial class VideoPlayView : Window
         InitializeComponent();
         VideoView = this.FindControl<PlayerView>("playerView");
     }
+
+
     PlayerView VideoView;
     public void Play(string url)
     {
         VideoView.Play(url);
     }
-
+    public void Stop()
+    {
+        VideoView.Stop();
+    }
 
 }
