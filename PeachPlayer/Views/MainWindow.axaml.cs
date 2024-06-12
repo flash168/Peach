@@ -11,6 +11,7 @@ using PeachPlayer.Foundation;
 using ReactiveUI;
 using Splat;
 using System;
+using System.Reactive.Linq;
 using System.Runtime.InteropServices;
 using System.Threading.Tasks;
 

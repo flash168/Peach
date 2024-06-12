@@ -3,6 +3,7 @@ using PeachPlayer.Foundation;
 using ReactiveUI;
 using System;
 using System.Reactive;
+using System.Reactive.Linq;
 
 namespace PeachPlayer.ViewModels
 {
@@ -39,13 +40,12 @@ namespace PeachPlayer.ViewModels
             SourceUrl = configStorage.AppConfig.SourceUrl;
         }
 
-
-        public void SaveConfig()
+        public async void SaveConfig()
         {
             configStorage.AppConfig.SourceUrl = this.SourceUrl;
             configStorage.AppConfig.HipySnifferUrl = this.HipySnifferUrl;
             configStorage.Save();
-            var aa = Interactions.ShowNote.Handle("配置文件保存成功了！");
+            _ = await Interactions.ShowNote.Handle("配置文件保存成功了！");
         }
 
 

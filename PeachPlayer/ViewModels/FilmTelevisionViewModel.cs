@@ -51,12 +51,12 @@ public class FilmTelevisionViewModel : ViewModelBase
     {
         if (string.IsNullOrEmpty(ConfigStorage.Instance.AppConfig.SourceUrl))
         {
-            _ = Interactions.ShowError.Handle("没配置数据源地址我给你显示毛。");
+            _ = await Interactions.ShowError.Handle("没配置数据源地址我给你显示毛。");
             return;
         }
         if (string.IsNullOrEmpty(ConfigStorage.Instance.AppConfig.HipySnifferUrl))
         {
-            _ = Interactions.ShowError.Handle("没配置嗅探服务地址不能播放哦！");
+            _ = await Interactions.ShowError.Handle("没配置嗅探服务地址不能播放哦！");
             return;
         }
         snifferService.InitSnifferAsync(ConfigStorage.Instance.AppConfig.HipySnifferUrl);
