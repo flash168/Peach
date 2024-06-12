@@ -9,7 +9,6 @@ using System.Reactive.Linq;
 using ReactiveUI;
 using ReactiveUI.Fody.Helpers;
 using System;
-using Peach.Application.Services;
 
 namespace PeachPlayer.ViewModels;
 

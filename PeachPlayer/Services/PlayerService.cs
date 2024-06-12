@@ -7,6 +7,7 @@ using Peach.Application.Interfaces;
 using System.Collections.Generic;
 using System;
 using ReactiveUI;
+using PeachPlayer.Foundation;
 
 namespace PeachPlayer.Services
 {
@@ -103,6 +104,8 @@ namespace PeachPlayer.Services
                 var play = await snifferService.SnifferAsync(playdata.url);
                 if (play != null && play.code == 200)
                     videoPlayView.Play(play.url);
+                else
+                    Interactions.ShowNote.Handle("嗅探失败，自行检查问题！");
             }
         }
 

@@ -1,4 +1,5 @@
 ﻿using Peach.Application.Services;
+using PeachPlayer.Foundation;
 using ReactiveUI;
 using System;
 using System.Reactive;
@@ -25,7 +26,7 @@ namespace PeachPlayer.ViewModels
         }
 
 
-        
+
         ConfigStorage configStorage = ConfigStorage.Instance;
         public SetUpViewModel()
         {
@@ -44,7 +45,7 @@ namespace PeachPlayer.ViewModels
             configStorage.AppConfig.SourceUrl = this.SourceUrl;
             configStorage.AppConfig.HipySnifferUrl = this.HipySnifferUrl;
             configStorage.Save();
-
+            var aa = Interactions.ShowNote.Handle("配置文件保存成功了！");
         }
 
 
