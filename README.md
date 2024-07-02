@@ -43,18 +43,24 @@ PeachPlayer 是一款采用 Net C#开发的全功能媒体播放器，它基于 
 ## 🛠️ 下载安装与使用
 
 > **最新版下载**: 访问 [GitHub 发布页面](https://github.com/flash168/Peach/releases) 获取。
+
 > **问题反馈**: 访问 [GitHub issues页面](https://github.com/flash168/Peach/issues) 反馈。
+
 > **net6运行环境下载**: 访问 [microsoft 页面](https://dotnet.microsoft.com/zh-cn/download/dotnet/6.0) 下载。
+
 > **播放器数据服务**: 访问 [hipy-server](https://github.com/hjdhnx/hipy-server) 。
+
 > **播放器视频嗅探**: 访问 [hipy-server](https://github.com/hjdhnx/hipy-sniffer) 。
 
 
 ## 🚗 二次开发（暂未重构，接口未公布）
 > 框架暂未重构，重构后贴出接口内容
 
-<summary>展开查看说明</summary>
 <details>
+<summary>展开查看说明</summary>
+
 > 开发环境配置
+
 ```
 [1]安装Net6开发运行时环境。
 [1]安装Visual Studio 2022及以上版本开发工具。
