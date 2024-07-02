@@ -63,7 +63,7 @@ public class FilmTelevisionViewModel : ViewModelBase
         IsLoading = true;
         //测试加载数据
         var req = await source.LoadConfig(ConfigStorage.Instance.AppConfig.SourceUrl);
-        if (req)
+        if (req && source?.Source?.Sites?.Count > 0)
             ListItems = new ObservableCollection<SiteModel>(source.Source.Sites);
         IsLoading = false;
     }
