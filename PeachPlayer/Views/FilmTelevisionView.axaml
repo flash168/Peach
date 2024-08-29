@@ -3,12 +3,19 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:vm="clr-namespace:PeachPlayer.ViewModels"
-			 xmlns:u="clr-namespace:PeachPlayer.Controls;assembly=PeachPlayer"
+			 xmlns:u="clr-namespace:PeachPlayer.Controls;assembly=PeachPlayer"  
+			 xmlns:i="clr-namespace:Avalonia.Xaml.Interactivity;assembly=Avalonia.Xaml.Interactivity"
+			 xmlns:ia="clr-namespace:Avalonia.Xaml.Interactions.Core;assembly=Avalonia.Xaml.Interactions"
 			 xmlns:md="using:Peach.Model.Models"
 			 xmlns:vods="clr-namespace:PeachPlayer.Views"
              x:DataType="vm:FilmTelevisionViewModel"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
              x:Class="PeachPlayer.Views.FilmTelevisionView">
+	<i:Interaction.Behaviors>
+		<ia:EventTriggerBehavior EventName="Loaded">
+			<ia:InvokeCommandAction Command="{Binding PageLoadedCommand}" />
+		</ia:EventTriggerBehavior>
+	</i:Interaction.Behaviors>
 
 	<Grid ColumnDefinitions="170,1,*">
 		<ScrollViewer>

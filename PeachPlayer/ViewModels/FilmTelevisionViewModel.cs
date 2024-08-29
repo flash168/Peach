@@ -24,6 +24,7 @@ public class FilmTelevisionViewModel : ViewModelBase
         set { selectedType = value; this.RaiseAndSetIfChanged(ref selectedType, value); selectedType?.LoadVodList(); }
     }
 
+    public ReactiveCommand<Unit, Unit> PageLoadedCommand { get; }
     public ReactiveCommand<SiteModel, Unit> SwitchSiteCommand { get; }
 
     [Reactive]
@@ -41,10 +42,15 @@ public class FilmTelevisionViewModel : ViewModelBase
         snifferService = Locator.Current.GetService<ISnifferService>();
         vod = Locator.Current.GetService<ICmsService>();
         SwitchSiteCommand = ReactiveCommand.Create<SiteModel>(SwitchSite);
-        LoadSource();
+        PageLoadedCommand = ReactiveCommand.Create(PageLoaded);
         // 接收消息
         MessageBus.Current.Listen<bool>("IsLoading").Subscribe(x => IsLoading = x);
         // MessageBus.Current.RegisterMessageSource(RootVisual.Events().KeyUpObs);
+    }
+
+    public void PageLoaded()
+    {
+        LoadSource();
     }
 
     private async void LoadSource()

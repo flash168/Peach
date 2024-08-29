@@ -18,7 +18,8 @@ class Program
     public static AppBuilder BuildAvaloniaApp()
         => AppBuilder.Configure<App>()
             .UsePlatformDetect()
-            .WithInterFont()
+            //.WithInterFont()
+            .WithFont_SourceHanSansCN()
             .UseVideoView()
             .LogToTrace()
             .UseReactiveUI();

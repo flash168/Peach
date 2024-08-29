@@ -27,6 +27,9 @@ public partial class MainWindow : Window
     {
         InitializeComponent();
 
+        Interactions.ShowNote.RegisterHandler(cxt => NotifyMessage(cxt));
+        Interactions.ShowError.RegisterHandler(cxt => NotifyMessage(cxt, NotificationType.Error));
+
         var minimizeButton = this.FindControl<Button>("MinimizeButton");
         var maximizeButton = this.FindControl<Button>("MaximizeButton");
         maximizeIcon = this.FindControl<Path>("MaximizeIcon");
@@ -48,10 +51,6 @@ public partial class MainWindow : Window
             UseNativeTitleBar();
         }
         SubscribeToWindowState();
-
-        Interactions.ShowNote.RegisterHandler(cxt => NotifyMessage(cxt));
-        Interactions.ShowError.RegisterHandler(cxt => NotifyMessage(cxt, NotificationType.Error));
-
     }
 
     private void DarkTheme_IsCheckedChanged(object sender, Avalonia.Interactivity.RoutedEventArgs e)
