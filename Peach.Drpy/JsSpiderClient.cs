@@ -46,8 +46,8 @@ namespace Peach.Drpy
             if (!string.IsNullOrWhiteSpace(ext.Trim()))
             {
                 if (!ext.ToLower().StartsWith("http"))
-                {
-                    ext = $"https://www.sourcepower.top/api/v1/subscribe/NbmEVj/{ext}";
+                {//这里处理相对路径
+                    ext = $"https://{ext}";
                 }
                 ext = hparser.GetHtml(ext);
 
