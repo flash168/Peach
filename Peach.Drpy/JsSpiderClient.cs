@@ -38,11 +38,20 @@ namespace Peach.Drpy
             {
                 api = hparser.GetHtml(api);
             }
+            else if (api.Contains("xbq"))
+                return Task.FromResult(false);
             else
                 api = File.ReadAllText(Path.Combine(AppContext.BaseDirectory, "js", $"{api}.js"));
 
-            if (!string.IsNullOrWhiteSpace(ext.Trim()) && ext.ToLower().StartsWith("http"))
+            if (!string.IsNullOrWhiteSpace(ext.Trim()))
+            {
+                if (!ext.ToLower().StartsWith("http"))
+                {
+                    ext = $"https://www.sourcepower.top/api/v1/subscribe/NbmEVj/{ext}";
+                }
                 ext = hparser.GetHtml(ext);
+
+            }
 
             return Task.Factory.StartNew(() =>
             {
