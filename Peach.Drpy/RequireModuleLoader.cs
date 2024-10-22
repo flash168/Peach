@@ -1,12 +1,10 @@
-﻿using Esprima;
-using Esprima.Ast;
-using Jint;
+﻿using Jint;
 using Jint.Runtime.Modules;
 using RestSharp;
 
 namespace Peach.Drpy
 {
-    public class RequireModuleLoader : IModuleLoader
+    public class RequireModuleLoader : ModuleLoader
     {
         private readonly RestClient client;
         private readonly string _basePath;
@@ -19,66 +17,39 @@ namespace Peach.Drpy
         }
 
         private readonly string[] _basePaths = { "assets://js/lib/", "../libs/js/", "../js/", "./" };
-        public Module LoadModule(Engine engine, ResolvedSpecifier resolved)
+
+        public override ResolvedSpecifier Resolve(string referencingModuleLocation, ModuleRequest moduleRequest)
         {
-            Module module;
-            var url = resolved.Key;
-            try
-            {
-                string code = "";
-                string fileName;
-                if (_basePaths.Any(s => url.IndexOf(s) >= 0))
-                {
-                    var tp = _basePaths.First(s => url.IndexOf(s) >= 0);
-
-                    fileName = Path.Combine(_basePath, url.Replace(tp, "drpy_libs/")).Replace('\\', '/');
-                }
-                else
-                    fileName = Path.Combine(_basePath, url).Replace('\\', '/');
-
-                if (File.Exists(fileName))
-                    code = File.ReadAllText(fileName);
-
-                var parserOptions = new ParserOptions
-                {
-                    AdaptRegexp = true,
-                    Tolerant = true
-                };
-                module = new JavaScriptParser(parserOptions).ParseModule(code, source: resolved.Uri?.LocalPath!);
-
-                //string code = "";
-                //if (url.ToLower().StartsWith("http"))
-                //    code = GetWebJs(url);
-                //else
-                //{
-                //    string fileName;
-                //    if (_basePaths.Any(s => url.IndexOf(s) >= 0))
-                //    {
-                //        var tp = _basePaths.First(s => url.IndexOf(s) >= 0);
-
-                //        fileName = Path.Combine(_basePath, url.Replace(tp, "drpy_libs/")).Replace('\\', '/');
-                //    }
-                //    else
-                //        fileName = Path.Combine(_basePath, url).Replace('\\', '/');
-
-                //    if (File.Exists(fileName))
-                //        code = File.ReadAllText(fileName);
-                //    else
-                //        code = GetWebJs(new Uri(new Uri(_baseUrl), url).ToString());
-                //}
-            }
-            catch (ParserException ex)
-            {
-                module = null;
-            }
-            catch (Exception ex)
-            {
-                var message = $"Could not load module {resolved.Uri?.LocalPath}: {ex.Message}";
-                module = null;
-            }
-
-            return module;
+            var moduleSpec = moduleRequest.Specifier;
+            Uri uri = Resolve(referencingModuleLocation, moduleRequest.Specifier);
+            Console.WriteLine($"Resolved Get '{moduleRequest.Specifier}' referenced by '{referencingModuleLocation}' to '{uri}'");
+            return new ResolvedSpecifier(moduleRequest, moduleSpec, uri, SpecifierType.RelativeOrAbsolute);
         }
+        protected override string LoadModuleContents(Engine engine, ResolvedSpecifier resolved)
+        {
+            string fileName = Path.GetFileName(Uri.UnescapeDataString(resolved.Uri.AbsolutePath));
+            var path = Path.Combine(_basePath, "drpy_libs", fileName);
+            if (File.Exists(path))
+            {
+                return File.ReadAllText(path);
+            }
+            // this test dont need to load content
+            throw new InvalidOperationException();
+        }
+        private Uri Resolve(string? referencingModuleLocation, string specifier)
+        {
+            if (Uri.TryCreate(specifier, UriKind.Absolute, out Uri? absoluteLocation))
+                return absoluteLocation;
+
+            if (!string.IsNullOrEmpty(referencingModuleLocation) && Uri.TryCreate(referencingModuleLocation, UriKind.Absolute, out Uri? baseUri))
+            {
+                if (Uri.TryCreate(baseUri, specifier, out Uri? relative))
+                    return relative;
+            }
+
+            return new Uri("file:///./" + specifier);
+        }
+
 
         private string GetWebJs(string url)
         {
@@ -90,10 +61,5 @@ namespace Peach.Drpy
         }
 
 
-
-        public ResolvedSpecifier Resolve(string? referencingModuleLocation, string specifier)
-        {
-            return new ResolvedSpecifier(referencingModuleLocation ?? "", specifier ?? "", null, SpecifierType.RelativeOrAbsolute);
-        }
     }
 }

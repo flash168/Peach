@@ -68,10 +68,11 @@ namespace Peach.Drpy
                     engine.SetValue("local", new Local());
                     engine.SetValue("console", console);
 
-                    engine.AddModule("drpyModel", api);
-                    ns = engine.ImportModule("drpyModel");
+                    engine.Modules.Add("drpyModel", api);
+                    ns = engine.Modules.Import("drpyModel");
 
-                    engine.Invoke(ns.Get("default").Get("init"), ext);
+                    JSInvoke("init", ext);
+                    //engine.Invoke(ns.Get("default").Get("init"), ext);
                 }
                 catch (Exception ex)
                 {
@@ -82,12 +83,27 @@ namespace Peach.Drpy
             });
         }
 
+
+        public string JSInvoke(string func, params object?[] objects)
+        {
+            try
+            {
+                return engine.Invoke(ns["default"].Get(func), objects).AsString();
+            }
+            catch (Exception ex)
+            {
+
+            }
+            return null;
+        }
+
+
         public Task<HomeModel> HomeAsync(string filter)
         {
             if (engine == null) return null;
             return Task.Factory.StartNew(_filier =>
             {
-                var data = engine.Invoke(ns["default"].Get("home"), _filier).AsString();
+                var data = JSInvoke("home", _filier);// engine.Invoke(ns["default"].Get("home"), _filier).AsString();
                 return data.ToObjectByJson<HomeModel>();
             }, filter);
         }
@@ -96,7 +112,7 @@ namespace Peach.Drpy
             if (engine == null) return null;
             return Task.Factory.StartNew(_fidier =>
             {
-                var data = engine.Invoke(ns["default"].Get("homeVod"), _fidier).AsString();
+                var data = JSInvoke("homeVod", _fidier);//  engine.Invoke(ns["default"].Get("homeVod"), _fidier).AsString();
                 return data.ToObjectByJson<SmallVodListModel>();
             }, fidier);
         }
@@ -105,7 +121,7 @@ namespace Peach.Drpy
             if (engine == null) return null;
             return Task.Factory.StartNew(() =>
             {
-                var data = engine.Invoke(ns["default"].Get("category"), tid, pg, filter, extend).AsString();
+                var data = JSInvoke("category", tid, pg, filter, extend);//  engine.Invoke(ns["default"].Get("category"), tid, pg, filter, extend).AsString();
                 return data.ToObjectByJson<SmallVodListModel>();
             });
         }
@@ -115,7 +131,7 @@ namespace Peach.Drpy
             if (engine == null) return null;
             return Task.Factory.StartNew(_ids =>
             {
-                var data = engine.Invoke(ns["default"].Get("detail"), _ids).AsString();
+                var data = JSInvoke("detail", _ids);//engine.Invoke(ns["default"].Get("detail"), _ids).AsString();
                 return data.ToObjectByJson<VodListModel>();
             }, ids);
         }
@@ -125,7 +141,7 @@ namespace Peach.Drpy
             if (engine == null) return null;
             return Task.Factory.StartNew(_filter =>
             {
-                var data = engine.Invoke(ns["default"].Get("search"), _filter, quick).AsString();
+                var data = JSInvoke("search", _filter, quick);// engine.Invoke(ns["default"].Get("search"), _filter, quick).AsString();
                 return data.ToObjectByJson<SmallVodListModel>();
             }, filter);
         }
@@ -136,7 +152,7 @@ namespace Peach.Drpy
             return Task.Factory.StartNew(_id =>
             {
                 //line线路名, id, array(vipFlags)全局配置需要解析的标识列表flags
-                var data = engine.Invoke(ns["default"].Get("play"), line, _id, flags).AsString();
+                var data = JSInvoke("play", line, _id, flags);// engine.Invoke(ns["default"].Get("play"), line, _id, flags).AsString();
                 return data.ToObjectByJson<PlayModel>();
             }, id);
         }
